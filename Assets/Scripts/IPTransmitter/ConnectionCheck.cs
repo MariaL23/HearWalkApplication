@@ -7,48 +7,39 @@ using UnityEngine.UI;
 
 	public class ConnectionCheck : MonoBehaviour
 	{
-		
-
-		public string Address = "/S2";
-
 		[Header("OSC Settings")]
-		public OSCReceiver Receiver;
+		public string Address = "/S2"; // Address to listen
+		public OSCReceiver Receiver; // Receiver component
 
-		public int count;
-
-	
-	
-		public TextMeshProUGUI ConnictionText;
+        [Header("UI Settings")] 
+		public int count; // Receiver component
+		public TextMeshProUGUI ConnictionText; // Receiver component
 
 		
 
 		protected virtual void Start()
 		{
-			Receiver.Bind(Address, ReceivedMessage);
+			Receiver.Bind(Address, ReceivedMessage); // Bind address
 		}
 
-		
-
-		#region Private Methods
-
+	
+       // updates count and closes the receiver
 	   private void Update() {
 		   if (count > 0) {
-			   ConnictionText.text = "Connected";
+			   ConnictionText.text = "Connected"; //updates button text
 			   ConnictionText.color = Color.green;
 			   Receiver.Close();
 		   }
 	   }
 
 
-
+        // Invokes when message received and add 1 to count
 		private void ReceivedMessage(OSCMessage message)
 		{ 
 			count++;
-			
-			
 			Debug.Log(message);
-			//Debug.LogFormat("Received: {0}", message);
+			;
 		}
 
-		#endregion
+	
 	}
