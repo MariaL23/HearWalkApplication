@@ -19,6 +19,7 @@ public class DataHandlerCSV : MonoBehaviour
     public string folderName = "Documents/Sensor/"  ; // Define the folder name
     
     public string nameOfFile = "Sensor"; // Define the name of the CSV file
+    
 
     [Header("UI Settings")]  
     public TextMeshProUGUI messageText; // Define the text object
@@ -35,8 +36,16 @@ public class DataHandlerCSV : MonoBehaviour
     // Define the coroutine to save the CSV file
     private Coroutine saveCoroutine;
 
-    private void Start()
+    public bool isChosen= false;
+
+
+    public void whenChosen()
     {
+        isChosen = true;
+        Debug.Log("Chosen" + nameOfFile);
+        
+        if (isChosen == true)
+        {
         // Bind the OSC receiver to the address
         receiver.Bind(Address, MessageReceived);
 
@@ -45,13 +54,12 @@ public class DataHandlerCSV : MonoBehaviour
         {
             Permission.RequestUserPermission(Permission.ExternalStorageWrite);
         }
-  
-
         // Create the CSV file
         CreateCSVFile();
 
         // Start the coroutine to save the CSV file every 5 seconds
         saveCoroutine = StartCoroutine(SaveCSVFileCoroutine(5f));
+    }
     }
 
     private void OnDestroy()
@@ -101,7 +109,7 @@ public class DataHandlerCSV : MonoBehaviour
         
     }
     // Create the CSV file
-    private void CreateCSVFile()
+    public void CreateCSVFile()
     {
         csvFilePath = GetCSVFilePath();
 
@@ -150,7 +158,7 @@ public class DataHandlerCSV : MonoBehaviour
     }
    
    //Define the coroutine to save the CSV file 
-    private IEnumerator SaveCSVFileCoroutine(float interval)
+    public IEnumerator SaveCSVFileCoroutine(float interval)
     {
         while (true)
         {
@@ -159,7 +167,7 @@ public class DataHandlerCSV : MonoBehaviour
         }
     }
   // Save the messages to the CSV file
-    private void SaveMessagesToCSV()
+    public void SaveMessagesToCSV()
     {
         if (messages.Count > 0)
         {

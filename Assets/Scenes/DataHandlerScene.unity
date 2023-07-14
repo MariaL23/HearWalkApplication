@@ -384,8 +384,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -267.04224, y: 369.32037}
-  m_SizeDelta: {x: 209.9155, y: 39.3592}
+  m_AnchoredPosition: {x: -249.05867, y: 358.77826}
+  m_SizeDelta: {x: 245.8826, y: 60.4434}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &326398593
 MonoBehaviour:
@@ -502,12 +502,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropdown: {fileID: 326398593}
-  gameObjectsToEnableDisable:
+  scriptsToEnableDisable:
   - {fileID: 0}
-  - {fileID: 941720862}
-  - {fileID: 941720862}
-  - {fileID: 941720862}
-  - {fileID: 941720862}
+  - {fileID: 941720865}
+  - {fileID: 817853530}
+  - {fileID: 694607558}
+  - {fileID: 1160263590}
   desiredOptionIndexes: 0000000001000000020000000300000004000000
 --- !u!1 &335479562
 GameObject:
@@ -1271,6 +1271,7 @@ MonoBehaviour:
   messageText: {fileID: 335479564}
   countText: {fileID: 395221389}
   count: 0
+  isChosen: 0
 --- !u!1 &817853528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,6 +1323,7 @@ MonoBehaviour:
   messageText: {fileID: 335479564}
   countText: {fileID: 395221389}
   count: 0
+  isChosen: 0
 --- !u!1 &824313710
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,6 +1477,7 @@ MonoBehaviour:
   messageText: {fileID: 335479564}
   countText: {fileID: 395221389}
   count: 0
+  isChosen: 0
 --- !u!1 &1016570380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1945,6 +1948,7 @@ MonoBehaviour:
   messageText: {fileID: 335479564}
   countText: {fileID: 395221389}
   count: 0
+  isChosen: 0
 --- !u!1 &1238495972
 GameObject:
   m_ObjectHideFlags: 0
@@ -2879,8 +2883,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

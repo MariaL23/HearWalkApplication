@@ -4,8 +4,8 @@ using TMPro;
 public class DropdownScriptController : MonoBehaviour
 {
     public TMP_Dropdown dropdown;
-    public GameObject[] gameObjectsToEnableDisable;
-    public int[] desiredOptionIndexes; // Define and assign the desired option indexes for each GameObject
+    public MonoBehaviour[] scriptsToEnableDisable;
+    public int[] desiredOptionIndexes; // Define and assign the desired option indexes for each script
 
     private void Start()
     {
@@ -14,9 +14,21 @@ public class DropdownScriptController : MonoBehaviour
 
     private void OnDropdownValueChanged(int index)
     {
-        for (int i = 0; i < gameObjectsToEnableDisable.Length; i++)
+        if (index < desiredOptionIndexes.Length)
         {
-            gameObjectsToEnableDisable[i].SetActive(i == desiredOptionIndexes[index]);
+            int desiredIndex = desiredOptionIndexes[index];
+            if (desiredIndex < scriptsToEnableDisable.Length && desiredIndex >= 0)
+            {
+                MonoBehaviour scriptToInvoke = scriptsToEnableDisable[desiredIndex];
+                if (scriptToInvoke != null)
+                {
+                    scriptToInvoke.Invoke("whenChosen", 0f);
+                }
+            }
         }
     }
 }
+
+
+
+
