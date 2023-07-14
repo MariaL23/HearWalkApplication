@@ -6,12 +6,16 @@ using UnityEngine.Android;
 using UnityEngine.Networking;
 using System.IO;
 
-public class SnapshotHandlerCSV : MonoBehaviour
+public class SnapshotSensor1: MonoBehaviour
 {    
     // Define the OSC receiver and the OSC address
     public OSCReceiver receiver;
-    public string Address = "/example/1";
+    public string Address = "/S";
+
+    public string folderName = "Documents/Sensor/Snapshot"  ;
     
+    public string nameOfFile = "SnapshotSensor";
+
     // Define the variables to save the messages to a CSV file
     private List<string> messages = new List<string>(); // Initialize the messages list
     private string csvFilePath;
@@ -93,8 +97,8 @@ public class SnapshotHandlerCSV : MonoBehaviour
     {   
         // Name the CSV File SnapShots_YYYYMMDDHHMMSS.csv 
         string timeStamp = System.DateTime.Now.ToString("yyyyMMddHHmmss");
-        string fileName = "SnapShots_" + timeStamp + ".csv";
-        string folderPath = Path.Combine(GetExternalStoragePath(), "Documents/Snapshots");
+        string fileName = nameOfFile + timeStamp + ".csv";
+        string folderPath = Path.Combine(GetExternalStoragePath(), folderName);
 
         // Create the folder if it doesn't exist
         if (!Directory.Exists(folderPath))
