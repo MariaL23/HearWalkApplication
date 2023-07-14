@@ -714,7 +714,7 @@ Transform:
   - {fileID: 694607557}
   - {fileID: 1160263589}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &694607556
 GameObject:
@@ -761,12 +761,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receiver: {fileID: 2079026503}
-  messageText: {fileID: 335479564}
-  countText: {fileID: 395221389}
-  count: 0
   Address: /S3
   folderName: Documents/Sensor3/
   nameOfFile: Sensor3
+  messageText: {fileID: 335479564}
+  countText: {fileID: 395221389}
+  count: 0
 --- !u!1 &817853528
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,12 +812,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receiver: {fileID: 824313712}
-  messageText: {fileID: 335479564}
-  countText: {fileID: 395221389}
-  count: 0
   Address: /S2
   folderName: Documents/Sensor2/
   nameOfFile: Sensor2
+  messageText: {fileID: 335479564}
+  countText: {fileID: 395221389}
+  count: 0
 --- !u!1 &824313710
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,12 +965,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receiver: {fileID: 1099194560}
-  messageText: {fileID: 335479564}
-  countText: {fileID: 395221389}
-  count: 0
   Address: /S1
   folderName: Documents/Sensor1/
   nameOfFile: Sensor1
+  messageText: {fileID: 335479564}
+  countText: {fileID: 395221389}
+  count: 0
 --- !u!1 &1016570380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1170,7 @@ RectTransform:
   - {fileID: 1427108111}
   - {fileID: 340626388}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1222,12 +1222,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receiver: {fileID: 883545717}
-  messageText: {fileID: 335479564}
-  countText: {fileID: 395221389}
-  count: 0
   Address: /S4
   folderName: Documents/Sensor4/
   nameOfFile: Sensor4
+  messageText: {fileID: 335479564}
+  countText: {fileID: 395221389}
+  count: 0
 --- !u!1 &1238495972
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,7 +1329,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1427108108
 GameObject:
@@ -1774,7 +1774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5619776257309880180, guid: c81dd6cdf3838cf46ac3751e0969be9e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5619776257309880180, guid: c81dd6cdf3838cf46ac3751e0969be9e, type: 3}
       propertyPath: m_LocalPosition.x
