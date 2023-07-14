@@ -19,4 +19,10 @@ public class MenuNavigation : MonoBehaviour
         Debug.Log ("Loading Scene...");
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
+
+     public void LoadMainMenu(string sceneName)
+    {
+        Debug.Log ("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
 }
