@@ -8,20 +8,21 @@ using System.IO;
 
 public class SnapshotSensor1: MonoBehaviour
 {    
-    // Define the OSC receiver and the OSC address
-    public OSCReceiver receiver;
-    public string Address = "/S";
+    [Header("OSC Settings")]  
 
-    public string folderName = "Documents/Sensor/Snapshot"  ;
+    public OSCReceiver receiver;     // Define the OSC receiver and the OSC address
+    public string Address = "/S"; // Define the OSC address
     
-    public string nameOfFile = "SnapshotSensor";
+    [Header("CSV Settings")]  // Define the folder name and the name of the CSV file
+    public string folderName = "Documents/Sensor/Snapshot"  ; // Define the folder name
+    public string nameOfFile = "SnapshotSensor"; // Define the name of the CSV file
 
     // Define the variables to save the messages to a CSV file
     private List<string> messages = new List<string>(); // Initialize the messages list
-    private string csvFilePath;
-    private string csvSeparator = ",";
+    private string csvFilePath; // Define the path of the CSV file
+    private string csvSeparator = ","; // Define the separator of the CSV file
     private string[] csvHeaders = { "Timestamp", "accX", "accY", "accZ", "gyroX", "gyroY", "gyroZ", "Battery"};
-    private float lastWriteTime;
+    private float lastWriteTime; // Define the last write time
     
     private void Start()
     {
@@ -84,7 +85,8 @@ public class SnapshotSensor1: MonoBehaviour
     {
         csvFilePath = GetCSVFilePath();
 
-        if (!File.Exists(csvFilePath))
+
+        if (!File.Exists(csvFilePath)) // If the file doesn't exist, create it
         {
             using (StreamWriter writer = new StreamWriter(csvFilePath))
             {
@@ -95,9 +97,9 @@ public class SnapshotSensor1: MonoBehaviour
  
     private string GetCSVFilePath()
     {   
-        // Name the CSV File SnapShots_YYYYMMDDHHMMSS.csv 
-        string timeStamp = System.DateTime.Now.ToString("yyyyMMddHHmmss");
-        string fileName = nameOfFile + timeStamp + ".csv";
+        // Name the CSV File SnapShots_YYYYMMDDHHMM.csv 
+        string timeStamp = System.DateTime.Now.ToString("yyyyMMddHHmm");
+        string fileName = nameOfFile + "-" + timeStamp + ".csv";
         string folderPath = Path.Combine(GetExternalStoragePath(), folderName);
 
         // Create the folder if it doesn't exist
@@ -106,7 +108,7 @@ public class SnapshotSensor1: MonoBehaviour
             Directory.CreateDirectory(folderPath);
         }
 
-        return Path.Combine(folderPath, fileName);
+        return Path.Combine(folderPath, fileName); // Return the path of the CSV file
     }
 
     // Ensure that the file is saved in the Documents folder on Android
@@ -114,6 +116,7 @@ public class SnapshotSensor1: MonoBehaviour
     {
         string externalStoragePath = "";
 
+        // Check if the application is running on Android
         if (Application.platform == RuntimePlatform.Android)
         {
             using (AndroidJavaClass androidEnvironment = new AndroidJavaClass("android.os.Environment"))

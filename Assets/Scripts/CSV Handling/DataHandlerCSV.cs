@@ -10,15 +10,22 @@ using System.IO;
 
 public class DataHandlerCSV : MonoBehaviour
 {    
-    //Define the OSC receiver and the text object
-    public OSCReceiver receiver;
-    public TextMeshProUGUI messageText;
-
-    public TextMeshProUGUI countText;
-
-    public int count;
-    public string Address = "/example/1";
+    [Header("OSC Settings")]  
     
+    public OSCReceiver receiver; //Define the OSC receiver and the text object
+    public string Address = "/S"; // Define the OSC address
+    
+    [Header("CSV Settings")]  
+    public string folderName = "Documents/Sensor/"  ; // Define the folder name
+    
+    public string nameOfFile = "Sensor"; // Define the name of the CSV file
+
+    [Header("UI Settings")]  
+    public TextMeshProUGUI messageText; // Define the text object
+
+    public TextMeshProUGUI countText;  // Define the text object
+    public int count; // Define the count variable
+
     //Define the variables to save the messages to a CSV file
     private List<string> messages = new List<string>(); // Initialize the messages list
     private string csvFilePath;
@@ -109,10 +116,10 @@ public class DataHandlerCSV : MonoBehaviour
  
     private string GetCSVFilePath()
 
-    {    //Name the CSV File SensorData_YYYYMMDDHHMMSS.csv 
-        string timeStamp = System.DateTime.Now.ToString("yyyyMMddHHmmss");
-        string fileName = "AllData_" + timeStamp + ".csv";
-        string folderPath = Path.Combine(GetExternalStoragePath(), "Documents");
+    {    //Name the CSV File SensorData_YYYYMMDDHHMM.csv 
+        string timeStamp = System.DateTime.Now.ToString("yyyyMMddHHmm");
+        string fileName = nameOfFile +"-" + timeStamp + ".csv";
+        string folderPath = Path.Combine(GetExternalStoragePath(), folderName);
 
         // Create the folder if it doesn't exist
         if (!Directory.Exists(folderPath))
