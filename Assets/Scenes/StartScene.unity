@@ -1326,7 +1326,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.8099846, g: 0.9811321, b: 0.6247775, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1448,7 +1448,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.8099846, g: 0.9811321, b: 0.6247775, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1781,7 +1781,6 @@ MonoBehaviour:
   Address: /S2
   Receiver: {fileID: 918850382}
   count: 0
-  CountText: {fileID: 477465440}
   ConnictionText: {fileID: 647638678}
 --- !u!114 &918850382
 MonoBehaviour:
@@ -1872,14 +1871,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7675fcb15a19e747a9d50ec4c8b6b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Address: /address2
   Transmitter: {fileID: 921664335}
+  Address: /address2
   connectButton: {fileID: 759561220}
-  connectButtonText: {fileID: 1096392710}
-  sensorNumber: 3
-  ReceiverIP: 192.168.0.177
-  ReceiverPort: 8886
-  text: {fileID: 246870891}
 --- !u!1 &1012072173
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,7 +2043,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.8099846, g: 0.9811321, b: 0.6247775, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2407,7 +2401,6 @@ MonoBehaviour:
   Address: /S1
   Receiver: {fileID: 1120344550}
   count: 0
-  CountText: {fileID: 1690078623}
   ConnictionText: {fileID: 1863347210}
 --- !u!1 &1129501192
 GameObject:
@@ -2418,7 +2411,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1129501193}
-  - component: {fileID: 1129501194}
+  - component: {fileID: 1129501196}
   - component: {fileID: 1129501195}
   m_Layer: 0
   m_Name: Transmitter Sensor 2
@@ -2443,7 +2436,22 @@ Transform:
   m_Father: {fileID: 1845825502}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1129501194
+--- !u!114 &1129501195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129501192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7675fcb15a19e747a9d50ec4c8b6b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Transmitter: {fileID: 1129501196}
+  Address: /address2
+  connectButton: {fileID: 814166395}
+--- !u!114 &1129501196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2462,31 +2470,11 @@ MonoBehaviour:
   _localHostMode: 0
   _localPortMode: 2
   _localReceiver: {fileID: 0}
-  _localHost: 192.168.0.100
+  _localHost: 192.168.172.1
   _localPort: 7000
   _remoteHost: 192.168.0.188
   _remotePort: 8887
   _useBundle: 0
---- !u!114 &1129501195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1129501192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7675fcb15a19e747a9d50ec4c8b6b73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Address: /address2
-  Transmitter: {fileID: 1129501194}
-  connectButton: {fileID: 814166395}
-  connectButtonText: {fileID: 647638678}
-  sensorNumber: 2
-  ReceiverIP: 192.168.0.188
-  ReceiverPort: 8887
-  text: {fileID: 53757751}
 --- !u!1001 &1159385102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3021,7 +3009,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.8099846, g: 0.9811321, b: 0.6247775, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3127,7 +3115,6 @@ MonoBehaviour:
   Address: /S3
   Receiver: {fileID: 1685273280}
   count: 0
-  CountText: {fileID: 1250488852}
   ConnictionText: {fileID: 1096392710}
 --- !u!114 &1685273280
 MonoBehaviour:
@@ -3670,14 +3657,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7675fcb15a19e747a9d50ec4c8b6b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Address: /address2
   Transmitter: {fileID: 1857311104}
+  Address: /address2
   connectButton: {fileID: 1056288909}
-  connectButtonText: {fileID: 1863347210}
-  sensorNumber: 1
-  ReceiverIP: 192.168.0.199
-  ReceiverPort: 8888
-  text: {fileID: 1877590214}
 --- !u!1 &1863347209
 GameObject:
   m_ObjectHideFlags: 0
@@ -3996,7 +3978,6 @@ MonoBehaviour:
   Address: /S4
   Receiver: {fileID: 2015451180}
   count: 0
-  CountText: {fileID: 0}
   ConnictionText: {fileID: 1687022399}
 --- !u!114 &2015451180
 MonoBehaviour:
@@ -4087,11 +4068,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7675fcb15a19e747a9d50ec4c8b6b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Address: /address2
   Transmitter: {fileID: 2124265138}
+  Address: /address2
   connectButton: {fileID: 1636753584}
-  connectButtonText: {fileID: 1687022399}
-  sensorNumber: 4
-  ReceiverIP: 192.168.0.166
-  ReceiverPort: 8885
-  text: {fileID: 1463014092}

@@ -24,17 +24,17 @@ public class SnapshotSensor1: MonoBehaviour
     private string[] csvHeaders = { "Timestamp", "accX", "accY", "accZ", "gyroX", "gyroY", "gyroZ", "Battery"};
     private float lastWriteTime; // Define the last write time
     
-    private void Start()
+    
+
+
+
+     private void Start()
     {
         // Bind the OSC receiver to the address
         receiver.Bind(Address, MessageReceived);
-
-        // Request necessary permissions
-        if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
-        {
-            Permission.RequestUserPermission(Permission.ExternalStorageWrite);
-        }
   
+    }
+     public void whenChosen(){
         // Create the CSV file
         CreateCSVFile();
 
@@ -43,6 +43,8 @@ public class SnapshotSensor1: MonoBehaviour
 
         // Start the coroutine to write to the CSV file every frame
         StartCoroutine(WriteToCSVFileCoroutine());
+
+        Debug.Log("Chosen" + Address);
     }
 
     private void OnDestroy()
@@ -141,8 +143,9 @@ public class SnapshotSensor1: MonoBehaviour
             // Check if the interval has passed since the last write
             if (Time.realtimeSinceStartup - lastWriteTime >= 0.01f)
             {
-                WriteToCSVFile();
                 lastWriteTime = Time.realtimeSinceStartup;
+                WriteToCSVFile();
+                
             }
         }
     }

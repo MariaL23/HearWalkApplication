@@ -12,7 +12,7 @@ public class DropdownScriptController : MonoBehaviour
         dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
     }
 
-    private void OnDropdownValueChanged(int index)
+    public void OnDropdownValueChanged(int index)
     {
         if (index < desiredOptionIndexes.Length)
         {
