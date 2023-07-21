@@ -33,8 +33,6 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
 
-    public TextMeshProUGUI UpdateText;
-
     private void Awake()
     {
         if (Instance == null)
@@ -145,7 +143,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
                 case "Sensor2":
                     ProcessSensorData2(sensorData);
-                    UpdateText.text = ("Update called!");
+                    
                 break;
 
                 case "Sensor3":
