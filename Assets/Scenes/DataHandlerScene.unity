@@ -737,7 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 209495833}
-  Address: /address2
+  Address: /OSC_Ctrl_2
   connectButton: {fileID: 854352346}
   ipAddressInput: {fileID: 1800380908}
   HostText: {fileID: 471345182}
@@ -2965,7 +2965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 572869841}
-  Address: /address2
+  Address: /OSC_Ctrl_1
   connectButton: {fileID: 764667501}
   ipAddressInput: {fileID: 1800380908}
   HostText: {fileID: 471345182}
@@ -6620,7 +6620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 1131710079}
-  Address: /address2
+  Address: /OSC_Ctrl_3
   connectButton: {fileID: 378442789}
   ipAddressInput: {fileID: 1800380908}
   HostText: {fileID: 471345182}
@@ -7696,7 +7696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 1320169213}
-  Address: /address2
+  Address: OSC_Ctrl_6
   connectButton: {fileID: 530609522}
   ipAddressInput: {fileID: 1800380908}
   HostText: {fileID: 471345182}
@@ -7770,7 +7770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 1332196627}
-  Address: /address2
+  Address: /OSC_Ctrl_4
   connectButton: {fileID: 1047673306}
   ipAddressInput: {fileID: 1800380908}
   HostText: {fileID: 471345182}
@@ -9456,7 +9456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 1634353769}
-  Address: /address2
+  Address: /OSC_Ctrl_5
   connectButton: {fileID: 628897586}
   ipAddressInput: {fileID: 1800380908}
   HostText: {fileID: 471345182}
