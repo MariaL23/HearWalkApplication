@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuNavigation : MonoBehaviour
 {
+    public GameObject GameObject;
     //Quit application function
    public void QuitApp()
     {
@@ -16,7 +17,7 @@ public class MenuNavigation : MonoBehaviour
    //Load scene function
     public void LoadScene(string sceneName)
     {
-        Debug.Log ("Loading Scene...");
+        Debug.Log ("Loading Scene 1...");
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
@@ -24,5 +25,10 @@ public class MenuNavigation : MonoBehaviour
     {
         Debug.Log ("Loading Scene...");
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+
+    public void DismissUI()
+    {
+        GameObject.SetActive(false);
     }
 }

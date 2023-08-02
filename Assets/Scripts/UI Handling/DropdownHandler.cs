@@ -5,9 +5,16 @@ public class DropdownHandler : MonoBehaviour
 {
     public TMP_Dropdown dropdown;
     public MonoBehaviour[] scriptsTochoose;
-    public int[] desiredOptionIndexes; // Define and assign the desired option indexes for each script
+    public int[] desiredOptionIndexes;
 
-
+    private void OnEnable()
+    {
+        string selectedBodyPartName = dropdown.gameObject.name;
+        int savedIndex = PlayerPrefs.GetInt(selectedBodyPartName, 0);
+        dropdown.value = savedIndex;
+        
+        OnDropdownValueChanged(savedIndex); // Call whenChosen when the scene is reloaded
+    }
 
     private void Start()
     {
@@ -26,16 +33,12 @@ public class DropdownHandler : MonoBehaviour
                 {
                     scriptToInvoke.Invoke("whenChosen", 0f);
                     string selectedBodyPartName = dropdown.gameObject.name;
-                    DataProcessorAHRS.Instance.SetBodyPartName(selectedBodyPartName); // Pass the Dropdown GameObject name to the DataProcessorAHRS script
-                    
+                    DataProcessorAHRS.Instance.SetBodyPartName(selectedBodyPartName);
+
+                    PlayerPrefs.SetInt(selectedBodyPartName, index);
+                    PlayerPrefs.Save(); // Save the selected index
                 }
             }
         }
     }
-
-    
 }
-
-
-
-

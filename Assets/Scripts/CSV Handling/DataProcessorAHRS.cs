@@ -18,8 +18,12 @@ public class DataProcessorAHRS : MonoBehaviour
 
     public Dictionary<string, float> PitchValues { get; private set; } = new Dictionary<string, float>();
     public Dictionary<string, float> RollValues { get; private set; } = new Dictionary<string, float>();
+
+    private Dictionary<string, float> lastMessage = new Dictionary<string, float>();
     
     public static DataProcessorAHRS Instance { get; private set; }
+
+    private DataReceiver dataReceiver; // Define the DataReceiver script
 
     private string bodyPartName; // Variable to store the body part name received from the DropdownHandler script
 
@@ -34,6 +38,12 @@ public class DataProcessorAHRS : MonoBehaviour
         
     }
 
+    public TextMeshProUGUI DisconnectText;
+
+    public GameObject DisconnectUI;
+
+    
+
 
     private void Awake()
     {
@@ -42,6 +52,8 @@ public class DataProcessorAHRS : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
+   
 
  
     private void RequestAndroidPermissions()
@@ -56,6 +68,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
     private void Start()
     {
+        
         RequestAndroidPermissions();
         
     }
@@ -67,6 +80,16 @@ public class DataProcessorAHRS : MonoBehaviour
 
     public void ProcessData(string sensorName, string data)
     {
+          if (!lastMessage.ContainsKey(sensorName))
+        {
+            lastMessage.Add(sensorName, Time.time);
+        }
+        else
+        {
+            lastMessage[sensorName] = Time.time;
+        }
+
+
         if (!synchronizedDataDict.ContainsKey(sensorName))
         {
             synchronizedDataDict[sensorName] = new List<string>();
@@ -115,9 +138,11 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
     
-
     private void Update()
     {
+
+        CheckForInactivity();
+        
         foreach (var pair in sensorTextPairs)
         {
             string sensorName = pair.sensorName;
@@ -174,7 +199,7 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
     StreamWriter writer = csvWriters[sensorName];
-     string timestamp = System.DateTime.Now.ToString("ss.fff"); // Seconds and milliseconds
+    string timestamp = System.DateTime.Now.ToString("mm.ss.fff"); // Seconds and milliseconds
     string line = $"{timestamp},{data}";
     writer.WriteLine(line);
     }
@@ -210,7 +235,6 @@ public class DataProcessorAHRS : MonoBehaviour
      private void ProcessSensorData1(List<string> data)
     {
         ProcessSensorData("Sensor1", data);
-       
        
     }
 
@@ -288,6 +312,34 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 }
 
+private void CheckForInactivity()
+{
+    List<string> disconnectedSensors = new List<string>();
+
+    foreach (var kvp in lastMessage)
+    {
+        string sensorName = kvp.Key;
+        float lastMessageTime = kvp.Value;
+
+        // Check if no messages have been received for this sensor for more than 1 second
+        if (Time.time - lastMessageTime >= 1f)
+        {
+            Debug.Log($"No OSC messages received from {sensorName} in the last second.");
+            disconnectedSensors.Add(bodyPartName);
+        }
+    }
+
+    if (disconnectedSensors.Count > 0)
+    {
+        DisconnectText.text = string.Join(", ", disconnectedSensors) + " Disconnected";
+        DisconnectUI.SetActive(true);
+    }
+    else
+    {
+        DisconnectText.text = "";
+    }
+}
+
 
 
     private void OnApplicationQuit()
@@ -305,11 +357,11 @@ public class DataProcessorAHRS : MonoBehaviour
     // Implementation of the Madgwick algorithm for AHRS
 
     // Constructor
-    public MadgwickAHRS(float sampleFrequency = 32.26f)
+    public MadgwickAHRS(float sampleFrequency = 0.03f)
     {
         // Initialize algorithm parameters
         SamplePeriod = 1f / sampleFrequency;
-        Beta = 0.5f;
+        Beta = 0.6f;
         Quaternion = new float[] { 1f, 0f, 0f, 0f };
     }
 

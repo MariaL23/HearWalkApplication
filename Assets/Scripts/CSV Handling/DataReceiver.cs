@@ -5,6 +5,7 @@ using extOSC;
 using UnityEngine.Android;
 using UnityEngine.Networking;
 using System.IO;
+using TMPro;
 
 public class DataReceiver: MonoBehaviour
 {    
@@ -14,9 +15,13 @@ public class DataReceiver: MonoBehaviour
     public string Address = "/S"; // Define the OSC address
 
     public DataProcessorAHRS dataProcessor;
-    
 
+    private string bodyPartName; // Variable to store the body part name received from the DropdownHandler script
+    
+    public TextMeshProUGUI DisconnectText;
     public string sensorName;
+
+     private Dictionary<string, float> lastMessage = new Dictionary<string, float>();
     
     private bool isChosen = false;
 
@@ -27,18 +32,14 @@ public class DataReceiver: MonoBehaviour
         receiver.Bind(Address, MessageReceived);
   
     }
+
+    private void Update(){
+        //CheckForInactivity();
+        }
      public void whenChosen(){
-        // Create the CSV file
-      
 
         isChosen = true;
-
-        // Initialize last write time
-      
-
-        // Start the coroutine to write to the CSV file every frame
         
-
         Debug.Log("Chosen" + Address);
     }
 
@@ -48,9 +49,23 @@ public class DataReceiver: MonoBehaviour
       
     }
 
+       public void SetBodyPartName(string name)
+    {
+        bodyPartName = name; // Set the body part name received from the DropdownController script
+    }
+
     // Receive the OSC message
     public void MessageReceived(OSCMessage message)
-    {     
+    {    
+        if (!lastMessage.ContainsKey(sensorName))
+        {
+            lastMessage.Add(sensorName, Time.time);
+        }
+        else
+        {
+            lastMessage[sensorName] = Time.time;
+        }
+
         if (isChosen == true)
         {
         // Extract timestamp and value from the OSC message
@@ -75,10 +90,26 @@ public class DataReceiver: MonoBehaviour
         // Combine timestamp with all float values
         string formattedMessage = $"{string.Join(",", stringValues)}";
 
+
         // Add the formatted message to the list
-        
 
         dataProcessor.ProcessData(sensorName, formattedMessage);
+        }
+    }
+
+       private void CheckForInactivity()
+    {
+        foreach (var kvp in lastMessage)
+        {
+            string sensorName = kvp.Key;
+            float lastMessageTime = kvp.Value;
+
+            // Check if no messages have been received for this sensor for more than 1 second
+            if (Time.time - lastMessageTime >= 1f)
+            {
+                DisconnectText.text = sensorName +  " Disconnected";
+                Debug.Log($"No OSC messages received from {sensorName} in the last second.");
+            }
         }
     }
 
