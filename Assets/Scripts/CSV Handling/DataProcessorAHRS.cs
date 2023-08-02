@@ -28,7 +28,9 @@ public class DataProcessorAHRS : MonoBehaviour
     {
         public string sensorName;
         public TextMeshProUGUI pitchText;
-       public TextMeshProUGUI rollText;
+        public TextMeshProUGUI rollText;
+
+        public TextMeshProUGUI GyroText;
         
     }
 
@@ -242,6 +244,7 @@ public class DataProcessorAHRS : MonoBehaviour
     float gyroY = float.Parse(sensorData[4]);
     float gyroZ = float.Parse(sensorData[5]);
 
+
     // Convert the sensor data to AHRS-compatible format
     Vector3 accelerometerData = new Vector3(accX, accY, accZ);
     Vector3 gyroscopeData = new Vector3(gyroX, gyroY, gyroZ);
@@ -280,13 +283,12 @@ public class DataProcessorAHRS : MonoBehaviour
         {
             pair.pitchText.text = "Pitch: " + pitch.ToString("F2");
             pair.rollText.text = "Roll: " + roll.ToString("F2");
+            pair.GyroText.text = bodyPartName + "\nGyro X:" + gyroX.ToString("F2") + "\nGyroY " + gyroY.ToString("F2") + "\nGyroZ " + gyroZ.ToString("F2");          
         }
     }
 }
 
 
-
-   
 
     private void OnApplicationQuit()
     {
@@ -298,17 +300,16 @@ public class DataProcessorAHRS : MonoBehaviour
 
 
 
-
     public class MadgwickAHRS
 {
     // Implementation of the Madgwick algorithm for AHRS
 
     // Constructor
-    public MadgwickAHRS(float sampleFrequency = 256f)
+    public MadgwickAHRS(float sampleFrequency = 32.26f)
     {
         // Initialize algorithm parameters
         SamplePeriod = 1f / sampleFrequency;
-        Beta = 0.1f;
+        Beta = 0.5f;
         Quaternion = new float[] { 1f, 0f, 0f, 0f };
     }
 

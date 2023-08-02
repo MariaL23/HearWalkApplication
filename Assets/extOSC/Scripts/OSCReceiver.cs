@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using extOSC.Core;
 using extOSC.Core.Network;
 
+using System.Net.NetworkInformation;
+
 
 namespace extOSC
 {
@@ -375,7 +377,15 @@ namespace extOSC
 		{
 			return _localHostMode == OSCLocalHostMode.Any ? "0.0.0.0" : _localHost;
 		}
+        
+		
+
+
+
 
 		#endregion
 	}
+
+
+	
 }

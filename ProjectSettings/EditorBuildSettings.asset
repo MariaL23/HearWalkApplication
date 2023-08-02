@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/DataHandlerScene.unity
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd
   m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 3a7bd42ae2473484f9926a877b487138, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 4bcee6a1a0de9c041896da56587fd50f, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 1737044468a5de240971002919ec1db8, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 67eea6a56a1d231478699382d041708a, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 9547b621cadb3fb408af8176b2c7b984, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 7bb286223dd85594ba8e5b552f8c88e3, type: 2}

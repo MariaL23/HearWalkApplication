@@ -137,6 +137,7 @@ PlayerSettings:
   preloadedAssets:
   - {fileID: -1826851904569287071, guid: 4bcee6a1a0de9c041896da56587fd50f, type: 2}
   - {fileID: 11400000, guid: 1737044468a5de240971002919ec1db8, type: 2}
+  - {fileID: 11400000, guid: 9547b621cadb3fb408af8176b2c7b984, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -725,7 +726,7 @@ PlayerSettings:
   suppressCommonWarnings: 1
   allowUnsafeCode: 0
   useDeterministicCompilation: 1
-  selectedPlatform: 0
+  selectedPlatform: 2
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1
@@ -806,7 +807,7 @@ PlayerSettings:
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 0
+  activeInputHandler: 2
   windowsGamepadBackendHint: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
