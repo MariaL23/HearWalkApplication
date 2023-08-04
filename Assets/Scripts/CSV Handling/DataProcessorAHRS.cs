@@ -6,6 +6,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.Android;
 using UnityEngine.UI;
+using System;
 
 public class DataProcessorAHRS : MonoBehaviour
 {
@@ -255,7 +256,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
 
 
-   private void ProcessSensorData(string sensorName, List<string> data)
+  private void ProcessSensorData(string sensorName, List<string> data)
 {
     // Process data here for the given sensor
     string[] sensorData = data[data.Count - 1].Split(',');
@@ -268,10 +269,16 @@ public class DataProcessorAHRS : MonoBehaviour
     float gyroY = float.Parse(sensorData[4]);
     float gyroZ = float.Parse(sensorData[5]);
 
-
-    // Convert the sensor data to AHRS-compatible format
-    Vector3 accelerometerData = new Vector3(accX, accY, accZ);
-    Vector3 gyroscopeData = new Vector3(gyroX, gyroY, gyroZ);
+ Vector3 accelerometerData = new Vector3(
+    accX * Mathf.Deg2Rad,
+    accY * Mathf.Deg2Rad,
+    accZ * Mathf.Deg2Rad
+);
+Vector3 gyroscopeData = new Vector3(
+    gyroX * Mathf.Deg2Rad,
+    gyroY * Mathf.Deg2Rad,
+    gyroZ * Mathf.Deg2Rad
+);
 
     // Create a new MadgwickAHRS object for the sensor if it doesn't exist yet
     if (!ahrsObjects.ContainsKey(sensorName))
@@ -281,7 +288,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
     // Update the MadgwickAHRS object with the latest sensor data
     MadgwickAHRS ahrs = ahrsObjects[sensorName];
-    ahrs.Update(gyroscopeData, accelerometerData);
+    ahrs.Update(gyroX, gyroY, gyroZ, accX, accY, accZ); // Pass the sensor data to the Madgwick algorithm
 
     // Get the orientation quaternion from the MadgwickAHRS object
     float[] q = ahrs.Quaternion;
@@ -296,12 +303,11 @@ public class DataProcessorAHRS : MonoBehaviour
     // Now you have the pitch and roll angles for the given sensor, log the values.
     Debug.Log(sensorName + " - Pitch: " + pitch + ", Roll: " + roll);
     
-     // Store the pitch and roll values in the dictionaries
-        PitchValues[sensorName] = pitch;
-        RollValues[sensorName] = roll;
+    // Store the pitch and roll values in the dictionaries
+    PitchValues[sensorName] = pitch;
+    RollValues[sensorName] = roll;
 
-
-  foreach (var pair in sensorTextPairs)
+    foreach (var pair in sensorTextPairs)
     {
         if (pair.sensorName == sensorName)
         {
@@ -311,6 +317,7 @@ public class DataProcessorAHRS : MonoBehaviour
         }
     }
 }
+
 
 private void CheckForInactivity()
 {
@@ -354,72 +361,79 @@ private void CheckForInactivity()
 
     public class MadgwickAHRS
 {
-    // Implementation of the Madgwick algorithm for AHRS
+     // Implementation of the Madgwick algorithm for AHRS
 
     // Constructor
-    public MadgwickAHRS(float sampleFrequency = 0.03f)
+    public MadgwickAHRS(float samplePeriod = 0.01f)
     {
         // Initialize algorithm parameters
-        SamplePeriod = 1f / sampleFrequency;
         Beta = 0.6f;
         Quaternion = new float[] { 1f, 0f, 0f, 0f };
+        SamplePeriod = samplePeriod;
     }
 
     // Properties
-    public float SamplePeriod { get; set; }
     public float Beta { get; set; }
     public float[] Quaternion { get; private set; }
-
+    public float SamplePeriod { get; private set; }
     // Update method
-    public void Update(Vector3 gyro, Vector3 accel)
-    {
-        float[] q = Quaternion;
-        float sampleFreq = 1f / SamplePeriod;
-
-        float q0 = q[0], q1 = q[1], q2 = q[2], q3 = q[3]; // Shorten the variable names for clarity
-        float ax = accel.x, ay = accel.y, az = accel.z;
-        float gx = gyro.x, gy = gyro.y, gz = gyro.z;
-
-        // Compute the derivative of the quaternion
-        float qDot0 = 0.5f * (-q1 * gx - q2 * gy - q3 * gz);
-        float qDot1 = 0.5f * (q0 * gx + q2 * gz - q3 * gy);
-        float qDot2 = 0.5f * (q0 * gy - q1 * gz + q3 * gx);
-        float qDot3 = 0.5f * (q0 * gz + q1 * gy - q2 * gx);
-
-        // Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalization)
-        if (!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f)))
+       public void Update(float gx, float gy, float gz, float ax, float ay, float az)
         {
-            // Normalize accelerometer measurement
-            float invSqrt = 1.0f / Mathf.Sqrt(ax * ax + ay * ay + az * az);
-            ax *= invSqrt;
-            ay *= invSqrt;
-            az *= invSqrt;
+            float q1 = Quaternion[0], q2 = Quaternion[1], q3 = Quaternion[2], q4 = Quaternion[3];   // short name local variable for readability
+            float norm;
+            float s1, s2, s3, s4;
+            float qDot1, qDot2, qDot3, qDot4;
 
-            // Compute error between estimated and measured direction of gravity
-            float halfvx = q1 * q3 - q0 * q2;
-            float halfvy = q0 * q1 + q2 * q3;
-            float halfvz = q0 * q0 - 0.5f + q3 * q3;
+            // Auxiliary variables to avoid repeated arithmetic
+            float _2q1 = 2f * q1;
+            float _2q2 = 2f * q2;
+            float _2q3 = 2f * q3;
+            float _2q4 = 2f * q4;
+            float _4q1 = 4f * q1;
+            float _4q2 = 4f * q2;
+            float _4q3 = 4f * q3;
+            float _8q2 = 8f * q2;
+            float _8q3 = 8f * q3;
+            float q1q1 = q1 * q1;
+            float q2q2 = q2 * q2;
+            float q3q3 = q3 * q3;
+            float q4q4 = q4 * q4;
 
-            // Compute and apply integral feedback
-            qDot0 -= Beta * halfvx;
-            qDot1 -= Beta * halfvy;
-            qDot2 -= Beta * halfvz;
+            // Normalise accelerometer measurement
+            norm = (float)Math.Sqrt(ax * ax + ay * ay + az * az);
+            if (norm == 0f) return; // handle NaN
+            norm = 1 / norm;        // use reciprocal for division
+            ax *= norm;
+            ay *= norm;
+            az *= norm;
+
+            // Gradient decent algorithm corrective step
+            s1 = _4q1 * q3q3 + _2q3 * ax + _4q1 * q2q2 - _2q2 * ay;
+            s2 = _4q2 * q4q4 - _2q4 * ax + 4f * q1q1 * q2 - _2q1 * ay - _4q2 + _8q2 * q2q2 + _8q2 * q3q3 + _4q2 * az;
+            s3 = 4f * q1q1 * q3 + _2q1 * ax + _4q3 * q4q4 - _2q4 * ay - _4q3 + _8q3 * q2q2 + _8q3 * q3q3 + _4q3 * az;
+            s4 = 4f * q2q2 * q4 - _2q2 * ax + 4f * q3q3 * q4 - _2q3 * ay;
+            norm = 1f / (float)Math.Sqrt(s1 * s1 + s2 * s2 + s3 * s3 + s4 * s4);    // normalise step magnitude
+            s1 *= norm;
+            s2 *= norm;
+            s3 *= norm;
+            s4 *= norm;
+
+            // Compute rate of change of quaternion
+            qDot1 = 0.5f * (-q2 * gx - q3 * gy - q4 * gz) - Beta * s1;
+            qDot2 = 0.5f * (q1 * gx + q3 * gz - q4 * gy) - Beta * s2;
+            qDot3 = 0.5f * (q1 * gy - q2 * gz + q4 * gx) - Beta * s3;
+            qDot4 = 0.5f * (q1 * gz + q2 * gy - q3 * gx) - Beta * s4;
+
+            // Integrate to yield quaternion
+            q1 += qDot1 * SamplePeriod;
+            q2 += qDot2 * SamplePeriod;
+            q3 += qDot3 * SamplePeriod;
+            q4 += qDot4 * SamplePeriod;
+            norm = 1f / (float)Math.Sqrt(q1 * q1 + q2 * q2 + q3 * q3 + q4 * q4);    // normalise quaternion
+            Quaternion[0] = q1 * norm;
+            Quaternion[1] = q2 * norm;
+            Quaternion[2] = q3 * norm;
+            Quaternion[3] = q4 * norm;
         }
-
-        // Integrate rate of change of quaternion to yield quaternion
-        q0 += qDot0 * SamplePeriod;
-        q1 += qDot1 * SamplePeriod;
-        q2 += qDot2 * SamplePeriod;
-        q3 += qDot3 * SamplePeriod;
-
-        // Normalize quaternion
-        float invSqrtq = 1.0f / Mathf.Sqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3);
-        q[0] = q0 * invSqrtq;
-        q[1] = q1 * invSqrtq;
-        q[2] = q2 * invSqrtq;
-        q[3] = q3 * invSqrtq;
-
-        Quaternion = q;
     }
-}
 }
