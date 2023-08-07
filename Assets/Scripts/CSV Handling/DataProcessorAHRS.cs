@@ -271,7 +271,7 @@ public class DataProcessorAHRS : MonoBehaviour
     float gyroX = float.Parse(sensorData[3]);
     float gyroY = float.Parse(sensorData[4]);
     float gyroZ = float.Parse(sensorData[5]);
-
+  
  Vector3 accelerometerData = new Vector3(
     accX * Mathf.Deg2Rad,
     accY * Mathf.Deg2Rad,
@@ -303,7 +303,7 @@ Vector3 gyroscopeData = new Vector3(
     float roll = Mathf.Atan2(2 * (orientation.y * orientation.w + orientation.x * orientation.z),
                              1 - 2 * (orientation.y * orientation.y + orientation.x * orientation.x)) * Mathf.Rad2Deg;
 
-    // Now you have the pitch and roll angles for the given sensor, log the values.
+    //pitch and roll angles for the given sensor, log the values.
     Debug.Log(sensorName + " - Pitch: " + pitch + ", Roll: " + roll);
     
     // Store the pitch and roll values in the dictionaries
