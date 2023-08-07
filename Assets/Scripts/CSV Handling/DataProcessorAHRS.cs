@@ -11,25 +11,25 @@ using System;
 public class DataProcessorAHRS : MonoBehaviour
 {
     public List<SensorTextPair> sensorTextPairs;
-    private Dictionary<string, List<string>> synchronizedDataDict = new Dictionary<string, List<string>>();
-    private Dictionary<string, StreamWriter> csvWriters = new Dictionary<string, StreamWriter>();
-    private Dictionary<string, bool> fileCreatedFlags = new Dictionary<string, bool>();
+    private Dictionary<string, List<string>> synchronizedDataDict = new Dictionary<string, List<string>>(); // Dictionary to store the synchronized data for each sensor
+    private Dictionary<string, StreamWriter> csvWriters = new Dictionary<string, StreamWriter>(); // Dictionary to store the CSV writers for each sensor
+    private Dictionary<string, bool> fileCreatedFlags = new Dictionary<string, bool>(); // Dictionary to store the file creation flags for each sensor
 
-    private Dictionary<string, MadgwickAHRS> ahrsObjects = new Dictionary<string, MadgwickAHRS>();
+    private Dictionary<string, MadgwickAHRS> ahrsObjects = new Dictionary<string, MadgwickAHRS>(); // Dictionary to store the MadgwickAHRS objects for each sensor
 
-    public Dictionary<string, float> PitchValues { get; private set; } = new Dictionary<string, float>();
-    public Dictionary<string, float> RollValues { get; private set; } = new Dictionary<string, float>();
+    public Dictionary<string, float> PitchValues { get; private set; } = new Dictionary<string, float>(); // Dictionary to store the pitch values for each sensor
+    public Dictionary<string, float> RollValues { get; private set; } = new Dictionary<string, float>(); // Dictionary to store the roll values for each sensor
 
-    private Dictionary<string, float> lastMessage = new Dictionary<string, float>();
+    private Dictionary<string, float> lastMessage = new Dictionary<string, float>(); // Dictionary to store the last message time for each sensor
     
-    public static DataProcessorAHRS Instance { get; private set; }
+    public static DataProcessorAHRS Instance { get; private set; }  //Create instance
 
     private DataReceiver dataReceiver; // Define the DataReceiver script
 
     private string bodyPartName; // Variable to store the body part name received from the DropdownHandler script
 
     [System.Serializable]
-    public class SensorTextPair
+    public class SensorTextPair // Class to store the sensor name and the corresponding text objects
     {
         public string sensorName;
         public TextMeshProUGUI pitchText;
@@ -39,9 +39,9 @@ public class DataProcessorAHRS : MonoBehaviour
         
     }
 
-    public TextMeshProUGUI DisconnectText;
+    public TextMeshProUGUI DisconnectText; // Define the DisconnectText object
 
-    public GameObject DisconnectUI;
+    public GameObject DisconnectUI; // Define the DisconnectUI object
 
     
 
@@ -56,7 +56,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
    
 
- 
+      //permissions from android
     private void RequestAndroidPermissions()
     {
 
@@ -69,7 +69,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
     private void Start()
     {
-        
+        // get persmissions   
         RequestAndroidPermissions();
         
     }
@@ -79,7 +79,7 @@ public class DataProcessorAHRS : MonoBehaviour
         bodyPartName = name; // Set the body part name received from the DropdownController script
     }
 
-    public void ProcessData(string sensorName, string data)
+    public void ProcessData(string sensorName, string data) // Process the data received from the DataReceiver script
     {
           if (!lastMessage.ContainsKey(sensorName))
         {
@@ -116,7 +116,8 @@ public class DataProcessorAHRS : MonoBehaviour
         // Create the file for the sensor if it hasn't been created yet
         CreateCSV(sensorName);
     }
-
+    
+    //create csv file settings
     private void CreateCSV(string sensorName)
     {
         if (!fileCreatedFlags.ContainsKey(sensorName) || !fileCreatedFlags[sensorName])
@@ -141,7 +142,7 @@ public class DataProcessorAHRS : MonoBehaviour
     
     private void Update()
     {
-
+        //check sensor connection
         CheckForInactivity();
         
         foreach (var pair in sensorTextPairs)
@@ -158,7 +159,7 @@ public class DataProcessorAHRS : MonoBehaviour
                 }
 
             }
-
+              // Run data processing for each sensor
              if (sensorData != null)
             {
              
@@ -191,6 +192,7 @@ public class DataProcessorAHRS : MonoBehaviour
         }
     }
 
+    //write data to csv
     private void WriteToCSV(string sensorName, string data)
     {
          if (!csvWriters.ContainsKey(sensorName))
@@ -204,7 +206,8 @@ public class DataProcessorAHRS : MonoBehaviour
     string line = $"{timestamp},{data}";
     writer.WriteLine(line);
     }
-
+      
+    //getting synced data
     private List<string> GetSynchronizedData(string sensorName)
     {
         if (synchronizedDataDict.ContainsKey(sensorName))
@@ -215,7 +218,7 @@ public class DataProcessorAHRS : MonoBehaviour
         return null;
     }
 
-
+     //get android storage path
        private string GetAndroidExternalStoragePath()
     {
         string externalStoragePath = "";
@@ -232,7 +235,7 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
     
-
+     //Handle the data from the sensors
      private void ProcessSensorData1(List<string> data)
     {
         ProcessSensorData("Sensor1", data);
