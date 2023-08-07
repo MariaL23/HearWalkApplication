@@ -272,11 +272,7 @@ public class DataProcessorAHRS : MonoBehaviour
     float gyroY = float.Parse(sensorData[4]);
     float gyroZ = float.Parse(sensorData[5]);
   
- Vector3 accelerometerData = new Vector3(
-    accX * Mathf.Deg2Rad,
-    accY * Mathf.Deg2Rad,
-    accZ * Mathf.Deg2Rad
-);
+    // Convert the gyroscope data from degrees per second to radians per second
 Vector3 gyroscopeData = new Vector3(
     gyroX * Mathf.Deg2Rad,
     gyroY * Mathf.Deg2Rad,
@@ -376,9 +372,9 @@ private void CheckForInactivity() //check for inactivity
     }
 
     // Properties
-    public float Beta 
-    public float[] Quaternion 
-    public float SamplePeriod 
+    public float Beta { get; set; }
+    public float[] Quaternion { get; private set; }
+    public float SamplePeriod { get; private set; }
     // Update method
        public void Update(float gx, float gy, float gz, float ax, float ay, float az)
         {
