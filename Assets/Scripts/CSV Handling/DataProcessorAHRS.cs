@@ -322,7 +322,7 @@ Vector3 gyroscopeData = new Vector3(
 }
 
 
-private void CheckForInactivity()
+private void CheckForInactivity() //check for inactivity
 {
     List<string> disconnectedSensors = new List<string>();
 
@@ -339,7 +339,7 @@ private void CheckForInactivity()
         }
     }
 
-    if (disconnectedSensors.Count > 0)
+    if (disconnectedSensors.Count > 0) //if no messages have been received for this sensor for more than 1 second
     {
         DisconnectText.text = string.Join(", ", disconnectedSensors) + " Disconnected";
         DisconnectUI.SetActive(true);
@@ -356,7 +356,7 @@ private void CheckForInactivity()
     {
         foreach (var writer in csvWriters.Values)
         {
-            writer.Close();
+            writer.Close(); // Close the CSV writer
         }
     }
 
@@ -364,7 +364,7 @@ private void CheckForInactivity()
 
     public class MadgwickAHRS
 {
-     // Implementation of the Madgwick algorithm for AHRS
+    
 
     // Constructor
     public MadgwickAHRS(float samplePeriod = 0.01f)
@@ -376,9 +376,9 @@ private void CheckForInactivity()
     }
 
     // Properties
-    public float Beta { get; set; }
-    public float[] Quaternion { get; private set; }
-    public float SamplePeriod { get; private set; }
+    public float Beta 
+    public float[] Quaternion 
+    public float SamplePeriod 
     // Update method
        public void Update(float gx, float gy, float gz, float ax, float ay, float az)
         {
