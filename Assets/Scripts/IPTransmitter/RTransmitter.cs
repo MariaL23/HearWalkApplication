@@ -13,6 +13,7 @@ public string Address = "/address2"; // Define the OSC address
 [Header("UI Settings")] 
 public Button connectButton; // Define the connect button
 
+
 public TMP_InputField ipAddressInput;
 
 public TextMeshProUGUI HostText;
@@ -71,6 +72,8 @@ private bool isConnected = false; // Define the connection status
       HostText.text = "Reciver ip: " + Transmitter.RemoteHost; // Set the IP address text
       // Connect to the OSC receiver
       Transmitter.Connect();
+      connectButton.GetComponent<Image>().color = Color.green; // Change the color of the connect button 
+      
 
        // Update connection status
        isConnected = true;

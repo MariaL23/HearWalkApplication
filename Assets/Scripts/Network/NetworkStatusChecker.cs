@@ -23,11 +23,14 @@ public class NetworkStatusChecker : MonoBehaviour
 
     }
   
-
+   private void Update()
+    {
+        CheckNetworkStatus(); // Check network status every frame
+    }
     private void Start()
     {
         RequestAndroidPermissions();
-        CheckNetworkStatus(); // Check network status on start
+       
     }
 
     private void CheckNetworkStatus()
@@ -60,8 +63,7 @@ public class NetworkStatusChecker : MonoBehaviour
         // Check for the correct network name here
         string correctNetworkName = "Prithvi";
         string currentNetworkName = GetCurrentNetworkName();
-        Debug.Log("Current Network Name: " + currentNetworkName);
-        Debug.Log("Expected Network Name: " + correctNetworkName);
+        
        
 
         return currentNetworkName.Equals(correctNetworkName);

@@ -14,9 +14,12 @@ public class DataProcessorAHRS : MonoBehaviour
     private Dictionary<string, List<string>> synchronizedDataDict = new Dictionary<string, List<string>>(); // Dictionary to store the synchronized data for each sensor
     private Dictionary<string, StreamWriter> csvWriters = new Dictionary<string, StreamWriter>(); // Dictionary to store the CSV writers for each sensor
     private Dictionary<string, bool> fileCreatedFlags = new Dictionary<string, bool>(); // Dictionary to store the file creation flags for each sensor
+  
+    private Dictionary<string, List<string>> recordDataDict = new Dictionary<string, List<string>>(); // Store additional data for each sensor
 
     private Dictionary<string, MadgwickAHRS> ahrsObjects = new Dictionary<string, MadgwickAHRS>(); // Dictionary to store the MadgwickAHRS objects for each sensor
-
+    
+    
     public Dictionary<string, float> PitchValues { get; private set; } = new Dictionary<string, float>(); // Dictionary to store the pitch values for each sensor
     public Dictionary<string, float> RollValues { get; private set; } = new Dictionary<string, float>(); // Dictionary to store the roll values for each sensor
 
@@ -43,6 +46,11 @@ public class DataProcessorAHRS : MonoBehaviour
 
     public GameObject DisconnectUI; // Define the DisconnectUI object
 
+    public TextMeshProUGUI Debug1; // Define the Debug1 object
+
+     public TextMeshProUGUI Debug2; // Define the Debug2 object
+
+     private bool recordtoCSV = false; 
     
 
 
@@ -110,11 +118,26 @@ public class DataProcessorAHRS : MonoBehaviour
             }
             return false;
         });
+        
 
         synchronizedDataDict[sensorName].Add(data);
 
         // Create the file for the sensor if it hasn't been created yet
+        
         CreateCSV(sensorName);
+
+
+        if (recordtoCSV && !string.IsNullOrEmpty(sensorName))
+    {
+        if (!recordDataDict.ContainsKey(sensorName))
+        {
+            recordDataDict[sensorName] = new List<string>();
+        }
+        
+        // Add the data to the additionalFileDataDict only when writeToAdditionalFile is true
+        recordDataDict[sensorName].Add(data);
+        Debug1.text = sensorName + " " + data;
+    }
     }
     
     //create csv file settings
@@ -138,7 +161,7 @@ public class DataProcessorAHRS : MonoBehaviour
             fileCreatedFlags[sensorName] = true;
         }
     }
-
+  
     
     private void Update()
     {
@@ -147,6 +170,8 @@ public class DataProcessorAHRS : MonoBehaviour
         
         foreach (var pair in sensorTextPairs)
         {
+
+            
             string sensorName = pair.sensorName;
             List<string> sensorData = GetSynchronizedData(sensorName);
 
@@ -156,9 +181,11 @@ public class DataProcessorAHRS : MonoBehaviour
                 {
                     WriteToCSV(sensorName, data);
                     
+                    
                 }
 
             }
+
               // Run data processing for each sensor
              if (sensorData != null)
             {
@@ -193,7 +220,7 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
     //write data to csv
-    private void WriteToCSV(string sensorName, string data)
+    public void WriteToCSV(string sensorName, string data)
     {
          if (!csvWriters.ContainsKey(sensorName))
     {
@@ -205,8 +232,10 @@ public class DataProcessorAHRS : MonoBehaviour
     string timestamp = System.DateTime.Now.ToString("mm.ss.fff"); // Seconds and milliseconds
     string line = $"{timestamp},{data}";
     writer.WriteLine(line);
+    
     }
-      
+
+
     //getting synced data
     private List<string> GetSynchronizedData(string sensorName)
     {
@@ -217,6 +246,8 @@ public class DataProcessorAHRS : MonoBehaviour
 
         return null;
     }
+
+
 
      //get android storage path
        private string GetAndroidExternalStoragePath()
@@ -233,6 +264,69 @@ public class DataProcessorAHRS : MonoBehaviour
 
         return externalStoragePath;
     }
+
+ public void OnWriteRecord()
+{
+    if (recordtoCSV)
+    {
+        foreach (var pair in recordDataDict)
+        {
+            string sensorName = pair.Key;
+            List<string> sensorData = pair.Value;
+
+            if (sensorData.Count == 0)
+            {
+                Debug.Log($"No data to write for sensor: {sensorName}");
+                continue; // Skip this sensor's data if no data is available
+            }
+
+            string recordFolderPath = Path.Combine(GetAndroidExternalStoragePath(), "Documents", "Records", sensorName);
+            if (!Directory.Exists(recordFolderPath))
+            {
+                Directory.CreateDirectory(recordFolderPath);
+            }
+
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string recordFileName = $"{bodyPartName}_{sensorName}_{timestamp}.csv";
+            string recordFilePath = Path.Combine(recordFolderPath, recordFileName);
+
+            using (StreamWriter writer = new StreamWriter(recordFilePath, true))
+            {
+                writer.WriteLine("Timestamp,accX,accY,accZ,gyroX,gyroY,gyroZ,Battery");
+
+                foreach (string data in sensorData)
+                {
+                    string timestampData = System.DateTime.Now.ToString("mm.ss.fff"); // Seconds and milliseconds
+                    writer.WriteLine($"{timestampData},{data}");
+                }
+            }
+
+            Debug.Log($"Data written to file for sensor: {sensorName}");
+        }
+    }
+}
+
+
+
+    public void OnStartButtonClicked()
+{
+    recordtoCSV = true; 
+}     
+     
+
+public void OnStopButtonClicked()
+{
+     OnWriteRecord();
+    recordtoCSV = false;
+
+    // Clear the recordDataDict for each sensor
+    foreach (var pair in recordDataDict)
+    {
+        pair.Value.Clear();
+    }
+    
+}
+
 
     
      //Handle the data from the sensors
@@ -256,7 +350,6 @@ public class DataProcessorAHRS : MonoBehaviour
     {
         ProcessSensorData("Sensor4", data);
     }
-
 
 
   private void ProcessSensorData(string sensorName, List<string> data)
