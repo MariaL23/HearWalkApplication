@@ -11,7 +11,8 @@ using System;
 
 public class DataProcessorAHRS : MonoBehaviour
 {
-    
+   
+
     public List<SensorTextPair> sensorTextPairs;
     private Dictionary<string, List<string>> synchronizedDataDict = new Dictionary<string, List<string>>(); // Dictionary to store the synchronized data for each sensor
     private Dictionary<string, StreamWriter> csvWriters = new Dictionary<string, StreamWriter>(); // Dictionary to store the CSV writers for each sensor
@@ -31,8 +32,7 @@ public class DataProcessorAHRS : MonoBehaviour
     public class SensorTextPair // Class to store the sensor name and the corresponding text objects
     {
         public string sensorName;
-        public TextMeshProUGUI pitchText;
-        public TextMeshProUGUI rollText;
+    
 
         public TextMeshProUGUI GyroText;
 
@@ -140,7 +140,13 @@ public class DataProcessorAHRS : MonoBehaviour
 
             // Add the data to the additionalFileDataDict only when writeToAdditionalFile is true
             recordDataDict[sensorName].Add(data);
-            Debug1.text = sensorName + " " + data;
+            
+        }
+
+        MainDataProcessor mainDataProcessor = FindObjectOfType<MainDataProcessor>();
+        if (mainDataProcessor != null)
+        {
+            mainDataProcessor.HandleIncomingData(sensorName, data);
         }
     }
 
@@ -370,24 +376,32 @@ public class DataProcessorAHRS : MonoBehaviour
         float gyroX = float.Parse(sensorData[3]);
         float gyroY = float.Parse(sensorData[4]);
         float gyroZ = float.Parse(sensorData[5]);
-        // Set acc with accx,y,z and x
+        //Set acc with accx,y,z and x
         SetAccBuf(accX, accY, accZ);
         //set gyr with gyr + x, y ,z
         SetGyrBuf(gyroX, gyroY, gyroZ);
 
-       
+
+
+
         GetOrientation_Quaternion();
 
-      
-        
+
+
+
 
         foreach (var pair in sensorTextPairs)
         {
             if (pair.sensorName == sensorName)
             {
-                 pair.rollText.text = roll.ToString("F2");
-                pair.pitchText.text = pitch.ToString("F2");
-                pair.GyroText.text = bodyPartName + "\nGyro X:" + gyroX.ToString("F2") + "\nGyroY " + gyroY.ToString("F2") + "\nGyroZ " + gyroZ.ToString("F2");
+                pair.GyroText.text = bodyPartName +
+                "\n" +
+                " Gyro X:  " + gyroX.ToString("F2").PadRight(15) + "  " +
+                " Gyro Y:  " + gyroY.ToString("F2").PadRight(15) + "  " +
+                " Gyro Z:  " + gyroZ.ToString("F2").PadRight(15) + "  " +
+                "\n" +
+                "\nPitch  " + roll.ToString("F2").PadRight(15) + "  " +
+                "Roll  " + pitch.ToString("F2").PadRight(15);
             }
         }
     }
