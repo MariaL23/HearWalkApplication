@@ -12,7 +12,6 @@ using System;
 public class DataProcessorAHRS : MonoBehaviour
 {
    
-
     public List<SensorTextPair> sensorTextPairs;
     private Dictionary<string, List<string>> synchronizedDataDict = new Dictionary<string, List<string>>(); // Dictionary to store the synchronized data for each sensor
     private Dictionary<string, StreamWriter> csvWriters = new Dictionary<string, StreamWriter>(); // Dictionary to store the CSV writers for each sensor
@@ -89,6 +88,7 @@ public class DataProcessorAHRS : MonoBehaviour
     public void SetBodyPartName(string name)
     {
         bodyPartName = name; // Set the body part name received from the DropdownController script
+        Debug1.text = bodyPartName;
     }
 
     public void ProcessData(string sensorName, string data) // Process the data received from the DataReceiver script
@@ -204,7 +204,7 @@ public class DataProcessorAHRS : MonoBehaviour
                 {
                     case "Sensor1":
                         ProcessSensorData1(sensorData);
-
+                        
                         break;
 
                     case "Sensor2":
@@ -348,6 +348,7 @@ public class DataProcessorAHRS : MonoBehaviour
     private void ProcessSensorData2(List<string> data)
     {
         ProcessSensorData("Sensor2", data);
+        Debug2.text = "Sensor2";
     }
 
     private void ProcessSensorData3(List<string> data)
@@ -358,6 +359,7 @@ public class DataProcessorAHRS : MonoBehaviour
     private void ProcessSensorData4(List<string> data)
     {
         ProcessSensorData("Sensor4", data);
+        Debug2.text = "Sensor4" + data;
     }
 
 
@@ -382,11 +384,7 @@ public class DataProcessorAHRS : MonoBehaviour
         SetGyrBuf(gyroX, gyroY, gyroZ);
 
 
-
-
         GetOrientation_Quaternion();
-
-
 
 
 
@@ -395,7 +393,7 @@ public class DataProcessorAHRS : MonoBehaviour
             if (pair.sensorName == sensorName)
             {
                 pair.GyroText.text = bodyPartName +
-                "\n" +
+                "\n" + sensorName + "  " +
                 " Gyro X:  " + gyroX.ToString("F2").PadRight(15) + "  " +
                 " Gyro Y:  " + gyroY.ToString("F2").PadRight(15) + "  " +
                 " Gyro Z:  " + gyroZ.ToString("F2").PadRight(15) + "  " +
