@@ -1,17 +1,14 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Collections;
-using System.Threading.Tasks;
 using System.IO;
 using TMPro;
-using UnityEngine.Android;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 
 public class DataProcessorAHRS : MonoBehaviour
 {
-   
+
     public List<SensorTextPair> sensorTextPairs;
     private Dictionary<string, List<string>> synchronizedDataDict = new Dictionary<string, List<string>>(); // Dictionary to store the synchronized data for each sensor
     private Dictionary<string, StreamWriter> csvWriters = new Dictionary<string, StreamWriter>(); // Dictionary to store the CSV writers for each sensor
@@ -25,13 +22,15 @@ public class DataProcessorAHRS : MonoBehaviour
 
     private DataReceiver dataReceiver; // Define the DataReceiver script
 
-    private string bodyPartName; // Variable to store the body part name received from the DropdownHandler script
+    public string bodyPartName; // Variable to store the body part name received from the DropdownHandler script
+
+    public MainDataProcessor mainDataProcessor;
 
     [System.Serializable]
     public class SensorTextPair // Class to store the sensor name and the corresponding text objects
     {
         public string sensorName;
-    
+
 
         public TextMeshProUGUI GyroText;
 
@@ -47,13 +46,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
     private bool recordtoCSV = false;
 
-    public Slider slider;
-
-    public float Pitch => pitch;
-    public float Roll => roll;
-
-
-
+  
 
 
     private void Awake()
@@ -77,18 +70,67 @@ public class DataProcessorAHRS : MonoBehaviour
 
     }
 
+    public List<string> GetAllSensorNames()
+    {
+        List<string> sensorNames = new List<string>();
+
+        foreach (var pair in sensorTextPairs)
+        {
+            sensorNames.Add(pair.sensorName);
+        }
+
+        return sensorNames;
+    }
+
     private void Start()
     {
         // get persmissions   
         RequestAndroidPermissions();
+        InvokeRepeating("UpdateData", 0.033f, 0.033f);
+
+    }
+
+    private void UpdateData()
+    {
+        foreach (var pair in sensorTextPairs)
+        {
+
+            string sensorName = pair.sensorName;
+            List<string> sensorData = GetSynchronizedData(sensorName);
 
 
+            // Run data processing for each sensor
+            if (sensorData != null && sensorData.Count > 0)
+            {
+                string[] sensorDataArray = sensorData[sensorData.Count - 1].Split(',');
+
+                switch (sensorName)
+                {
+                    case "Sensor1":
+                        ProcessSensorData1(sensorDataArray);
+                        break;
+
+                    case "Sensor2":
+                        ProcessSensorData2(sensorDataArray);
+                        break;
+
+                    case "Sensor3":
+                        ProcessSensorData3(sensorDataArray);
+                        break;
+
+                    case "Sensor4":
+                        ProcessSensorData4(sensorDataArray);
+                        break;
+                }
+            }
+
+        }
     }
 
     public void SetBodyPartName(string name)
     {
         bodyPartName = name; // Set the body part name received from the DropdownController script
-        Debug1.text = bodyPartName;
+       
     }
 
     public void ProcessData(string sensorName, string data) // Process the data received from the DataReceiver script
@@ -140,13 +182,13 @@ public class DataProcessorAHRS : MonoBehaviour
 
             // Add the data to the additionalFileDataDict only when writeToAdditionalFile is true
             recordDataDict[sensorName].Add(data);
-            
+
         }
 
         MainDataProcessor mainDataProcessor = FindObjectOfType<MainDataProcessor>();
         if (mainDataProcessor != null)
         {
-            mainDataProcessor.HandleIncomingData(sensorName, data);
+            
         }
     }
 
@@ -181,7 +223,6 @@ public class DataProcessorAHRS : MonoBehaviour
         foreach (var pair in sensorTextPairs)
         {
 
-
             string sensorName = pair.sensorName;
             List<string> sensorData = GetSynchronizedData(sensorName);
 
@@ -189,43 +230,12 @@ public class DataProcessorAHRS : MonoBehaviour
             {
                 foreach (string data in sensorData)
                 {
+                    
                     WriteToCSV(sensorName, data);
-
-
+                    
                 }
 
             }
-
-            // Run data processing for each sensor
-            if (sensorData != null)
-            {
-
-                switch (sensorName)
-                {
-                    case "Sensor1":
-                        ProcessSensorData1(sensorData);
-                        
-                        break;
-
-                    case "Sensor2":
-                        ProcessSensorData2(sensorData);
-
-                        break;
-
-                    case "Sensor3":
-                        ProcessSensorData3(sensorData);
-
-                        break;
-
-                    case "Sensor4":
-                        ProcessSensorData4(sensorData);
-
-                        break;
-
-
-                }
-            }
-
         }
     }
 
@@ -337,74 +347,6 @@ public class DataProcessorAHRS : MonoBehaviour
 
     }
 
-
-
-    //Handle the data from the sensors
-    private void ProcessSensorData1(List<string> data)
-    {
-        ProcessSensorData("Sensor1", data);
-
-    }
-    private void ProcessSensorData2(List<string> data)
-    {
-        ProcessSensorData("Sensor2", data);
-        Debug2.text = "Sensor2";
-    }
-
-    private void ProcessSensorData3(List<string> data)
-    {
-        ProcessSensorData("Sensor3", data);
-    }
-
-    private void ProcessSensorData4(List<string> data)
-    {
-        ProcessSensorData("Sensor4", data);
-        Debug2.text = "Sensor4" + data;
-    }
-
-
-    private void ProcessSensorData(string sensorName, List<string> data)
-    {
-        // Process data here for the given sensor
-        string[] sensorData = data[data.Count - 1].Split(',');
-
-
-        // Extract accelerometer and gyroscope data from the sensorData array
-
-        float accX = float.Parse(sensorData[0]);
-        float accY = float.Parse(sensorData[1]);
-        float accZ = float.Parse(sensorData[2]);
-
-        float gyroX = float.Parse(sensorData[3]);
-        float gyroY = float.Parse(sensorData[4]);
-        float gyroZ = float.Parse(sensorData[5]);
-        //Set acc with accx,y,z and x
-        SetAccBuf(accX, accY, accZ);
-        //set gyr with gyr + x, y ,z
-        SetGyrBuf(gyroX, gyroY, gyroZ);
-
-
-        GetOrientation_Quaternion();
-
-
-
-        foreach (var pair in sensorTextPairs)
-        {
-            if (pair.sensorName == sensorName)
-            {
-                pair.GyroText.text = bodyPartName +
-                "\n" + sensorName + "  " +
-                " Gyro X:  " + gyroX.ToString("F2").PadRight(15) + "  " +
-                " Gyro Y:  " + gyroY.ToString("F2").PadRight(15) + "  " +
-                " Gyro Z:  " + gyroZ.ToString("F2").PadRight(15) + "  " +
-                "\n" +
-                "\nPitch  " + roll.ToString("F2").PadRight(15) + "  " +
-                "Roll  " + pitch.ToString("F2").PadRight(15);
-            }
-        }
-    }
-
-
     private void CheckForInactivity() //check for inactivity
     {
         List<string> disconnectedSensors = new List<string>();
@@ -440,9 +382,247 @@ public class DataProcessorAHRS : MonoBehaviour
         foreach (var writer in csvWriters.Values)
         {
             writer.Close(); // Close the CSV writer
+            writer.Dispose(); // Dispose the writer
         }
     }
 
+
+    public PitchRollCalculations calculationsSensor1 = new PitchRollCalculations();
+    public PitchRollCalculations calculationsSensor2 = new PitchRollCalculations();
+    public PitchRollCalculations calculationsSensor3 = new PitchRollCalculations();
+    public PitchRollCalculations calculationsSensor4 = new PitchRollCalculations();
+
+    //Handle the data from the sensors
+    public void ProcessSensorData1(string[] sensorDataArray)
+    {
+        List<string> dataSensor1 = GetSynchronizedData("Sensor1");
+        if (sensorDataArray.Length >= 6)
+        {
+            string[] sensorData = dataSensor1[dataSensor1.Count - 1].Split(',');
+            float accX = float.Parse(sensorData[0]);
+            float accY = float.Parse(sensorData[1]);
+            float accZ = float.Parse(sensorData[2]);
+            float gyroX = float.Parse(sensorData[3]);
+            float gyroY = float.Parse(sensorData[4]);
+            float gyroZ = float.Parse(sensorData[5]);
+
+            calculationsSensor1.SetAccBuf(accX, accY, accZ);
+            calculationsSensor1.SetGyrBuf(gyroX, gyroY, gyroZ);
+            calculationsSensor1.GetOrientation_Quaternion();
+            float rollSensor1 = calculationsSensor1.GetPitch();
+            float pitchSensor1 = calculationsSensor1.GetRoll();
+
+            gyroZ = +gyroZ;
+            pitchSensor1 = -pitchSensor1;
+            rollSensor1 = -rollSensor1;
+
+            foreach (var pair in sensorTextPairs)
+            {
+                if (pair.sensorName == "Sensor1")
+                {
+                    pair.GyroText.text = 
+                   
+                    "Gyro Z:  " + (gyroZ >= 0 ? "+" : "") + gyroZ.ToString("F2").PadRight(15) + "  " +
+                    "\n" +
+                    "Pitch: " + (pitchSensor1 >= 0 ? "+" : "") + pitchSensor1.ToString("F2").PadRight(15) + "  " +
+                     "\n" +
+                    "Roll: " + (rollSensor1 >= 0 ? "+" : "") + rollSensor1.ToString("F2").PadRight(15) + "  ";
+                }
+            }
+        }
+
+    }
+
+    public float GetPitchSensor1()
+    {
+        float pitchSensor1 = calculationsSensor1.GetPitch();
+        return pitchSensor1;
+    }
+
+    public float GetRollSensor1()
+    {
+        float rollSensor1 = calculationsSensor1.GetRoll();
+        return rollSensor1;
+    }
+
+    /*
+    public float GetRawDataSensor1() 
+    {
+        float GyroZ = gyrox;
+        return GyroZ;
+    }
+    */
+  
+
+    public void ProcessSensorData2(string[] sensorDataArray)
+    {
+        List<string> dataSensor2 = GetSynchronizedData("Sensor2");
+        if (sensorDataArray.Length >= 6)
+        {
+            string[] sensorData = dataSensor2[dataSensor2.Count - 1].Split(',');
+            float accX = float.Parse(sensorData[0]);
+            float accY = float.Parse(sensorData[1]);
+            float accZ = float.Parse(sensorData[2]);
+            float gyroX = float.Parse(sensorData[3]);
+            float gyroY = float.Parse(sensorData[4]);
+            float gyroZ = float.Parse(sensorData[5]);
+
+            calculationsSensor2.SetAccBuf(accX, accY, accZ);
+            calculationsSensor2.SetGyrBuf(gyroX, gyroY, gyroZ);
+            calculationsSensor2.GetOrientation_Quaternion();
+            float rollSensor2 = calculationsSensor2.GetPitch();
+            float pitchSensor2 = calculationsSensor2.GetRoll();
+
+            gyroZ = -gyroZ;
+            pitchSensor2 = +pitchSensor2;
+            rollSensor2 = -rollSensor2;
+
+            foreach (var pair in sensorTextPairs)
+            {
+                if (pair.sensorName == "Sensor2")
+                {
+                    pair.GyroText.text =
+                    
+                    "Gyro Z: " + (gyroZ >= 0 ? "+" : "") + gyroZ.ToString("F2").PadRight(15) + "  " +
+                    "\n" +
+                    "Pitch: " + (pitchSensor2 >= 0 ? "+" : "") + pitchSensor2.ToString("F2").PadRight(15) + "  " +
+                     "\n" +
+                    "Roll: " + (rollSensor2 >= 0 ? "+" : "") + rollSensor2.ToString("F2").PadRight(15) + "  ";
+                }
+            }
+        }
+
+    }
+
+    public float GetPitchSensor2()
+    {
+        float pitchSensor2 = calculationsSensor2.GetPitch();
+        return pitchSensor2;
+    }
+
+    public float GetRollSensor2()
+    {
+        float rollSensor2 = calculationsSensor2.GetRoll();
+        return rollSensor2;
+    }
+
+
+
+    public void ProcessSensorData3(string[] sensorDataArray)
+    {
+        List<string> dataSensor3 = GetSynchronizedData("Sensor3");
+        if (sensorDataArray.Length >= 6)
+        {
+            string[] sensorData = dataSensor3[dataSensor3.Count - 1].Split(',');
+            float accX = float.Parse(sensorData[0]);
+            float accY = float.Parse(sensorData[1]);
+            float accZ = float.Parse(sensorData[2]);
+            float gyroX = float.Parse(sensorData[3]);
+            float gyroY = float.Parse(sensorData[4]);
+            float gyroZ = float.Parse(sensorData[5]);
+
+            calculationsSensor3.SetAccBuf(accX, accY, accZ);
+            calculationsSensor3.SetGyrBuf(gyroX, gyroY, gyroZ);
+            calculationsSensor3.GetOrientation_Quaternion();
+            float rollSensor3 = calculationsSensor3.GetPitch();
+            float pitchSensor3 = calculationsSensor3.GetRoll();
+
+            gyroZ = -gyroZ;
+            pitchSensor3 = +pitchSensor3;
+            rollSensor3 = -rollSensor3;
+
+
+
+            foreach (var pair in sensorTextPairs)
+            {
+                if (pair.sensorName == "Sensor3")
+                {
+                    pair.GyroText.text = 
+                  
+                    "Gyro Z: " + (gyroZ >= 0 ? "+" : "") + gyroZ.ToString("F2").PadRight(15) + "  " +
+                    "\n" +
+                    "Pitch: " + (pitchSensor3 >= 0 ? "+" : "") + pitchSensor3.ToString("F2").PadRight(15) + "  " +
+                     "\n" +
+                    "Roll: " + (rollSensor3 >= 0 ? "+" : "") + rollSensor3.ToString("F2").PadRight(15) + "  ";
+                }
+            }
+        }
+    }
+
+    public float GetPitchSensor3()
+    {
+        float pitchSensor3 = calculationsSensor3.GetPitch();
+        return pitchSensor3;
+    }
+
+    public float GetRollSensor3()
+    {
+        float rollSensor3 = calculationsSensor3.GetRoll();
+        return rollSensor3;
+    }
+
+
+
+    public void ProcessSensorData4(string[] sensorDataArray)
+    {
+        List<string> dataSensor4 = GetSynchronizedData("Sensor4");
+        if (sensorDataArray.Length >= 6)
+        {
+            string[] sensorData = dataSensor4[dataSensor4.Count - 1].Split(',');
+            float accX = float.Parse(sensorData[0]);
+            float accY = float.Parse(sensorData[1]);
+            float accZ = float.Parse(sensorData[2]);
+            float gyroX = float.Parse(sensorData[3]);
+            float gyroY = float.Parse(sensorData[4]);
+            float gyroZ = float.Parse(sensorData[5]);
+
+            calculationsSensor4.SetAccBuf(accX, accY, accZ);
+            calculationsSensor4.SetGyrBuf(gyroX, gyroY, gyroZ);
+            calculationsSensor4.GetOrientation_Quaternion();
+            float rollSensor4 = calculationsSensor4.GetPitch();
+            float pitchSensor4 = calculationsSensor4.GetRoll();
+           
+            gyroZ = +gyroZ;
+            pitchSensor4 = -pitchSensor4;
+            rollSensor4 = -rollSensor4;
+
+            foreach (var pair in sensorTextPairs)
+            {
+                if (pair.sensorName == "Sensor4")
+                {
+                    pair.GyroText.text = 
+                     
+                    "Gyro Z: " + (gyroZ >= 0 ? "+" : "") + gyroZ.ToString("F2").PadRight(15) + "  " +
+                    "\n" +
+                    "Pitch: " + (pitchSensor4 >= 0 ? "+" : "") + pitchSensor4.ToString("F2").PadRight(15) + "  " +
+                     "\n" +
+                    "Roll: " + (rollSensor4 >= 0 ? "+" : "") + rollSensor4.ToString("F2").PadRight(15) + "  ";
+
+                   
+                }
+            }
+
+            
+        }
+
+    }
+
+    public float GetPitchSensor4()
+    {
+        float pitchSensor4 = calculationsSensor4.GetPitch();
+        return pitchSensor4;
+    }
+
+    public float GetRollSensor4()
+    {
+        float rollSensor4 = calculationsSensor4.GetRoll();
+        return rollSensor4;
+    }
+
+}
+
+
+public class PitchRollCalculations {
     float beta = 1.5f;
     float[] q = { 1.0f, 0.0f, 0.0f, 0.0f };
     float[] eInt = { 0.0f, 0.0f, 0.0f };
@@ -454,6 +634,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
     float pitch = 0;
     public float GetPitch() { return pitch; }
+
     float roll = 0;
     public float GetRoll() { return roll; }
 
@@ -469,6 +650,21 @@ public class DataProcessorAHRS : MonoBehaviour
         gyrBuf[0] = gyrX * (float)Math.PI / 180.0f;
         gyrBuf[1] = gyrY * (float)Math.PI / 180.0f;
         gyrBuf[2] = gyrZ * (float)Math.PI / 180.0f;
+    }
+
+    public void GetOrientation_Quaternion()
+    {
+        MadgwickAHRSupdateIMU(gyrBuf[0] * (float)Math.PI / 180.0f, gyrBuf[1] * (float)Math.PI / 180.0f, gyrBuf[2] * (float)Math.PI / 180.0f,
+            accBuf[0], accBuf[1], accBuf[2]);
+
+        roll = -(float)Math.Asin(2.0f * (q[1] * q[3] - q[0] * q[2]));
+        pitch = (float)Math.Atan2(2.0f * (q[0] * q[1] + q[2] * q[3]), q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]);
+
+        roll *= 180.0f / (float)Math.PI;
+        pitch *= 180.0f / (float)Math.PI;
+        pitch -= 90;
+        roll = float.IsNaN(roll) ? 0 : roll;
+        pitch = float.IsNaN(pitch) ? 0 : pitch;
     }
 
     public void MadgwickAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float az)
@@ -550,19 +746,6 @@ public class DataProcessorAHRS : MonoBehaviour
     {
         return 1.0f / (float)Math.Sqrt(x);
     }
-
-    public void GetOrientation_Quaternion()
-    {
-        MadgwickAHRSupdateIMU(gyrBuf[0] * (float)Math.PI / 180.0f, gyrBuf[1] * (float)Math.PI / 180.0f, gyrBuf[2] * (float)Math.PI / 180.0f,
-            accBuf[0], accBuf[1], accBuf[2]);
-
-        roll = -(float)Math.Asin(2.0f * (q[1] * q[3] - q[0] * q[2]));
-        pitch = (float)Math.Atan2(2.0f * (q[0] * q[1] + q[2] * q[3]), q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]);
-
-        roll *= 180.0f / (float)Math.PI;
-        pitch *= 180.0f / (float)Math.PI;
-        pitch -= 90;
-        roll = float.IsNaN(roll) ? 0 : roll;
-        pitch = float.IsNaN(pitch) ? 0 : pitch;
-    }
 }
+   
+

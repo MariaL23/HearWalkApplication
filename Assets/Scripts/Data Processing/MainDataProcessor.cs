@@ -5,81 +5,158 @@ using TMPro;
 using static DataProcessorAHRS;
 using UnityEngine.UI;
 using System.IO;
+using System;
 
 public class MainDataProcessor : MonoBehaviour
 {
-    public List<SensorTextPair> sensorTextPairs;
-    private DataProcessorAHRS dataProcessor; // Reference to the DataProcessorAHRS instance
-
-   
     
-    public TextMeshProUGUI StartText;
+    public DataProcessorAHRS dataProcessorAHRS;
+    public DropdownHandler dropdownHandler;
 
-    [System.Serializable]
-    public class SensorTextPair // Class to store the sensor name and the corresponding text objects
+    public TextMeshProUGUI ShankLtext;
+    public TextMeshProUGUI ShankRtext;
+    public TextMeshProUGUI ThighLtext;
+    public TextMeshProUGUI ThighRtext;
+
+    public TextMeshProUGUI KneeLtext;
+    public TextMeshProUGUI KneeRtext;
+    public TextMeshProUGUI FootLvsRtext;
+
+    public MovementFeature[] movementFeatures = new MovementFeature[7];
+    public void Start()
     {
-        public string sensorName;
-
-        public TextMeshProUGUI gyroText;
-
+        
+            movementFeatures[0] = new MovementFeature("Angular_Velocity_ThighL", -110, 110);
+            movementFeatures[1] = new MovementFeature("Angular_Velocity_ThighR", -110, 110);
+            movementFeatures[2] = new MovementFeature("Angular_Velocity_ShankL", -250, 250);
+            movementFeatures[3] = new MovementFeature("Angular_Velocity_ShankR", -250, 250);
+            movementFeatures[4] = new MovementFeature("Joint_Angle_KneeL", -10, 90);
+            movementFeatures[5] = new MovementFeature("Joint_Angle_KneeR", -10, 90);
+            movementFeatures[6] = new MovementFeature("Foot_Position_Lvs/R", -1, 1);
+        
+        // Call the UpdateData function every 0.33 seconds, starting after 0.33 seconds
+        InvokeRepeating("UpdateData", 0.033f, 0.033f);
     }
-    private void Start()
+
+    private void UpdateData()
+    {
+        SensorData1();
+        SensorData2();  
+        SensorData3();
+        SensorData4();
+        UpdateValue();
+    }
+
+    public void GetBodyPartName()
+    {
+
+       
+    }
+
+    public void SensorData1()
+    {
+        float rollSensor1 = dataProcessorAHRS.GetPitchSensor1();
+        float pitchsensor1 = dataProcessorAHRS.GetRollSensor1(); 
+    }
+
+    public void SensorData2() 
+    {
+
+        float rollSensor2  = dataProcessorAHRS.GetPitchSensor2();
+        float pitchsensor2 = dataProcessorAHRS.GetRollSensor2();
+    }
+    public void SensorData3()
+    {
+
+        float rollSensor3 = dataProcessorAHRS.GetPitchSensor3();
+        float pitchsensor3 = dataProcessorAHRS.GetRollSensor3();
+    }
+
+    public void SensorData4()
     {
        
-        // Find the DataProcessorAHRS instance in the scene or use a reference you already have
-        dataProcessor = DataProcessorAHRS.Instance; // Replace with your actual instance retrieval method
+
+        float rollSensor4 = dataProcessorAHRS.GetPitchSensor4();
+        float pitchsensor4 = dataProcessorAHRS.GetRollSensor4();    
+
+        
     }
 
-  
-    public void HandleIncomingData(string sensorName, string data)
+    public void UpdateSensorData(int sensorIndex)
     {
-        if (dataProcessor != null)
+        switch (sensorIndex)
         {
-            
-            
-            List<string> sensorData = dataProcessor.GetSynchronizedData(sensorName);
+            case 1:
+                SensorData1();
+                break;
 
-            if (sensorData != null)
-            {
-                // Process the sensor data as needed
-                foreach (string dataEntry in sensorData)
-                {
-                    // Split the data entry and process individual data points
-                    string[] dataPoints = dataEntry.Split(',');
-                    float accX = float.Parse(dataPoints[0]);
-                    float accY = float.Parse(dataPoints[1]);
-                    float accZ = float.Parse(dataPoints[2]);
+            case 2:
+                SensorData2();
+                break;
 
-                    float gyroX = float.Parse(dataPoints[3]);
-                    float gyroY = float.Parse(dataPoints[4]);
-                    float gyroZ = float.Parse(dataPoints[5]);
+            case 3:
+                SensorData3();
+                break;
 
-                    // Process accX, accY, accZ, gyroX, gyroY, gyroZ as needed
+            case 4:
+                SensorData4();
+                break;
 
-                    float Switchedpitch = dataProcessor.Roll;
-                    float Switchedroll = dataProcessor.Pitch;
 
-                    UpdateText(gyroX, Switchedroll,Switchedpitch);
-                }
-            }
-        }
-        else
-        {
-            Debug.LogWarning("DataProcessorAHRS instance not found.");
-        }
-        void UpdateText(float gyroX,float Swictedroll, float Switchedpitch)
-        {
-            foreach (var pair in sensorTextPairs)
-            {
-                if (pair.sensorName == sensorName)
-                {
-                    pair.gyroText.text = 
-                    "\n" +
-                    " Gyro X:  " + gyroX.ToString("F2").PadRight(15) + 
-                    "\n Pitch  " + Switchedpitch.ToString("F2").PadRight(15) + 
-                    " Roll  " + Swictedroll.ToString("F2").PadRight(15);
-                }
-            }
+            default:
+                break;
         }
     }
+
+    public void UpdateValue()
+    {
+        ShankLtext.text =  movementFeatures[2].getValue().ToString();
+        ShankRtext.text = movementFeatures[3].getValue().ToString();
+        ThighLtext.text = movementFeatures[0].getValue().ToString();
+        ThighRtext.text = movementFeatures[1].getValue().ToString();
+        KneeLtext.text = movementFeatures[4].getValue().ToString();
+        KneeRtext.text = movementFeatures[5].getValue().ToString();
+        FootLvsRtext.text = movementFeatures[6].getValue().ToString();
+
+    }
+
+
+
+
+
+
+    public class MovementFeature
+    {
+        public double minVal = 0;
+        public double maxVal = 0;
+        public string mpName = "PLACEHOLDER";
+        public double value = 0;
+
+        public MovementFeature(string name, double mini, double maxi)
+        {
+            mpName = name;
+            minVal = mini;
+            maxVal = maxi;
+        }
+
+        public void storeValue(double newVal)
+        {
+            if (!double.IsNaN(newVal)) // Check for NaN
+            {
+                value = Math.Min(newVal, maxVal);
+                value = Math.Max(value, minVal);
+            }
+            else
+            {
+                newVal = minVal;
+            }
+        }
+
+        public double getValue()
+        {
+            return value;
+        }
+
+    }
+
 }

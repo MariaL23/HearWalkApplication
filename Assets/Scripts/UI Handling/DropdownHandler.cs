@@ -1,11 +1,16 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
+using System;
 
 public class DropdownHandler : MonoBehaviour
 {
     public TMP_Dropdown dropdown;
     public MonoBehaviour[] scriptsTochoose;
     public int[] desiredOptionIndexes;
+    public TextMeshProUGUI sensorDataTextbox;
+
+    public MainDataProcessor mainDataProcessor;
 
     private void OnEnable()
     {
@@ -19,6 +24,7 @@ public class DropdownHandler : MonoBehaviour
     private void Start()
     {
         dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+        mainDataProcessor = FindObjectOfType<MainDataProcessor>();
     }
 
     public void OnDropdownValueChanged(int index)
@@ -37,8 +43,29 @@ public class DropdownHandler : MonoBehaviour
 
                     PlayerPrefs.SetInt(selectedBodyPartName, index);
                     PlayerPrefs.Save(); // Save the selected index
+
+                    // Call the appropriate SensorDataX method in MainDataProcessor
+                    mainDataProcessor.UpdateSensorData(desiredIndex);
+
+                    // Update the textbox with the sensor data
+                    UpdateSensorDataTextbox(desiredIndex);
                 }
             }
         }
+    }
+
+    private void UpdateSensorDataTextbox(int sensorIndex)
+    {
+        // Retrieve the sensor data based on the index and format it as a string
+        string sensorData = GetSensorDataAsString(sensorIndex);
+
+        // Update the textbox's text with the sensor data
+        sensorDataTextbox.text = sensorData;
+    }
+
+    private string GetSensorDataAsString(int sensorIndex)
+    {
+
+        return ""; // Placeholder
     }
 }
