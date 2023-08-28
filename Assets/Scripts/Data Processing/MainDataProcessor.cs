@@ -13,6 +13,9 @@ public class MainDataProcessor : MonoBehaviour
     public DataProcessorAHRS dataProcessorAHRS;
     public DropdownHandler dropdownHandler;
 
+    public TextMeshProUGUI Debug3;
+    public TextMeshProUGUI Debug4;
+
     public TextMeshProUGUI ShankLtext;
     public TextMeshProUGUI ShankRtext;
     public TextMeshProUGUI ThighLtext;
@@ -56,7 +59,8 @@ public class MainDataProcessor : MonoBehaviour
     public void SensorData1()
     {
         float rollSensor1 = dataProcessorAHRS.GetPitchSensor1();
-        float pitchsensor1 = dataProcessorAHRS.GetRollSensor1(); 
+        float pitchsensor1 = dataProcessorAHRS.GetRollSensor1();
+        float gyroZSensor1 = dataProcessorAHRS.gyroZSensor1;
     }
 
     public void SensorData2() 
@@ -64,12 +68,17 @@ public class MainDataProcessor : MonoBehaviour
 
         float rollSensor2  = dataProcessorAHRS.GetPitchSensor2();
         float pitchsensor2 = dataProcessorAHRS.GetRollSensor2();
+        float gyroZSensor2 = dataProcessorAHRS.gyroZSensor2;
+
+       
     }
     public void SensorData3()
     {
 
         float rollSensor3 = dataProcessorAHRS.GetPitchSensor3();
         float pitchsensor3 = dataProcessorAHRS.GetRollSensor3();
+        float gyroZSensor3 = dataProcessorAHRS.gyroZSensor3;
+      
     }
 
     public void SensorData4()
@@ -78,6 +87,7 @@ public class MainDataProcessor : MonoBehaviour
 
         float rollSensor4 = dataProcessorAHRS.GetPitchSensor4();
         float pitchsensor4 = dataProcessorAHRS.GetRollSensor4();    
+        float gyroZSensor4 = dataProcessorAHRS.gyroZSensor4;
 
         
     }
@@ -101,7 +111,6 @@ public class MainDataProcessor : MonoBehaviour
             case 4:
                 SensorData4();
                 break;
-
 
             default:
                 break;

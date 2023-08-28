@@ -392,6 +392,11 @@ public class DataProcessorAHRS : MonoBehaviour
     public PitchRollCalculations calculationsSensor3 = new PitchRollCalculations();
     public PitchRollCalculations calculationsSensor4 = new PitchRollCalculations();
 
+    public float gyroZSensor1;
+    public float gyroZSensor2;
+    public float gyroZSensor3;
+    public float gyroZSensor4;
+
     //Handle the data from the sensors
     public void ProcessSensorData1(string[] sensorDataArray)
     {
@@ -415,6 +420,8 @@ public class DataProcessorAHRS : MonoBehaviour
             gyroZ = +gyroZ;
             pitchSensor1 = -pitchSensor1;
             rollSensor1 = -rollSensor1;
+
+            gyroZSensor1 = +gyroZ;
 
             foreach (var pair in sensorTextPairs)
             {
@@ -445,14 +452,8 @@ public class DataProcessorAHRS : MonoBehaviour
         return rollSensor1;
     }
 
-    /*
-    public float GetRawDataSensor1() 
-    {
-        float GyroZ = gyrox;
-        return GyroZ;
-    }
-    */
-  
+
+
 
     public void ProcessSensorData2(string[] sensorDataArray)
     {
@@ -476,6 +477,7 @@ public class DataProcessorAHRS : MonoBehaviour
             gyroZ = -gyroZ;
             pitchSensor2 = +pitchSensor2;
             rollSensor2 = -rollSensor2;
+            gyroZSensor2 = -gyroZ;
 
             foreach (var pair in sensorTextPairs)
             {
@@ -530,6 +532,7 @@ public class DataProcessorAHRS : MonoBehaviour
             gyroZ = -gyroZ;
             pitchSensor3 = +pitchSensor3;
             rollSensor3 = -rollSensor3;
+            gyroZSensor3 = -gyroZ;
 
 
 
@@ -538,7 +541,7 @@ public class DataProcessorAHRS : MonoBehaviour
                 if (pair.sensorName == "Sensor3")
                 {
                     pair.GyroText.text = 
-                   bodyPartName +
+                  
                     "Gyro Z: " + (gyroZ >= 0 ? "+" : "") + gyroZ.ToString("F2").PadRight(15) + "  " +
                     "\n" +
                     "Pitch: " + (pitchSensor3 >= 0 ? "+" : "") + pitchSensor3.ToString("F2").PadRight(15) + "  " +
@@ -585,6 +588,8 @@ public class DataProcessorAHRS : MonoBehaviour
             gyroZ = +gyroZ;
             pitchSensor4 = -pitchSensor4;
             rollSensor4 = -rollSensor4;
+
+            gyroZSensor4 = -gyroZ;
 
             foreach (var pair in sensorTextPairs)
             {
@@ -652,6 +657,7 @@ public class PitchRollCalculations {
         gyrBuf[2] = gyrZ * (float)Math.PI / 180.0f;
     }
 
+  
     public void GetOrientation_Quaternion()
     {
         MadgwickAHRSupdateIMU(gyrBuf[0] * (float)Math.PI / 180.0f, gyrBuf[1] * (float)Math.PI / 180.0f, gyrBuf[2] * (float)Math.PI / 180.0f,
