@@ -538,7 +538,7 @@ public class DataProcessorAHRS : MonoBehaviour
                 if (pair.sensorName == "Sensor3")
                 {
                     pair.GyroText.text = 
-                  
+                   bodyPartName +
                     "Gyro Z: " + (gyroZ >= 0 ? "+" : "") + gyroZ.ToString("F2").PadRight(15) + "  " +
                     "\n" +
                     "Pitch: " + (pitchSensor3 >= 0 ? "+" : "") + pitchSensor3.ToString("F2").PadRight(15) + "  " +
