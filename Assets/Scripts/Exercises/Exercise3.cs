@@ -26,36 +26,37 @@ public class Exercise3 : MonoBehaviour
 
     public void SensorData1()
     {
+        float gyroZSensor1 = dataProcessorAHRS.gyroZSensor1;
         float rollSensor1 = dataProcessorAHRS.GetPitchSensor1();
         float pitchsensor1 = dataProcessorAHRS.GetRollSensor1();
-        float gyroZSensor1 = dataProcessorAHRS.gyroZSensor1;
+       
     }
 
     public void SensorData2()
     {
-
+        float gyroZSensor2 = dataProcessorAHRS.gyroZSensor2;
         float rollSensor2 = dataProcessorAHRS.GetPitchSensor2();
         float pitchsensor2 = dataProcessorAHRS.GetRollSensor2();
-        float gyroZSensor2 = dataProcessorAHRS.gyroZSensor2;
+       
 
 
     }
     public void SensorData3()
     {
-
+        float gyroZSensor3 = dataProcessorAHRS.gyroZSensor3;
         float rollSensor3 = dataProcessorAHRS.GetPitchSensor3();
         float pitchsensor3 = dataProcessorAHRS.GetRollSensor3();
-        float gyroZSensor3 = dataProcessorAHRS.gyroZSensor3;
+        
 
     }
 
     public void SensorData4()
     {
 
-
+        float gyroZSensor4 = dataProcessorAHRS.gyroZSensor4;
         float rollSensor4 = dataProcessorAHRS.GetPitchSensor4();
         float pitchsensor4 = dataProcessorAHRS.GetRollSensor4();
-        float gyroZSensor4 = dataProcessorAHRS.gyroZSensor4;
+      
 
 
     }

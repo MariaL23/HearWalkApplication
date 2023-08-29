@@ -37,8 +37,8 @@ public class MainDataProcessor : MonoBehaviour
             movementFeatures[5] = new MovementFeature("Joint_Angle_KneeR", -10, 90);
             movementFeatures[6] = new MovementFeature("Foot_Position_Lvs/R", -1, 1);
         
-        // Call the UpdateData function every 0.33 seconds, starting after 0.33 seconds
-        InvokeRepeating("UpdateData", 0.033f, 0.033f);
+        // Call the UpdateData function every 0.033 seconds
+        InvokeRepeating("UpdateData", 0.01f, 0.01f);
     }
 
     private void UpdateData()
@@ -58,36 +58,37 @@ public class MainDataProcessor : MonoBehaviour
 
     public void SensorData1()
     {
+        float gyroZSensor1 = dataProcessorAHRS.gyroZSensor1;
         float rollSensor1 = dataProcessorAHRS.GetPitchSensor1();
         float pitchsensor1 = dataProcessorAHRS.GetRollSensor1();
-        float gyroZSensor1 = dataProcessorAHRS.gyroZSensor1;
+        
     }
 
     public void SensorData2() 
     {
-
+        float gyroZSensor2 = dataProcessorAHRS.gyroZSensor2;
         float rollSensor2  = dataProcessorAHRS.GetPitchSensor2();
         float pitchsensor2 = dataProcessorAHRS.GetRollSensor2();
-        float gyroZSensor2 = dataProcessorAHRS.gyroZSensor2;
+       
 
        
     }
     public void SensorData3()
     {
-
+        float gyroZSensor3 = dataProcessorAHRS.gyroZSensor3;
         float rollSensor3 = dataProcessorAHRS.GetPitchSensor3();
         float pitchsensor3 = dataProcessorAHRS.GetRollSensor3();
-        float gyroZSensor3 = dataProcessorAHRS.gyroZSensor3;
+      
       
     }
 
     public void SensorData4()
     {
-       
 
+        float gyroZSensor4 = dataProcessorAHRS.gyroZSensor4;
         float rollSensor4 = dataProcessorAHRS.GetPitchSensor4();
         float pitchsensor4 = dataProcessorAHRS.GetRollSensor4();    
-        float gyroZSensor4 = dataProcessorAHRS.gyroZSensor4;
+        
 
         
     }
@@ -128,6 +129,18 @@ public class MainDataProcessor : MonoBehaviour
         FootLvsRtext.text = movementFeatures[6].getValue().ToString();
 
     }
+
+    void computeMovFeatures(float gyrZ_Thigh_L, float pitch_Thigh_L)
+    {
+
+
+        float angVel_ThighL = 0;
+        float angVel_Thigh_R = 0;
+       
+
+       movementFeatures[0].storeValue(angVel_ThighL);
+       
+         }
 
 
 
