@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static DataProcessorAHRS;
 using System.Collections;
 using System.Threading.Tasks;
 using extOSC;
 public class RTransmitter : MonoBehaviour
 {
-[Header("OSC Settings")]       
+ public DataProcessorAHRS dataProcessorAHRS;
+ [Header("OSC Settings")]       
 public OSCTransmitter Transmitter; // Define the OSC transmitter
 public string Address = "/address2"; // Define the OSC address
 

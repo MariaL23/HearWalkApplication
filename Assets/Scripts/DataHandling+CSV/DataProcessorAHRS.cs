@@ -1,5 +1,7 @@
+using extOSC;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -30,8 +32,6 @@ public class DataProcessorAHRS : MonoBehaviour
     public class SensorTextPair // Class to store the sensor name and the corresponding text objects
     {
         public string sensorName;
-
-
         public TextMeshProUGUI GyroText;
 
     }
@@ -43,10 +43,47 @@ public class DataProcessorAHRS : MonoBehaviour
     public TextMeshProUGUI Debug1; // Define the Debug1 object
 
     public TextMeshProUGUI Debug2; // Define the Debug2 object
+    public TextMeshProUGUI Debug3;
+    public TextMeshProUGUI Debug4;
+
 
     private bool recordtoCSV = false;
 
-  
+    // Text Elements for the Movement Features
+    public TextMeshProUGUI ShankLtext;
+    public TextMeshProUGUI ShankRtext;
+    public TextMeshProUGUI ThighLtext;
+    public TextMeshProUGUI ThighRtext;
+
+    public TextMeshProUGUI KneeLtext;
+    public TextMeshProUGUI KneeRtext;
+    public TextMeshProUGUI FootLvsRtext;
+
+    public MovementFeature[] movementFeatures = new MovementFeature[7];
+    public Preprocessor[] preprocessors = new Preprocessor[6];
+    public Postprocessor[] postprocessors = new Postprocessor[6];
+
+    public TextMeshProUGUI[] preprocessorInputText = new TextMeshProUGUI[6];
+    public TextMeshProUGUI[] preprocessorOutputText = new TextMeshProUGUI[6];
+    public TextMeshProUGUI[] postprocessorOutputText = new TextMeshProUGUI[6];
+
+    public TextMeshProUGUI preprocessorInput1Text;
+    public int preproc_InUse = 1;
+    public int postproc_InUse = 1;
+
+    [Header("OSC Settings")]
+    public OSCTransmitter Transmitter; // Define the OSC transmitter
+    public string Address = "/address2"; // Define the OSC address
+
+    [Header("UI Settings")]
+    public Button connectButton; // Define the connect button
+
+
+    public TMP_InputField ipAddressInput;
+
+    public TextMeshProUGUI HostText;
+    private bool isConnected = false; // Define the connection status
+
 
 
     private void Awake()
@@ -86,10 +123,64 @@ public class DataProcessorAHRS : MonoBehaviour
     {
         // get persmissions   
         RequestAndroidPermissions();
-        InvokeRepeating("UpdateData", 0.033f, 0.033f);
+        InvokeRepeating("UpdateData", 0.032f, 0.032f);
+        connectButton.onClick.AddListener(ToggleConnection);
+
+        movementFeatures[0] = new MovementFeature("Angular_Velocity_ThighL", -110, 110);
+        movementFeatures[1] = new MovementFeature("Angular_Velocity_ThighR", -110, 110);
+        movementFeatures[2] = new MovementFeature("Angular_Velocity_ShankL", -250, 250);
+        movementFeatures[3] = new MovementFeature("Angular_Velocity_ShankR", -250, 250);
+        movementFeatures[4] = new MovementFeature("Joint_Angle_KneeL", -10, 90);
+        movementFeatures[5] = new MovementFeature("Joint_Angle_KneeR", -10, 90);
+        movementFeatures[6] = new MovementFeature("Foot_Position_Lvs/R", -1, 1);
+
+        preprocessors[0] = new Preprocessor(-110, 110, 0, 110, 5, false);
+        preprocessors[1] = new Preprocessor(-110, 110, 0, 110, 5, false);
+        preprocessors[2] = new Preprocessor(-110, 110, 0, 110, 5, false);
+        preprocessors[3] = new Preprocessor(-110, 110, 0, 110, 5, false);
+        preprocessors[4] = new Preprocessor(-110, 110, 0, 110, 5, false);
+        preprocessors[5] = new Preprocessor(-110, 110, 0, 110, 5, false);
+       
+
+        postprocessors[0] = new Postprocessor(1,false,800);
+        postprocessors[1] = new Postprocessor(1, false, 0);
+        postprocessors[2] = new Postprocessor(1, false, 0);
+        postprocessors[3] = new Postprocessor(1, false, 0);
+        postprocessors[4] = new Postprocessor(1, false, 0);
+        postprocessors[5] = new Postprocessor(1, false, 0);
+      
+
+        Debug3.text = "PostProcessorMade";
 
     }
 
+    public void ToggleConnection()
+    {
+        if (isConnected) // If the connection is established
+        {
+            Transmitter.Close(); // Close the connection
+
+        }
+        else
+        {
+            Connect(); // Connect to the OSC receiver
+        }
+    }
+    // Connect to the OSC receiver
+    private void Connect()
+    {
+        string ipAddress = ipAddressInput.text; // Get the IP address from the input field
+        Transmitter.RemoteHost = ipAddress; // Set the OSC transmitter's IP address
+        HostText.text = "Reciver ip: " + Transmitter.RemoteHost; // Set the IP address text
+                                                                 // Connect to the OSC receiver
+        Transmitter.Connect();
+        connectButton.GetComponent<Image>().color = Color.green; // Change the color of the connect button 
+
+
+        // Update connection status
+        isConnected = true;
+
+    }
     private void UpdateData()
     {
         foreach (var pair in sensorTextPairs)
@@ -125,6 +216,41 @@ public class DataProcessorAHRS : MonoBehaviour
             }
 
         }
+
+
+        ComputeMovFeatures(gyroZSensor2,gyroZSensor1, gyroZSensor3, gyroZSensor4,
+            GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
+
+        Debug1.text = gyroZSensor2.ToString("F2");
+        Debug2.text = gyroZSensor3.ToString("F2");
+        Debug4.text = preprocessors[1].outputVal.ToString("F2");
+
+        ShankLtext.text = movementFeatures[2].getValue().ToString("F2");
+        ShankRtext.text = movementFeatures[3].getValue().ToString("F2");
+        ThighLtext.text = movementFeatures[0].getValue().ToString("F2");
+        ThighRtext.text = movementFeatures[1].getValue().ToString("F2");
+        KneeLtext.text = movementFeatures[4].getValue().ToString("F2");
+        KneeRtext.text = movementFeatures[5].getValue().ToString("F2");
+        FootLvsRtext.text = movementFeatures[6].getValue().ToString("F2");
+
+       
+        preprocessors[0].Process(movementFeatures[0].getValue());
+        postprocessors[0].Process(preprocessors[0].outputVal);
+
+        
+
+        for (int i = 0; i < 6; i++)
+        {
+            preprocessorInputText[i].text = preprocessors[i].inputVal.ToString("F2");
+            preprocessorOutputText[i].text = preprocessors[i].outputVal.ToString("F2");
+            postprocessorOutputText[i].text = postprocessors[i].outputVal.ToString("F2");
+        }
+
+       
+
+
+
+
     }
 
     public void SetBodyPartName(string name)
@@ -421,7 +547,7 @@ public class DataProcessorAHRS : MonoBehaviour
             pitchSensor1 = -pitchSensor1;
             rollSensor1 = -rollSensor1;
 
-            gyroZSensor1 = +gyroZ;
+            gyroZSensor1 = gyroZ;
 
             foreach (var pair in sensorTextPairs)
             {
@@ -477,7 +603,7 @@ public class DataProcessorAHRS : MonoBehaviour
             gyroZ = -gyroZ;
             pitchSensor2 = +pitchSensor2;
             rollSensor2 = -rollSensor2;
-            gyroZSensor2 = -gyroZ;
+            gyroZSensor2 = gyroZ;
 
             foreach (var pair in sensorTextPairs)
             {
@@ -532,7 +658,7 @@ public class DataProcessorAHRS : MonoBehaviour
             gyroZ = -gyroZ;
             pitchSensor3 = +pitchSensor3;
             rollSensor3 = -rollSensor3;
-            gyroZSensor3 = -gyroZ;
+            gyroZSensor3 = gyroZ;
 
 
 
@@ -550,6 +676,10 @@ public class DataProcessorAHRS : MonoBehaviour
                 }
             }
         }
+
+
+     
+
     }
 
     public float GetPitchSensor3()
@@ -589,7 +719,7 @@ public class DataProcessorAHRS : MonoBehaviour
             pitchSensor4 = -pitchSensor4;
             rollSensor4 = -rollSensor4;
 
-            gyroZSensor4 = -gyroZ;
+            gyroZSensor4 = gyroZ;
 
             foreach (var pair in sensorTextPairs)
             {
@@ -624,7 +754,366 @@ public class DataProcessorAHRS : MonoBehaviour
         return rollSensor4;
     }
 
+
+
+
+    public void ComputeMovFeatures(float gyrZ_Thigh_L, float gyrZ_Thigh_R, float gyrZ_Shank_L, float gyrZ_Shank_R,
+    float pitchDeg_Thigh_L, float pitchDeg_Thigh_R, float pitchDeg_Shank_L, float pitchDeg_Shank_R)
+    {
+        float angVel_Thigh_L = gyrZ_Thigh_L;
+        float angVel_Thigh_R = gyrZ_Thigh_R;
+        float angVel_Shank_L = gyrZ_Shank_L;
+        float angVel_Shank_R = gyrZ_Shank_R;
+        float kneeAng_L = pitchDeg_Thigh_L - pitchDeg_Shank_L ;
+        float kneeAng_R = pitchDeg_Shank_R - pitchDeg_Thigh_R;
+        float footPos_L = (float)(0.511 * Math.Sin(pitchDeg_Thigh_L * Math.PI / 180.0) + 0.489 * Math.Sin(pitchDeg_Shank_L * Math.PI / 180.0));
+        float footPos_R = (float)(0.511 * Math.Sin(pitchDeg_Thigh_R * Math.PI / 180.0) + 0.489 * Math.Sin(pitchDeg_Shank_R * Math.PI / 180.0));
+
+        // Assuming movementFeatures is an accessible object with a storeValue method
+        movementFeatures[0].storeValue(angVel_Thigh_L);
+        movementFeatures[1].storeValue(angVel_Thigh_R);
+        movementFeatures[2].storeValue(angVel_Shank_L);
+        movementFeatures[3].storeValue(angVel_Shank_R);
+        movementFeatures[4].storeValue(kneeAng_L);
+        movementFeatures[5].storeValue(kneeAng_R);
+        movementFeatures[6].storeValue(footPos_L + footPos_R);
+    }
+
+    void PreProcessor()
+    {
+
+
+    }
+
+
+
+
 }
+
+
+class SmoothingFilter
+{
+    private const double M_PI = 3.141592653589793238462643383279502884;
+
+    private float m_f_Xz_1; // x z-1 delay element
+    private float m_f_Xz_2; // x z-2 delay element
+    private float m_f_Yz_1; // y z-1 delay element
+    private float m_f_Yz_2; // y z-2 delay element
+
+    private double m_f_a0 = 0;
+    private double m_f_a1 = 0;
+    private double m_f_a2 = 0;
+    private double m_f_b1 = 0;
+    private double m_f_b2 = 0;
+
+    public SmoothingFilter(float fc, float q, float fs)
+    {
+        FlushDelays();
+        CalculateLPFCoeffs(fc, q, fs); // Initialize filter at startup
+    }
+
+    ~SmoothingFilter()
+    {
+        // Destructor
+    }
+
+    private void FlushDelays()
+    {
+        m_f_Xz_1 = 0;
+        m_f_Xz_2 = 0;
+        m_f_Yz_1 = 0;
+        m_f_Yz_2 = 0;
+    }
+
+    public float DoFiltering(float f_xn)
+    {
+        // Calculate filter output
+        float yn = (float)(m_f_a0 * f_xn + m_f_a1 * m_f_Xz_1 + m_f_a2 * m_f_Xz_2
+            - m_f_b1 * m_f_Yz_1 - m_f_b2 * m_f_Yz_2);
+
+        // Delay Shuffle
+        m_f_Xz_2 = m_f_Xz_1;
+        m_f_Xz_1 = f_xn;
+        m_f_Yz_2 = m_f_Yz_1;
+        m_f_Yz_1 = yn;
+
+        // Check for NaN and return output
+        if (float.IsNaN(yn)) yn = 0;
+        return yn;
+    }
+
+    private void CalculateLPFCoeffs(float fCutoffFreq, float fQ, float fs)
+    {
+        // Use same terms as in book:
+        float theta_c = 2.0f * (float)M_PI * fCutoffFreq / fs;
+        float d = 1.0f / fQ;
+
+        // Intermediate values
+        float fBetaNumerator = 1.0f - ((d / 2.0f) * (float)Math.Sin(theta_c));
+        float fBetaDenominator = 1.0f + ((d / 2.0f) * (float)Math.Sin(theta_c));
+
+        // Beta
+        float fBeta = 0.5f * (fBetaNumerator / fBetaDenominator);
+
+        // Gamma
+        float fGamma = (0.5f + fBeta) * (float)Math.Cos(theta_c);
+
+        // Alpha
+        float fAlpha = (0.5f + fBeta - fGamma) / 2.0f;
+
+        // Coefficients
+        m_f_a0 = (0.5f + fBeta - fGamma) / 2.0f;
+        m_f_a1 = 0.5f + fBeta - fGamma;
+        m_f_a2 = (0.5f + fBeta - fGamma) / 2.0f;
+        m_f_b1 = -2 * fGamma;
+        m_f_b2 = 2 * fBeta;
+    }
+}
+
+public class EnvelopeFollower
+{
+    private double attack = 0.0;
+    private double release = 0.0;
+    private double tc = -4.6051701859880913680359829093687;
+    private double env_val = 0;
+
+    public EnvelopeFollower(float releaseMs)
+    {
+        Set_TC(0.0f, releaseMs);
+    }
+
+    ~EnvelopeFollower()
+    {
+        // Destructor
+    }
+
+    private void Set_TC(float attackMs, float releaseMs)
+    {
+        attack = (attackMs > 0.0001f) ? Math.Exp(tc / (attackMs * 100 * 0.001)) : 0.0;
+        release = (releaseMs > 0.0001f) ? Math.Exp(tc / (releaseMs * 100 * 0.001)) : 0.0;
+    }
+
+    public double GetEnvelope(double input)
+    {
+        if (input > env_val)
+            env_val = input + attack * (env_val - input);
+        else
+            env_val = input + release * (env_val - input);
+
+        return env_val; // Return the updated envelope value
+    }
+}
+
+
+public class Preprocessor
+{
+    // Processing Helper Elements
+    private SmoothingFilter filt;
+
+    // Fixed Parameters
+    private float feat_MIN_Global;
+    private float feat_MAX_Global;
+    private float filt_Fc_LPF;
+
+    // User-Modifiable Parameters
+    private float feat_MIN_OfInterest;
+    private float feat_MAX_OfInterest;
+    private bool isInverted = false;
+
+    // Helper variables
+    public float inputVal = 0;
+    public float outputVal = 0;
+    public bool isInitialized = false;
+
+    // Constructor
+    public Preprocessor(float featMinG, float featMaxG, float featMinI, float featMaxI, float filt_fc_L, bool isInv)
+    {
+        // Initialize filt as needed
+        feat_MIN_Global = featMinG;
+        feat_MAX_Global = featMaxG;
+        feat_MIN_OfInterest = featMinI;
+        feat_MAX_OfInterest = featMaxI;
+        filt_Fc_LPF = filt_fc_L;
+        filt = new SmoothingFilter(filt_Fc_LPF, 0.7f, 30); // Replace parameters as needed
+        isInverted = isInv;
+        isInitialized = true;
+    }
+
+    // Destructor
+    ~Preprocessor()
+    {
+        // Destructor
+    }
+
+    // Initialize - has to be called prior to use (!)
+    public void Initialize()
+    {
+     
+    }
+
+    // Real-time setters for movement feature range, specify whether modifying min value or max value
+    public void SetFeatRange_OfInterest(float val, bool isMin)
+    {
+        if (isMin)
+            feat_MIN_OfInterest = val;
+        else
+            feat_MAX_OfInterest = val;
+    }
+
+    // Real-time setter for inversion flag
+    public void SetIsInverted(bool isInv)
+    {
+        isInverted = isInv;
+    }
+
+    // Helper functions
+    private float ApplyNormalize(float input)
+    {
+        if (input <= feat_MIN_OfInterest) return 0;
+        if (input >= feat_MAX_OfInterest) return 1;
+        return (input - feat_MIN_OfInterest) / (feat_MAX_OfInterest - feat_MIN_OfInterest);
+    }
+
+    // Movement feature is processed in every callback using this function
+    public void Process(float input)
+    {
+        if (isInitialized)
+        {
+            inputVal = input;
+            outputVal = filt.DoFiltering(inputVal);
+            outputVal = ApplyNormalize(outputVal);
+            if (isInverted) outputVal = 1 - outputVal;
+        }
+    }
+}
+
+
+public class Postprocessor
+{
+    // Processing Helper Elements
+    private EnvelopeFollower envFol;
+
+    // Fixed Parameters
+    private short mapFuncType = 1; // 1 = Exp, 2 = Sig, 3 = Lgt
+    private bool isInverted = false;
+    private float envRel_ms = 0;
+
+    // User-Modifiable Parameters
+    private float mapFunc_shape = 1f;
+
+    // Helper Variables
+   public float outputVal = 0;
+    private bool isInitialized = false;
+
+    // Constructor
+    public Postprocessor(short mapfn_type, bool isInv, float envReleaseMS)
+    {
+        // Initialize envFol as needed
+        mapFuncType = mapfn_type;
+        isInverted = isInv;
+        envRel_ms = envReleaseMS;
+        envFol = new EnvelopeFollower(envRel_ms); // Replace the parameter with an appropriate value
+        isInitialized = true;
+    }
+
+    // Destructor
+    ~Postprocessor()
+    {
+        // Destructor
+    }
+
+    // Initializer Function - has to be called for each instance prior to use (!)
+    public void Initialize(short mapfn_type, bool isInv, float envReleaseMS)
+    {
+     
+    }
+
+    // Real-time Setter - Mapping Function Shape
+    public void SetMapFuncShape(float val)
+    {
+        mapFunc_shape = val;
+    }
+
+    // Apply nonlinear mapping function
+    private float ApplyMapFunc(float input)
+    {
+        float output = 0;
+
+        switch (mapFuncType)
+        {
+            case 1:
+                output = (float)Math.Pow(input, mapFunc_shape);
+                break;
+            case 2:
+                output = 1.0f / (1 + (float)Math.Exp(-mapFunc_shape * (10 * input - 5)));
+                break;
+            case 3:
+                output = 0.5f + (float)(mapFunc_shape * Math.Log(input) / (1 - input * 1 / (16 + 8 * (mapFunc_shape - 1))));
+                break;
+            case 4:
+                // If you still need to use sinPhase, declare it and update it here
+                // float sinPhase = ...; // Initialize and update it appropriately
+                output = (1 + (float)Math.Sin(input * mapFunc_shape)) * 0.5f;
+                break;
+        }
+
+        if (float.IsNaN(output)) output = 0;
+        output = Math.Clamp(output, 0.0f, 1.0f);
+        return output;
+    }
+
+    // Preprocessor output is processed in every callback using this function
+    public void Process(float input)
+    {
+        if (isInitialized)
+        {
+            double envelopeValue = envFol.GetEnvelope(input);
+            outputVal = ApplyMapFunc((float)envelopeValue);
+            if (isInverted) outputVal = 1 - outputVal;
+        }
+    }
+}
+
+
+public class MovementFeature
+{
+    public float minVal = 0;
+    public float maxVal = 0;
+    public string mpName = "PLACEHOLDER";
+    public float value = 0;
+
+    public MovementFeature(string name, float mini, float maxi)
+    {
+        mpName = name;
+        minVal = mini;
+        maxVal = maxi;
+    }
+
+    public void storeValue(float newVal)
+    {
+       // if (!double.IsNaN(newVal)) // Check for NaN
+       // {
+            value = Math.Min(newVal, maxVal);
+            value = Math.Max(value, minVal);
+       /* }
+       // else
+        {
+            newVal = minVal;
+        }
+       */
+    }
+
+    public float getValue()
+    {
+        return value;
+    }
+
+}
+
+
+
+
+
 
 
 public class PitchRollCalculations {

@@ -13,18 +13,14 @@ public class MainDataProcessor : MonoBehaviour
     public DataProcessorAHRS dataProcessorAHRS;
     public DropdownHandler dropdownHandler;
 
-    public TextMeshProUGUI Debug3;
-    public TextMeshProUGUI Debug4;
+    // Debug text Elements
+   
 
-    public TextMeshProUGUI ShankLtext;
-    public TextMeshProUGUI ShankRtext;
-    public TextMeshProUGUI ThighLtext;
-    public TextMeshProUGUI ThighRtext;
+   
 
-    public TextMeshProUGUI KneeLtext;
-    public TextMeshProUGUI KneeRtext;
-    public TextMeshProUGUI FootLvsRtext;
 
+
+    //Declare movement features array
     public MovementFeature[] movementFeatures = new MovementFeature[7];
     public void Start()
     {
@@ -39,6 +35,11 @@ public class MainDataProcessor : MonoBehaviour
         
         // Call the UpdateData function every 0.033 seconds
         InvokeRepeating("UpdateData", 0.01f, 0.01f);
+    }
+
+    public void MainCallback()
+    {
+
     }
 
     private void UpdateData()
@@ -58,9 +59,7 @@ public class MainDataProcessor : MonoBehaviour
 
     public void SensorData1()
     {
-        float gyroZSensor1 = dataProcessorAHRS.gyroZSensor1;
-        float rollSensor1 = dataProcessorAHRS.GetPitchSensor1();
-        float pitchsensor1 = dataProcessorAHRS.GetRollSensor1();
+      
         
     }
 
@@ -88,9 +87,7 @@ public class MainDataProcessor : MonoBehaviour
         float gyroZSensor4 = dataProcessorAHRS.gyroZSensor4;
         float rollSensor4 = dataProcessorAHRS.GetPitchSensor4();
         float pitchsensor4 = dataProcessorAHRS.GetRollSensor4();    
-        
-
-        
+           
     }
 
     public void UpdateSensorData(int sensorIndex)
@@ -120,27 +117,33 @@ public class MainDataProcessor : MonoBehaviour
 
     public void UpdateValue()
     {
-        ShankLtext.text =  movementFeatures[2].getValue().ToString();
-        ShankRtext.text = movementFeatures[3].getValue().ToString();
-        ThighLtext.text = movementFeatures[0].getValue().ToString();
-        ThighRtext.text = movementFeatures[1].getValue().ToString();
-        KneeLtext.text = movementFeatures[4].getValue().ToString();
-        KneeRtext.text = movementFeatures[5].getValue().ToString();
-        FootLvsRtext.text = movementFeatures[6].getValue().ToString();
 
     }
 
-    void computeMovFeatures(float gyrZ_Thigh_L, float pitch_Thigh_L)
+
+
+    public void ComputeMovFeatures(float gyrZ_Thigh_L, float gyrZ_Thigh_R, float gyrZ_Shank_L, float gyrZ_Shank_R,
+     float pitchDeg_Thigh_L, float pitchDeg_Thigh_R, float pitchDeg_Shank_L, float pitchDeg_Shank_R)
     {
+        float angVel_Thigh_L = gyrZ_Thigh_L;
+        float angVel_Thigh_R = gyrZ_Thigh_R;
+        float angVel_Shank_L = gyrZ_Shank_L;
+        float angVel_Shank_R = gyrZ_Shank_R;
+        float kneeAng_L = pitchDeg_Shank_L - pitchDeg_Thigh_L;
+        float kneeAng_R = pitchDeg_Shank_R - pitchDeg_Thigh_R;
+        float footPos_L = (float)(0.511 * Math.Sin(pitchDeg_Thigh_L * Math.PI / 180.0) + 0.489 * Math.Sin(pitchDeg_Shank_L * Math.PI / 180.0));
+        float footPos_R = (float)(0.511 * Math.Sin(pitchDeg_Thigh_R * Math.PI / 180.0) + 0.489 * Math.Sin(pitchDeg_Shank_R * Math.PI / 180.0));
 
+        // Assuming movementFeatures is an accessible object with a storeValue method
+        movementFeatures[0].storeValue(angVel_Thigh_L);
+        movementFeatures[1].storeValue(angVel_Thigh_R);
+        movementFeatures[2].storeValue(angVel_Shank_L);
+        movementFeatures[3].storeValue(angVel_Shank_R);
+        movementFeatures[4].storeValue(kneeAng_L);
+        movementFeatures[5].storeValue(kneeAng_R);
+        movementFeatures[6].storeValue(footPos_L - footPos_R);
+    }
 
-        float angVel_ThighL = 0;
-        float angVel_Thigh_R = 0;
-       
-
-       movementFeatures[0].storeValue(angVel_ThighL);
-       
-         }
 
 
 
