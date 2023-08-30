@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -71,19 +72,7 @@ public class DataProcessorAHRS : MonoBehaviour
     public int preproc_InUse = 1;
     public int postproc_InUse = 1;
 
-    [Header("OSC Settings")]
-    public OSCTransmitter Transmitter; // Define the OSC transmitter
-    public string Address = "/address2"; // Define the OSC address
-
-    [Header("UI Settings")]
-    public Button connectButton; // Define the connect button
-
-
-    public TMP_InputField ipAddressInput;
-
-    public TextMeshProUGUI HostText;
-    private bool isConnected = false; // Define the connection status
-
+    public RTransmitter[] transmitters = new RTransmitter[6];
 
 
     private void Awake()
@@ -96,35 +85,17 @@ public class DataProcessorAHRS : MonoBehaviour
 
 
 
-    //permissions from android
-    private void RequestAndroidPermissions()
-    {
 
-        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.ExternalStorageWrite))
-        {
-            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.ExternalStorageWrite);
-        }
+ 
 
-    }
-
-    public List<string> GetAllSensorNames()
-    {
-        List<string> sensorNames = new List<string>();
-
-        foreach (var pair in sensorTextPairs)
-        {
-            sensorNames.Add(pair.sensorName);
-        }
-
-        return sensorNames;
-    }
 
     private void Start()
     {
         // get persmissions   
         RequestAndroidPermissions();
-        InvokeRepeating("UpdateData", 0.032f, 0.032f);
-        connectButton.onClick.AddListener(ToggleConnection);
+        InvokeRepeating("UpdateData", 0.033f, 0.033f);
+     
+       
 
         movementFeatures[0] = new MovementFeature("Angular_Velocity_ThighL", -110, 110);
         movementFeatures[1] = new MovementFeature("Angular_Velocity_ThighR", -110, 110);
@@ -148,39 +119,13 @@ public class DataProcessorAHRS : MonoBehaviour
         postprocessors[3] = new Postprocessor(1, false, 0);
         postprocessors[4] = new Postprocessor(1, false, 0);
         postprocessors[5] = new Postprocessor(1, false, 0);
-      
 
-        Debug3.text = "PostProcessorMade";
 
     }
 
-    public void ToggleConnection()
-    {
-        if (isConnected) // If the connection is established
-        {
-            Transmitter.Close(); // Close the connection
-
-        }
-        else
-        {
-            Connect(); // Connect to the OSC receiver
-        }
-    }
-    // Connect to the OSC receiver
-    private void Connect()
-    {
-        string ipAddress = ipAddressInput.text; // Get the IP address from the input field
-        Transmitter.RemoteHost = ipAddress; // Set the OSC transmitter's IP address
-        HostText.text = "Reciver ip: " + Transmitter.RemoteHost; // Set the IP address text
-                                                                 // Connect to the OSC receiver
-        Transmitter.Connect();
-        connectButton.GetComponent<Image>().color = Color.green; // Change the color of the connect button 
 
 
-        // Update connection status
-        isConnected = true;
-
-    }
+   
     private void UpdateData()
     {
         foreach (var pair in sensorTextPairs)
@@ -221,9 +166,8 @@ public class DataProcessorAHRS : MonoBehaviour
         ComputeMovFeatures(gyroZSensor2,gyroZSensor1, gyroZSensor3, gyroZSensor4,
             GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
 
-        Debug1.text = gyroZSensor2.ToString("F2");
-        Debug2.text = gyroZSensor3.ToString("F2");
-        Debug4.text = preprocessors[1].outputVal.ToString("F2");
+        
+        
 
         ShankLtext.text = movementFeatures[2].getValue().ToString("F2");
         ShankRtext.text = movementFeatures[3].getValue().ToString("F2");
@@ -236,8 +180,9 @@ public class DataProcessorAHRS : MonoBehaviour
        
         preprocessors[0].Process(movementFeatures[0].getValue());
         postprocessors[0].Process(preprocessors[0].outputVal);
+    
 
-        
+
 
         for (int i = 0; i < 6; i++)
         {
@@ -246,12 +191,17 @@ public class DataProcessorAHRS : MonoBehaviour
             postprocessorOutputText[i].text = postprocessors[i].outputVal.ToString("F2");
         }
 
-       
 
-
+        for (int i = 0; i < 6; i++)
+        {
+            string messageContent = postprocessors[i].outputVal.ToString("F2");
+            transmitters[i].SendOSCMessage(messageContent);
+           
+        }
 
 
     }
+
 
     public void SetBodyPartName(string name)
     {
@@ -785,6 +735,32 @@ public class DataProcessorAHRS : MonoBehaviour
 
     }
 
+
+
+
+  public List<string> GetAllSensorNames()
+    {
+        List<string> sensorNames = new List<string>();
+
+        foreach (var pair in sensorTextPairs)
+        {
+            sensorNames.Add(pair.sensorName);
+        }
+
+        return sensorNames;
+    }
+
+
+    //permissions from android
+    private void RequestAndroidPermissions()
+    {
+
+        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.ExternalStorageWrite))
+        {
+            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.ExternalStorageWrite);
+        }
+
+    }
 
 
 

@@ -20,6 +20,7 @@ public TMP_InputField ipAddressInput;
 
 public TextMeshProUGUI HostText;
 private bool isConnected = false; // Define the connection status
+    public string messageContent;
 
 // Listen for the start event  and start the coroutine
   private async void Start()
@@ -38,21 +39,18 @@ private bool isConnected = false; // Define the connection status
     // Check if the connection is established
     if (isConnected)
      {
-      SendOSCMessage();
+      SendOSCMessage(messageContent);
     }
   }
  }
- // Function for the message that has to be send
-  private void SendOSCMessage()
-  {
-     var message = new OSCMessage(Address);
-     // Define message that has to be send
-     message.AddValue(OSCValue.String("0"));
-     
-      // Send the message
-     Transmitter.Send(message);
-  }
-  
+    // Function for the message that has to be send
+    public void SendOSCMessage(string messageContent)
+    {
+        var message = new OSCMessage(Address);
+        message.AddValue(OSCValue.String(messageContent));
+        Transmitter.Send(message);
+    }
+
     // Toggle connection 
     public void ToggleConnection()
    {
