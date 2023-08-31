@@ -99,7 +99,7 @@ public class DataProcessorAHRS : MonoBehaviour
         RequestAndroidPermissions();
         InvokeRepeating("UpdateData", 0.033f, 0.033f);
 
-        initialize_AllExercises();
+       initialize_AllExercises();
 
         movementFeatures[0] = new MovementFeature("Angular_Velocity_ThighL", -110, 110);
         movementFeatures[1] = new MovementFeature("Angular_Velocity_ThighR", -110, 110);
@@ -124,32 +124,29 @@ public class DataProcessorAHRS : MonoBehaviour
         postprocessors[4] = new Postprocessor(1, false, 0,1);
         postprocessors[5] = new Postprocessor(1, false, 0,1);
 
-        initialize_currentExercise(0);
+      initialize_currentExercise(0);
+       
+
     }
 
-    void initialize_AllExercises()
+   public void initialize_AllExercises()
     {
-        // should be called at startup
-        // put in all information about all exercises, call all setVal functions
-
-        // Do for one exercise for the time being
+        exercises[0] = new Exercise();
         exercises[0].set_NumFeatures_Processors_inUse(2, 3);                                                    // 1
-        exercises[0].set_MovFeature_Idxs_inUse(new short[] { 0, 2 });                                               // 2
+        exercises[0].set_MovFeature_Idxs_inUse(new short[] { 0, 2 });                                           // 2
         exercises[0].setVals_PreProc_filtFc_LPF(new float[] { 5, 5 });                                          // 3
-        exercises[0].setVals_PreProc_featMin_Global(new float[] { -110, -110 });                                    // 4
-        exercises[0].setVals_PreProc_featMax_Global(new float[] { 110, 110 });                                  // 5
+        exercises[0].setVals_PreProc_featMin_Global(new float[] { -110, -250 });                                // 4
+        exercises[0].setVals_PreProc_featMax_Global(new float[] { 110, 250 });                                  // 5
         exercises[0].setVals_PreProc_featMin_ofInterest(new float[] { 0, 0 });                                  // 6
         exercises[0].setVals_PreProc_featMax_ofInterest(new float[] { 110, 110 });                              // 7
-        exercises[0].setVals_PreProc_isInverted(new bool[] { false, false });                                       // 8
+        exercises[0].setVals_PreProc_isInverted(new bool[] { false, false });                                   // 8
 
-        exercises[0].setVals_SummingMatrix(new float[,] { { 1.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f } });                  // 8.5
-        exercises[0].setVals_PostProc_isInverted(new bool[] { false, true, false });                                // 9
-        exercises[0].setVals_PostProc_mapFuncType(new int[] { 1, 2, 1 });                                           // 10
-        exercises[0].setVals_PostProc_mapFuncShape(new float[] { 1, 0.5f, 2 });                                  // 11
-        exercises[0].setVals_PostProc_envRel_ms(new float[] { 0, 0, 500 });                                     // 12
-        exercises[0].setVals_PostProc_mapFuncGain(new float[] { 1, 1, 1 });                                     // 13
-
-        // same for exercises[1], exercises[2]....
+        exercises[0].setVals_SummingMatrix(new float[,] { { 1.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0 } });        // 8.5
+        exercises[0].setVals_PostProc_isInverted(new bool[] { false, true, false });                            // 9
+        exercises[0].setVals_PostProc_mapFuncType(new int[] { 1, 2, 1 });                                       // 10
+        exercises[0].setVals_PostProc_mapFuncShape(new float[] { 1, 0.5f, 2 });                                // 11
+        exercises[0].setVals_PostProc_envRel_ms(new float[] {0, 0, 50S0 });                                     // 12
+        exercises[0].setVals_PostProc_mapFuncGain(new float[] { 1, 1, 1 });
     }
 
     public void initialize_currentExercise(short newEx_Idx)
@@ -223,10 +220,10 @@ public class DataProcessorAHRS : MonoBehaviour
         }
 
 
-       
 
         ComputeMovFeatures(gyroZSensor2,gyroZSensor1, gyroZSensor3, gyroZSensor4,
         GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
+
 
         Debug1.text = "Being Called";
 
@@ -239,7 +236,7 @@ public class DataProcessorAHRS : MonoBehaviour
         KneeRtext.text = movementFeatures[5].getValue().ToString("F2");
         FootLvsRtext.text = movementFeatures[6].getValue().ToString("F2");
 
-
+        Debug2.text = movementFeatures[2].getValue().ToString("F2");
 
 
         for (int i = 0; i < 6; i++)
@@ -795,11 +792,20 @@ public class DataProcessorAHRS : MonoBehaviour
     public void ComputeMovFeatures(float gyrZ_Thigh_L, float gyrZ_Thigh_R, float gyrZ_Shank_L, float gyrZ_Shank_R,
     float pitchDeg_Thigh_L, float pitchDeg_Thigh_R, float pitchDeg_Shank_L, float pitchDeg_Shank_R)
     {
+        if (Double.IsNaN(gyrZ_Thigh_L)) gyrZ_Thigh_L = 0;
+        if (Double.IsNaN(gyrZ_Thigh_R)) gyrZ_Thigh_R = 0;
+        if (Double.IsNaN(gyrZ_Shank_L)) gyrZ_Shank_L = 0;
+        if (Double.IsNaN(gyrZ_Shank_R)) gyrZ_Shank_R = 0;
+        if (Double.IsNaN(pitchDeg_Thigh_L)) pitchDeg_Thigh_L = 0;
+        if (Double.IsNaN(pitchDeg_Thigh_R)) pitchDeg_Thigh_R = 0;
+        if (Double.IsNaN(pitchDeg_Shank_L)) pitchDeg_Shank_L = 0;
+        if (Double.IsNaN(pitchDeg_Shank_R)) pitchDeg_Shank_R = 0;
+
         float angVel_Thigh_L = gyrZ_Thigh_L;
         float angVel_Thigh_R = gyrZ_Thigh_R;
         float angVel_Shank_L = gyrZ_Shank_L;
         float angVel_Shank_R = gyrZ_Shank_R;
-        float kneeAng_L = pitchDeg_Thigh_L - pitchDeg_Shank_L ;
+        float kneeAng_L = pitchDeg_Thigh_L - pitchDeg_Shank_L;
         float kneeAng_R = pitchDeg_Shank_R - pitchDeg_Thigh_R;
         float footPos_L = (float)(0.511 * Math.Sin(pitchDeg_Thigh_L * Math.PI / 180.0) + 0.489 * Math.Sin(pitchDeg_Shank_L * Math.PI / 180.0));
         float footPos_R = (float)(0.511 * Math.Sin(pitchDeg_Thigh_R * Math.PI / 180.0) + 0.489 * Math.Sin(pitchDeg_Shank_R * Math.PI / 180.0));
@@ -813,6 +819,7 @@ public class DataProcessorAHRS : MonoBehaviour
         movementFeatures[5].storeValue(kneeAng_R);
         movementFeatures[6].storeValue(footPos_L + footPos_R);
     }
+
 
     void PreProcessor()
     {
