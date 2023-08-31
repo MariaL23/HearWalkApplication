@@ -145,7 +145,7 @@ public class DataProcessorAHRS : MonoBehaviour
         exercises[0].setVals_PostProc_isInverted(new bool[] { false, true, false });                            // 9
         exercises[0].setVals_PostProc_mapFuncType(new int[] { 1, 2, 1 });                                       // 10
         exercises[0].setVals_PostProc_mapFuncShape(new float[] { 1, 0.5f, 2 });                                // 11
-        exercises[0].setVals_PostProc_envRel_ms(new float[] {0, 0, 50S0 });                                     // 12
+        exercises[0].setVals_PostProc_envRel_ms(new float[] {0, 0, 500 });                                     // 12
         exercises[0].setVals_PostProc_mapFuncGain(new float[] { 1, 1, 1 });
     }
 
