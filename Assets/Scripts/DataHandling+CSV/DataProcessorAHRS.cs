@@ -67,12 +67,19 @@ public class DataProcessorAHRS : MonoBehaviour
     public TextMeshProUGUI[] preprocessorInputText = new TextMeshProUGUI[6];
     public TextMeshProUGUI[] preprocessorOutputText = new TextMeshProUGUI[6];
     public TextMeshProUGUI[] postprocessorOutputText = new TextMeshProUGUI[6];
+    
 
     public TextMeshProUGUI preprocessorInput1Text;
     public int preproc_InUse = 1;
     public int postproc_InUse = 1;
 
     public RTransmitter[] transmitters = new RTransmitter[6];
+
+    public Exercise[] exercises = new Exercise[3];
+
+    int currentExerciseIdx = 0;
+
+
 
 
     private void Awake()
@@ -85,17 +92,13 @@ public class DataProcessorAHRS : MonoBehaviour
 
 
 
-
- 
-
-
     private void Start()
     {
         // get persmissions   
         RequestAndroidPermissions();
         InvokeRepeating("UpdateData", 0.033f, 0.033f);
-     
-       
+
+        initialize_AllExercises();
 
         movementFeatures[0] = new MovementFeature("Angular_Velocity_ThighL", -110, 110);
         movementFeatures[1] = new MovementFeature("Angular_Velocity_ThighR", -110, 110);
@@ -113,19 +116,75 @@ public class DataProcessorAHRS : MonoBehaviour
         preprocessors[5] = new Preprocessor(-110, 110, 0, 110, 5, false);
        
 
-        postprocessors[0] = new Postprocessor(1,false,800);
-        postprocessors[1] = new Postprocessor(1, false, 0);
-        postprocessors[2] = new Postprocessor(1, false, 0);
-        postprocessors[3] = new Postprocessor(1, false, 0);
-        postprocessors[4] = new Postprocessor(1, false, 0);
-        postprocessors[5] = new Postprocessor(1, false, 0);
+        postprocessors[0] = new Postprocessor(1,false,800,1);
+        postprocessors[1] = new Postprocessor(1, false, 0,1);
+        postprocessors[2] = new Postprocessor(1, false, 0,1);
+        postprocessors[3] = new Postprocessor(1, false, 0,1);
+        postprocessors[4] = new Postprocessor(1, false, 0,1);
+        postprocessors[5] = new Postprocessor(1, false, 0,1);
 
+        initialize_currentExercise(0);
+    }
 
+    void initialize_AllExercises()
+    {
+        // should be called at startup
+        // put in all information about all exercises, call all setVal functions
+
+        // Do for one exercise for the time being
+        exercises[0].set_NumFeatures_Processors_inUse(2, 3);                                                    // 1
+        exercises[0].set_MovFeature_Idxs_inUse(new short[] { 0, 2 });                                               // 2
+        exercises[0].setVals_PreProc_filtFc_LPF(new float[] { 5, 5 });                                          // 3
+        exercises[0].setVals_PreProc_featMin_Global(new float[] { -110, -110 });                                    // 4
+        exercises[0].setVals_PreProc_featMax_Global(new float[] { 110, 110 });                                  // 5
+        exercises[0].setVals_PreProc_featMin_ofInterest(new float[] { 0, 0 });                                  // 6
+        exercises[0].setVals_PreProc_featMax_ofInterest(new float[] { 110, 110 });                              // 7
+        exercises[0].setVals_PreProc_isInverted(new bool[] { false, false });                                       // 8
+
+        exercises[0].setVals_SummingMatrix(new float[,] { { 1.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f } });                  // 8.5
+        exercises[0].setVals_PostProc_isInverted(new bool[] { false, true, false });                                // 9
+        exercises[0].setVals_PostProc_mapFuncType(new int[] { 1, 2, 1 });                                           // 10
+        exercises[0].setVals_PostProc_mapFuncShape(new float[] { 1, 0.5f, 2 });                                  // 11
+        exercises[0].setVals_PostProc_envRel_ms(new float[] { 0, 0, 500 });                                     // 12
+        exercises[0].setVals_PostProc_mapFuncGain(new float[] { 1, 1, 1 });                                     // 13
+
+        // same for exercises[1], exercises[2]....
+    }
+
+    public void initialize_currentExercise(short newEx_Idx)
+    {
+        // should be called when an exercise is selected
+        exercises[currentExerciseIdx].isActive = false;
+        currentExerciseIdx = newEx_Idx;
+        exercises[currentExerciseIdx].isActive = true;
+
+        // Initialize all preprocessors with the info specific to the chosen exercise
+        for (int i = 0; i < exercises[currentExerciseIdx].num_preProcessors; i++)
+        {
+            preprocessors[i].filt_Fc_LPF = exercises[currentExerciseIdx].paramArray_preProc_filtFc_LPF[i];                      // 3
+            preprocessors[i].feat_MIN_Global = exercises[currentExerciseIdx].paramArray_preProc_featMin_Global[i];              // 4
+            preprocessors[i].feat_MAX_Global = exercises[currentExerciseIdx].paramArray_preProc_featMax_Global[i];              // 5
+            preprocessors[i].feat_MIN_OfInterest = exercises[currentExerciseIdx].paramArray_preProc_featMin_OfInterest[i];      // 6
+            preprocessors[i].feat_MAX_OfInterest = exercises[currentExerciseIdx].paramArray_preProc_featMax_OfInterest[i];      // 7
+            preprocessors[i].isInverted = exercises[currentExerciseIdx].paramArray_preProc_isInverted[i];                       // 8
+        }
+
+        // Initialize all preprocessors with the info specific to the chosen exercise
+        for (int i = 0; i < exercises[currentExerciseIdx].num_postProcessors; i++)
+        {
+            postprocessors[i].isInverted = exercises[currentExerciseIdx].paramArray_postProc_isInverted[i];                     // 9
+            postprocessors[i].mapFuncType = exercises[currentExerciseIdx].paramArray_postProc_mapFuncType[i];                   // 10
+            postprocessors[i].mapFunc_shape = exercises[currentExerciseIdx].paramArray_postProc_mapFuncShape[i];                 // 11
+            postprocessors[i].envRel_ms = exercises[currentExerciseIdx].paramArray_postProc_envRel_ms[i];                       // 12
+            postprocessors[i].mapFuncGain = exercises[currentExerciseIdx].paramArray_postProc_mapFuncGain[i];                  // 13
+
+            // some code to make the required OSC senders and active and the remaining inactive
+            // num_activeSenders = num_postProcessors
+        }
     }
 
 
 
-   
     private void UpdateData()
     {
         foreach (var pair in sensorTextPairs)
@@ -164,7 +223,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
 
         ComputeMovFeatures(gyroZSensor2,gyroZSensor1, gyroZSensor3, gyroZSensor4,
-            GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
+        GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
 
         
         
@@ -177,10 +236,8 @@ public class DataProcessorAHRS : MonoBehaviour
         KneeRtext.text = movementFeatures[5].getValue().ToString("F2");
         FootLvsRtext.text = movementFeatures[6].getValue().ToString("F2");
 
-       
-        preprocessors[0].Process(movementFeatures[0].getValue());
-        postprocessors[0].Process(preprocessors[0].outputVal);
-    
+
+        generate_outputSignals();
 
 
 
@@ -195,13 +252,42 @@ public class DataProcessorAHRS : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             string messageContent = postprocessors[i].outputVal.ToString("F2");
-            transmitters[i].SendOSCMessage(messageContent);
-           
+            transmitters[i].SendOSCMessage(messageContent);  
         }
 
 
     }
 
+    void generate_outputSignals()
+    {
+        // should be called once per UpdateData callback.
+        // call all active preprocessor process methods
+        // perform matrix summing
+        // call all active postprocessor process methods
+        // relay output to OSC data senders and send to REAPER
+
+        float postProc_Input = 0;                                                                                                  // variable to hold postprocessor input
+
+        for (int j = 0; j < exercises[currentExerciseIdx].num_preProcessors; j++)                                                  // for each active preprocessor
+            preprocessors[j].Process(movementFeatures[exercises[currentExerciseIdx].movFeatureIdx_Used[j]].value);                 // preprocess input corresponding to value of required movement feature
+
+        for (int i = 0; i < exercises[currentExerciseIdx].num_postProcessors; i++)                                                 // for each active postprocessor
+        {
+            postProc_Input = 0;                                                                                                    // set postprocessor input to zero for each new postprocessor
+
+            for (int j = 0; j < exercises[currentExerciseIdx].num_preProcessors; j++)                                              // apply matrix-weighted sum of each preprocessor output
+            {
+                postProc_Input = postProc_Input + exercises[currentExerciseIdx].summingMatrix[j, i] * preprocessors[j].outputVal;
+            }
+
+            postProc_Input = Math.Max(postProc_Input, 0);                                                                         // limit between 0 and 1
+            postProc_Input = Math.Min(postProc_Input, 1);
+
+            postprocessors[i].Process(postProc_Input);                                                                            // postprocess the summed value from preprocessor outputs
+
+            // oscSenders[i].send(postProcessors[i].outputVal);                                                                    // send postprocessor output via OSC
+        }
+    }
 
     public void SetBodyPartName(string name)
     {
@@ -462,7 +548,6 @@ public class DataProcessorAHRS : MonoBehaviour
         }
     }
 
-
     public PitchRollCalculations calculationsSensor1 = new PitchRollCalculations();
     public PitchRollCalculations calculationsSensor2 = new PitchRollCalculations();
     public PitchRollCalculations calculationsSensor3 = new PitchRollCalculations();
@@ -472,6 +557,7 @@ public class DataProcessorAHRS : MonoBehaviour
     public float gyroZSensor2;
     public float gyroZSensor3;
     public float gyroZSensor4;
+
 
     //Handle the data from the sensors
     public void ProcessSensorData1(string[] sensorDataArray)
@@ -527,7 +613,6 @@ public class DataProcessorAHRS : MonoBehaviour
         float rollSensor1 = calculationsSensor1.GetRoll();
         return rollSensor1;
     }
-
 
 
 
@@ -767,20 +852,20 @@ public class DataProcessorAHRS : MonoBehaviour
 }
 
 
-class SmoothingFilter
+public class SmoothingFilter
 {
-    private const double M_PI = 3.141592653589793238462643383279502884;
+    public const double M_PI = 3.141592653589793238462643383279502884;
 
-    private float m_f_Xz_1; // x z-1 delay element
-    private float m_f_Xz_2; // x z-2 delay element
-    private float m_f_Yz_1; // y z-1 delay element
-    private float m_f_Yz_2; // y z-2 delay element
+    public float m_f_Xz_1; // x z-1 delay element
+    public float m_f_Xz_2; // x z-2 delay element
+    public float m_f_Yz_1; // y z-1 delay element
+    public float m_f_Yz_2; // y z-2 delay element
 
-    private double m_f_a0 = 0;
-    private double m_f_a1 = 0;
-    private double m_f_a2 = 0;
-    private double m_f_b1 = 0;
-    private double m_f_b2 = 0;
+    public double m_f_a0 = 0;
+    public double m_f_a1 = 0;
+    public double m_f_a2 = 0;
+    public double m_f_b1 = 0;
+    public double m_f_b2 = 0;
 
     public SmoothingFilter(float fc, float q, float fs)
     {
@@ -884,17 +969,17 @@ public class EnvelopeFollower
 public class Preprocessor
 {
     // Processing Helper Elements
-    private SmoothingFilter filt;
+    public SmoothingFilter filt;
 
     // Fixed Parameters
-    private float feat_MIN_Global;
-    private float feat_MAX_Global;
-    private float filt_Fc_LPF;
+    public float feat_MIN_Global;
+    public float feat_MAX_Global;
+    public float filt_Fc_LPF;
 
     // User-Modifiable Parameters
-    private float feat_MIN_OfInterest;
-    private float feat_MAX_OfInterest;
-    private bool isInverted = false;
+    public float feat_MIN_OfInterest;
+    public float feat_MAX_OfInterest;
+    public bool isInverted = false;
 
     // Helper variables
     public float inputVal = 0;
@@ -967,28 +1052,30 @@ public class Preprocessor
 public class Postprocessor
 {
     // Processing Helper Elements
-    private EnvelopeFollower envFol;
+    public EnvelopeFollower envFol;
 
     // Fixed Parameters
-    private short mapFuncType = 1; // 1 = Exp, 2 = Sig, 3 = Lgt
-    private bool isInverted = false;
-    private float envRel_ms = 0;
+    public int mapFuncType = 1; // 1 = Exp, 2 = Sig, 3 = Lgt
+    public bool isInverted = false;
+    public float envRel_ms = 0;
+    public float mapFuncGain = 1;
 
     // User-Modifiable Parameters
-    private float mapFunc_shape = 1f;
+    public float mapFunc_shape = 1f;
 
     // Helper Variables
-   public float outputVal = 0;
-    private bool isInitialized = false;
+    public float outputVal = 0;
+   public  bool isInitialized = false;
 
     // Constructor
-    public Postprocessor(short mapfn_type, bool isInv, float envReleaseMS)
+    public Postprocessor(short mapfn_type, bool isInv, float envReleaseMS, float mapGain)
     {
         // Initialize envFol as needed
         mapFuncType = mapfn_type;
         isInverted = isInv;
         envRel_ms = envReleaseMS;
-        envFol = new EnvelopeFollower(envRel_ms); // Replace the parameter with an appropriate value
+        envFol = new EnvelopeFollower(envRel_ms);
+        mapFuncGain = mapGain;
         isInitialized = true;
     }
 
@@ -1001,7 +1088,7 @@ public class Postprocessor
     // Initializer Function - has to be called for each instance prior to use (!)
     public void Initialize(short mapfn_type, bool isInv, float envReleaseMS)
     {
-     
+
     }
 
     // Real-time Setter - Mapping Function Shape
@@ -1034,6 +1121,7 @@ public class Postprocessor
         }
 
         if (float.IsNaN(output)) output = 0;
+        output = output * mapFuncGain;
         output = Math.Clamp(output, 0.0f, 1.0f);
         return output;
     }
@@ -1084,6 +1172,164 @@ public class MovementFeature
         return value;
     }
 
+}
+
+
+public class Exercise
+{
+    public Exercise()
+    {
+        // the following functions need to be called in order to complete the initialization of the exercise
+        // set_NumFeatures_Processors_inUse
+        // set_MovFeature_Idxs_inUse
+    }
+
+    ~Exercise()
+    {
+    }
+
+    public short initStatus = 0;              // status of exercise initialization
+    public bool isActive = false;
+    public string name = "";
+
+    // Attributes to set at startup
+    public short num_preProcessors = 0;
+    public short num_postProcessors = 0;      // number of OSC senders to use is the same as this
+
+    // Stores the indices of the movement features to be used in the respective exercise
+    public int[] movFeatureIdx_Used = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+
+    // Arrays with parameter values corresponding to that exercise - max size 10 - PREPROCESSORS
+    public float[] paramArray_preProc_filtFc_LPF = { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
+    public float[] paramArray_preProc_featMin_Global = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    public float[] paramArray_preProc_featMax_Global = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    public float[] paramArray_preProc_featMin_OfInterest = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    public float[] paramArray_preProc_featMax_OfInterest = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    public bool[] paramArray_preProc_isInverted = { false, false, false, false, false, false, false, false, false, false };
+
+    // Summing matrix 10x10
+    public float[,] summingMatrix = new float[6, 6];
+
+    // Arrays with parameter values corresponding to that exercise - max size 10 - POSTPROCESSORS
+    public int[] paramArray_postProc_mapFuncType = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    public float[] paramArray_postProc_mapFuncShape = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    public bool[] paramArray_postProc_isInverted = { false, false, false, false, false, false, false, false, false, false };
+    public float[] paramArray_postProc_envRel_ms = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    public float[] paramArray_postProc_mapFuncGain = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+    // Sets the numbers of preprocessor objects, and postprocessor objects in use										// 1
+    public void set_NumFeatures_Processors_inUse(short num_PreProc, short num_PostProc)
+    {
+        num_preProcessors = num_PreProc;
+        num_postProcessors = num_PostProc;
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the indices of the movement features to be used in the respective exercise									// 2
+    public void set_MovFeature_Idxs_inUse(short[] idxs)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            movFeatureIdx_Used[i] = idxs[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets preprocessor LPF cutoff frequencies																			// 3
+    public void setVals_PreProc_filtFc_LPF(float[] vals)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            paramArray_preProc_filtFc_LPF[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the minimum global value of the movement feature assigned													// 4
+    public void setVals_PreProc_featMin_Global(float[] vals)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            paramArray_preProc_featMin_Global[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the maximum global value of the movement feature assigned													// 5
+    public void setVals_PreProc_featMax_Global(float[] vals)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            paramArray_preProc_featMax_Global[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the minimum movement feature value of interest																// 6
+    public void setVals_PreProc_featMin_ofInterest(float[] vals)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            paramArray_preProc_featMin_OfInterest[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the maximum movement feature value of interest																// 7
+    public void setVals_PreProc_featMax_ofInterest(float[] vals)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            paramArray_preProc_featMax_OfInterest[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the inversion flag of each preprocessor																		// 8
+    public void setVals_PreProc_isInverted(bool[] vals)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            paramArray_preProc_isInverted[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Set the summing matrix values																					// 8.5
+    public void setVals_SummingMatrix(float[,] mat)
+    {
+        for (int i = 0; i < num_preProcessors; i++)
+            for (int j = 0; j < num_postProcessors; j++)
+            {
+                summingMatrix[i, j] = mat[i, j];
+            }
+    }
+
+    // Sets the inversion flag of each postprocessor																	// 9
+    public void setVals_PostProc_isInverted(bool[] vals)
+    {
+        for (int i = 0; i < num_postProcessors; i++)
+            paramArray_postProc_isInverted[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the mapping function type of each postprocessor																// 10
+    public void setVals_PostProc_mapFuncType(int[] vals)
+    {
+        for (int i = 0; i < num_postProcessors; i++)
+            paramArray_postProc_mapFuncType[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the mapping function shape of each postprocessor															// 11
+    public void setVals_PostProc_mapFuncShape(float[] vals)
+    {
+        for (int i = 0; i < num_postProcessors; i++)
+            paramArray_postProc_mapFuncShape[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the envelope release time of each postprocessor																// 12
+    public void setVals_PostProc_envRel_ms(float[] vals)
+    {
+        for (int i = 0; i < num_postProcessors; i++)
+            paramArray_postProc_envRel_ms[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
+
+    // Sets the mapping function gain of each postprocessor																// 13
+    public void setVals_PostProc_mapFuncGain(float[] vals)
+    {
+        for (int i = 0; i < num_postProcessors; i++)
+            paramArray_postProc_mapFuncGain[i] = vals[i];
+        initStatus = (short)(initStatus + 1);
+    }
 }
 
 
