@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -248,6 +249,7 @@ public class DataProcessorAHRS : MonoBehaviour
             postprocessorOutputText[i].text = postprocessors[i].outputVal.ToString("F2");
         }
 
+        Debug1.text = "Being Called";
 
         for (int i = 0; i < 6; i++)
         {
