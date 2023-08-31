@@ -223,11 +223,13 @@ public class DataProcessorAHRS : MonoBehaviour
         }
 
 
+       
+
         ComputeMovFeatures(gyroZSensor2,gyroZSensor1, gyroZSensor3, gyroZSensor4,
         GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
 
-        
-        
+        Debug1.text = "Being Called";
+
 
         ShankLtext.text = movementFeatures[2].getValue().ToString("F2");
         ShankRtext.text = movementFeatures[3].getValue().ToString("F2");
@@ -238,8 +240,6 @@ public class DataProcessorAHRS : MonoBehaviour
         FootLvsRtext.text = movementFeatures[6].getValue().ToString("F2");
 
 
-        generate_outputSignals();
-
 
 
         for (int i = 0; i < 6; i++)
@@ -249,15 +249,12 @@ public class DataProcessorAHRS : MonoBehaviour
             postprocessorOutputText[i].text = postprocessors[i].outputVal.ToString("F2");
         }
 
-        Debug1.text = "Being Called";
+        
 
-        for (int i = 0; i < 6; i++)
-        {
-            string messageContent = postprocessors[i].outputVal.ToString("F2");
-            transmitters[i].SendOSCMessage(messageContent);  
-        }
+      
 
 
+        generate_outputSignals();
     }
 
     void generate_outputSignals()
@@ -287,7 +284,8 @@ public class DataProcessorAHRS : MonoBehaviour
 
             postprocessors[i].Process(postProc_Input);                                                                            // postprocess the summed value from preprocessor outputs
 
-            // oscSenders[i].send(postProcessors[i].outputVal);                                                                    // send postprocessor output via OSC
+            string messageContent = postprocessors[i].outputVal.ToString("F2");
+            transmitters[i].SendOSCMessage(messageContent);                                                                   // send postprocessor output via OSC
         }
     }
 
