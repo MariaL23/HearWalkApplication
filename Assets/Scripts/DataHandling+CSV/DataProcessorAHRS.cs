@@ -28,7 +28,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
     public string bodyPartName; // Variable to store the body part name received from the DropdownHandler script
 
-    public MainDataProcessor mainDataProcessor;
+   
 
     [System.Serializable]
     public class SensorTextPair // Class to store the sensor name and the corresponding text objects
@@ -68,7 +68,8 @@ public class DataProcessorAHRS : MonoBehaviour
     public TextMeshProUGUI[] preprocessorInputText = new TextMeshProUGUI[6];
     public TextMeshProUGUI[] preprocessorOutputText = new TextMeshProUGUI[6];
     public TextMeshProUGUI[] postprocessorOutputText = new TextMeshProUGUI[6];
-    
+
+    public Slider volumeSlider;
 
     public TextMeshProUGUI preprocessorInput1Text;
     public int preproc_InUse = 1;
@@ -80,8 +81,10 @@ public class DataProcessorAHRS : MonoBehaviour
 
     int currentExerciseIdx = 0;
 
+    public Slider MapFuncGainSlider;
 
-
+    [SerializeField]
+    private Postprocessor postprocessor;
 
     private void Awake()
     {
@@ -91,15 +94,19 @@ public class DataProcessorAHRS : MonoBehaviour
             Destroy(gameObject);
     }
 
-
+    public void TogglePlayback()
+    {
+        
+    }
 
     private void Start()
     {
+        
         // get persmissions   
         RequestAndroidPermissions();
         InvokeRepeating("UpdateData", 0.033f, 0.033f);
-
-       initialize_AllExercises();
+        
+        initialize_AllExercises();
 
         movementFeatures[0] = new MovementFeature("Angular_Velocity_ThighL", -110, 110);
         movementFeatures[1] = new MovementFeature("Angular_Velocity_ThighR", -110, 110);
@@ -175,12 +182,22 @@ public class DataProcessorAHRS : MonoBehaviour
             postprocessors[i].mapFunc_shape = exercises[currentExerciseIdx].paramArray_postProc_mapFuncShape[i];                 // 11
             postprocessors[i].envRel_ms = exercises[currentExerciseIdx].paramArray_postProc_envRel_ms[i];                       // 12
             postprocessors[i].mapFuncGain = exercises[currentExerciseIdx].paramArray_postProc_mapFuncGain[i];                  // 13
-
+          
+          
             // some code to make the required OSC senders and active and the remaining inactive
             // num_activeSenders = num_postProcessors
         }
     }
 
+    public void UpdateMapFuncGain(int postprocessorIndex,float newValue)
+    {     Debug4.text = "Being Called " ;
+        
+        if (postprocessors != null && postprocessors.Length > postprocessorIndex)
+        {
+            postprocessors[postprocessorIndex].mapFuncGain = newValue;
+            Debug2.text = "mapFuncGain: " + newValue.ToString();
+        }
+    }
 
 
     private void UpdateData()
@@ -225,8 +242,7 @@ public class DataProcessorAHRS : MonoBehaviour
         GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
 
 
-        Debug1.text = "Being Called";
-
+    
 
         ShankLtext.text = movementFeatures[2].getValue().ToString("F2");
         ShankRtext.text = movementFeatures[3].getValue().ToString("F2");
@@ -236,7 +252,7 @@ public class DataProcessorAHRS : MonoBehaviour
         KneeRtext.text = movementFeatures[5].getValue().ToString("F2");
         FootLvsRtext.text = movementFeatures[6].getValue().ToString("F2");
 
-        Debug2.text = movementFeatures[2].getValue().ToString("F2");
+      
 
 
         for (int i = 0; i < 6; i++)
@@ -246,9 +262,7 @@ public class DataProcessorAHRS : MonoBehaviour
             postprocessorOutputText[i].text = postprocessors[i].outputVal.ToString("F2");
         }
 
-        
-
-      
+       
 
 
         generate_outputSignals();
@@ -282,9 +296,14 @@ public class DataProcessorAHRS : MonoBehaviour
             postprocessors[i].Process(postProc_Input);                                                                            // postprocess the summed value from preprocessor outputs
 
             string messageContent = postprocessors[i].outputVal.ToString("F2");
-            transmitters[i].SendOSCMessage(messageContent);                                                                   // send postprocessor output via OSC
+            transmitters[i].SendOSCMessage(messageContent);
+            
+            // send postprocessor output via OSC
         }
     }
+
+
+
 
     public void SetBodyPartName(string name)
     {
@@ -378,6 +397,7 @@ public class DataProcessorAHRS : MonoBehaviour
     {
         //check sensor connection
         CheckForInactivity();
+
 
         foreach (var pair in sensorTextPairs)
         {
@@ -1056,16 +1076,20 @@ public class Preprocessor
 }
 
 
-public class Postprocessor
+public class Postprocessor 
 {
     // Processing Helper Elements
     public EnvelopeFollower envFol;
+
+
 
     // Fixed Parameters
     public int mapFuncType = 1; // 1 = Exp, 2 = Sig, 3 = Lgt
     public bool isInverted = false;
     public float envRel_ms = 0;
-    public float mapFuncGain = 1;
+    public float mapFuncGain = 1 ;
+
+   
 
     // User-Modifiable Parameters
     public float mapFunc_shape = 1f;

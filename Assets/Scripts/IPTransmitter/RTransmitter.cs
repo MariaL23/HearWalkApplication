@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using static DataProcessorAHRS;
 using System.Collections;
-using System.Threading.Tasks;
+
 using extOSC;
 public class RTransmitter : MonoBehaviour
 {
@@ -19,29 +19,42 @@ public Button connectButton; // Define the connect button
 public TMP_InputField ipAddressInput;
 
 public TextMeshProUGUI HostText;
+public TextMeshProUGUI statusText;
 private bool isConnected = false; // Define the connection status
-    public string messageContent;
+private string messageContent;
 
-// Listen for the start event  and start the coroutine
-  private async void Start()
+
+    // Listen for the start event  and start the coroutine
+    public void Start()
    {
-    connectButton.onClick.AddListener(ToggleConnection);
-    await SendOSCMessageRepeatedly(); 
-   }
+
+        ipAddressInput.onEndEdit.AddListener(delegate { OnIpAddressEntered(); });
+        if (!string.IsNullOrEmpty(ipAddressInput.text))
+        {
+            OnIpAddressEntered();
+        }
+
+        SendOSCMessageRepeatedly();
+ 
+    }
 
    // Send OSC message repeatedly 
-  private async Task SendOSCMessageRepeatedly()
+public void SendOSCMessageRepeatedly()
  {
-   while (true)
-  {
-    // Wait for 1 millisecond
-    await Task.Delay(1);
-    // Check if the connection is established
-    if (isConnected)
-     {
-      SendOSCMessage(messageContent);
-    }
-  }
+        // Check if the connection is established
+        if (isConnected && !string.IsNullOrEmpty(messageContent))
+            {
+            statusText.text = "Sending";
+            SendOSCMessage(messageContent);
+               
+
+
+        }
+        else
+            {
+            
+         }
+        
  }
     // Function for the message that has to be send
     public void SendOSCMessage(string messageContent)
@@ -49,36 +62,29 @@ private bool isConnected = false; // Define the connection status
         var message = new OSCMessage(Address);
         message.AddValue(OSCValue.String(messageContent));
         Transmitter.Send(message);
-    }
-
-    // Toggle connection 
-    public void ToggleConnection()
-   {
-     if (isConnected) // If the connection is established
-      {
-          Transmitter.Close(); // Close the connection
-
-      }
-     else
-     {
-        Connect(); // Connect to the OSC receiver
-     }
-    }
-    // Connect to the OSC receiver
-    private void Connect()
-    {
-      string ipAddress = ipAddressInput.text; // Get the IP address from the input field
-      Transmitter.RemoteHost = ipAddress; // Set the OSC transmitter's IP address
-      HostText.text = "Reciver ip: " + Transmitter.RemoteHost; // Set the IP address text
-      // Connect to the OSC receiver
-      Transmitter.Connect();
-      connectButton.GetComponent<Image>().color = Color.green; // Change the color of the connect button 
-      
-
-       // Update connection status
-       isConnected = true;
        
     }
 
+    // Toggle connection 
+
+
+    // Connect to the OSC receiver
+    public void OnIpAddressEntered()
+    {
+        string ipAddress = ipAddressInput.text; // Get the IP address from the input field
+        Transmitter.RemoteHost = ipAddress; // Set the OSC transmitter's IP address
+        HostText.text = "Receiver IP: " + Transmitter.RemoteHost; // Set the IP address text
+
+        // Connect to the OSC receiver
+        Transmitter.Connect();
+       // ipAddressInput.interactable = false; // Disable input after connecting
+        isConnected = true; // Update connection status
     }
+
+
+   
+
+
+
+}
 
