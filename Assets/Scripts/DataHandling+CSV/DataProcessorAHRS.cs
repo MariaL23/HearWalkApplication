@@ -279,6 +279,7 @@ public class DataProcessorAHRS : MonoBehaviour
         initialize_currentExercise((short)index);
 
         Debug3.text = "Exercise: " + index.ToString();
+
     }
 
     void generate_outputSignals()
