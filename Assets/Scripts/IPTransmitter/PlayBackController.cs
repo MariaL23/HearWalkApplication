@@ -48,7 +48,7 @@ public class PlayBackController : MonoBehaviour
     public void SendOSCMessage()
     {
         var message = new OSCMessage(Address);
-        message.AddValue(OSCValue.String(isSendingOne ? "1" : "0")); // Send "1" or "0" based on the flag
+        message.AddValue(OSCValue.Float(isSendingOne ? 1 : 0)); // Send "1" or "0" based on the flag
         Transmitter.Send(message);
 
         connectButton.GetComponent<Image>().color = isSendingOne ? Color.green : Color.red;

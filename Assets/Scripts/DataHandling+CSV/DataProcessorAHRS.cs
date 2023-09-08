@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,6 +69,8 @@ public class DataProcessorAHRS : MonoBehaviour
     public TextMeshProUGUI[] postprocessorOutputText = new TextMeshProUGUI[6];
 
     public Slider volumeSlider;
+    [SerializeField]
+    public TMP_Dropdown Exercisedropdown;
 
     public TextMeshProUGUI preprocessorInput1Text;
     public int preproc_InUse = 1;
@@ -132,9 +133,11 @@ public class DataProcessorAHRS : MonoBehaviour
         postprocessors[5] = new Postprocessor(1, false, 0,1);
 
       initialize_currentExercise(0);
-       
 
-    }
+      
+    
+
+}
 
    public void initialize_AllExercises()
     {
@@ -190,12 +193,12 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
     public void UpdateMapFuncGain(int postprocessorIndex,float newValue)
-    {     Debug4.text = "Being Called " ;
+    {     
         
         if (postprocessors != null && postprocessors.Length > postprocessorIndex)
         {
             postprocessors[postprocessorIndex].mapFuncGain = newValue;
-            Debug2.text = "mapFuncGain: " + newValue.ToString();
+            
         }
     }
 
@@ -266,6 +269,16 @@ public class DataProcessorAHRS : MonoBehaviour
 
 
         generate_outputSignals();
+    }
+
+
+    public void OnDropdownValueChange()
+    {
+
+        int index = Exercisedropdown.value;
+        initialize_currentExercise((short)index);
+
+        Debug3.text = "Exercise: " + index.ToString();
     }
 
     void generate_outputSignals()
