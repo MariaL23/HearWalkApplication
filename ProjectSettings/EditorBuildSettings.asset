@@ -11,6 +11,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DataHandlerScene.unity
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd
+  - enabled: 1
+    path: Assets/Scenes/MainPage.unity
+    guid: 6f80eea7baada6742a5ad287559118d7
+  - enabled: 1
+    path: Assets/Scenes/Sensor Setup.unity
+    guid: 705d916c9556fe748856e67f4f095f47
+  - enabled: 1
+    path: Assets/Scenes/Sensor Placement.unity
+    guid: b474e25575f3bd743ae2ba67bf079b9f
+  - enabled: 1
+    path: Assets/Scenes/Exercise Page.unity
+    guid: 1bdf1df94fc554c45b4f21f83346bb9a
+  - enabled: 1
+    path: Assets/Scenes/Exercise Summary.unity
+    guid: 3d181f5947c6eb94b9e1018e184c8956
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 3a7bd42ae2473484f9926a877b487138, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 4bcee6a1a0de9c041896da56587fd50f, type: 2}
