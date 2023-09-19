@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Exercise Summary.unity
     guid: 3d181f5947c6eb94b9e1018e184c8956
+  - enabled: 1
+    path: Assets/Scenes/New Exercise.unity
+    guid: e2b66b5cd53795945801f6ef17f30574
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 3a7bd42ae2473484f9926a877b487138, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 4bcee6a1a0de9c041896da56587fd50f, type: 2}

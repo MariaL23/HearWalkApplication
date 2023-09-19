@@ -53,6 +53,11 @@ public class MenuNavigation : MonoBehaviour
         Debug.Log("Loading Scene...");
         UnityEngine.SceneManagement.SceneManager.LoadScene(6);
     }
+    public void LoadNewExercise(string sceneName)
+    {
+        Debug.Log("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(7);
+    }
 
 
     public void DismissUI()
