@@ -29,6 +29,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/New Exercise.unity
     guid: e2b66b5cd53795945801f6ef17f30574
+  - enabled: 1
+    path: Assets/Scenes/Landscape Mode/MainPage Landscape.unity
+    guid: dd739312521a879469a05ef3b6b04341
+  - enabled: 1
+    path: Assets/Scenes/Landscape Mode/Sensor Setup Landscape.unity
+    guid: 852ac916a2b2dee4883eb4fce1188c46
+  - enabled: 1
+    path: Assets/Scenes/Landscape Mode/Sensor Placement Landscape.unity
+    guid: f4e45f815f1a3f54190c8d4e4804498c
+  - enabled: 1
+    path: Assets/Scenes/Landscape Mode/Exercise Summary Landscape.unity
+    guid: f6fd3dd86b353ed4bb2c3e9ec48cd525
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 3a7bd42ae2473484f9926a877b487138, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 4bcee6a1a0de9c041896da56587fd50f, type: 2}
