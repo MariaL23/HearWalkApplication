@@ -1239,7 +1239,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 662.76, y: -1247}
+  m_AnchoredPosition: {x: 681.13, y: -1309}
   m_SizeDelta: {x: 315.4116, y: 92.3839}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &319662909
@@ -1767,7 +1767,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Aktiv
+  m_text: 'Lydsystemet er inaktivt
+
+
+    Tryk for at aktivere lydsystemet '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1776,8 +1779,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4289295912
+  m_fontColor: {r: 0.15686275, g: 0.46274513, b: 0.6627451, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4297,7 +4300,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lydindstillinger
+  m_text: 'Lydjustering '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5523,8 +5526,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 558.9, y: 948.8}
-  m_SizeDelta: {x: 150.2649, y: 129.7665}
+  m_AnchoredPosition: {x: 478, y: 933.6}
+  m_SizeDelta: {x: 309.3331, y: 273.9225}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1285362488
 MonoBehaviour:
@@ -6751,7 +6754,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Antal skridt:'
+  m_text: 'Antal skridt: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7518,8 +7521,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -32.118, y: -995}
-  m_SizeDelta: {x: 533.9021, y: 156.38}
+  m_AnchoredPosition: {x: -147.52, y: -1144.4976}
+  m_SizeDelta: {x: 662.83, y: 193.385}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1635517591
 MonoBehaviour:
@@ -8049,8 +8052,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 739, y: 707.2}
-  m_SizeDelta: {x: 118.5911, y: 33.8307}
+  m_AnchoredPosition: {x: 749.76227, y: 707.2}
+  m_SizeDelta: {x: 140.1157, y: 33.8307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1670127933
 MonoBehaviour:
@@ -8072,7 +8075,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Volume
+  m_text: Volumen
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

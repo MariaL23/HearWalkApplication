@@ -159,8 +159,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -224, y: 270}
-  m_SizeDelta: {x: 999.8576, y: 129.6555}
+  m_AnchoredPosition: {x: 0.000037193, y: 91.93873}
+  m_SizeDelta: {x: 1624.9297, y: 951.6774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &20318520
 MonoBehaviour:
@@ -197,7 +197,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Describtion of Exercise
+  m_text: "Denne type auditiv feedback er designet til at give patienten \xF8jeblikkelig
+    information om deres svingfase under gangtr\xE6ning.\nDenne feedback metode kan
+    implementeres i b\xE5de overjordiske og l\xF8beb\xE5nds tr\xE6ningsmilj\xF8er.
+    \nSystemts arbejdsprincip er baseret p\xE5 m\xE5ling af benenes rotationshastighed
+    i l\xE5rene og underbenene. Disse m\xE5linger oms\xE6ttes derefter til lyden
+    af at g\xE5 igennem vand.\n\nForm\xE5let er at tilbyde patienten en intuitiv
+    lydretning, der indirekte giver indsigt i svingfasens kinematik. Det unikke ved
+    denne tilgang er, at det muligg\xF8r en instiktiv forst\xE5else af gangem\xF8nstre
+    uden at det kr\xE6ver konstant opm\xE6ksomhed fra patienten.\n\nDet skal dog
+    bem\xE6rkes, at mens \xE5benlyse gangsymmentrier er let genkendelige med denne
+    form for feedback kan mere subtile asymmetrier v\xE6re vanskelige at genkende
+    udelukkende ved hj\xE6lp af lyd.\n\nFor at implementere denne form for feedback
+    er det n\xF8dvendigt at placere i alt fire tr\xE5dl\xF8se sensorer p\xE5 patientens
+    ben . Dette vil sikre n\xF8jagtige m\xE5linger, der kan oms\xE6ttes til relevant
+    lydfeedback."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -224,8 +238,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -310,8 +324,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000017166, y: -0.000038147}
-  m_SizeDelta: {x: 1493.0061, y: 719.6107}
+  m_AnchoredPosition: {x: 0.000033379, y: 69.10329}
+  m_SizeDelta: {x: 1692.0125, y: 1052.0079}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233363164
 MonoBehaviour:
@@ -522,8 +536,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.2742e-10, y: 688}
-  m_SizeDelta: {x: 976, y: 260.4449}
+  m_AnchoredPosition: {x: -0.000051141, y: 698}
+  m_SizeDelta: {x: 1651.8733, y: 260.4449}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &901645929
 MonoBehaviour:
@@ -545,7 +559,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Water walking
+  m_text: "Vandlydfeedback til gangtr\xE6ning"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -554,8 +568,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291990066
+  m_fontColor: {r: 0.19607845, g: 0.57254905, b: 0.8235295, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -572,8 +586,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
-  m_fontSizeBase: 150
+  m_fontSize: 110
+  m_fontSizeBase: 110
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
