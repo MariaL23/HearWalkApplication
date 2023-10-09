@@ -408,7 +408,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Main Menu
+  m_text: Hovedmenu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -559,8 +559,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Step 3: \nThe pairing is done when the text turns green and you can place
-    the sensor on the patient"
+  m_text: "Trin 3: \nParringen er fuldf\xF8rt, n\xE5r teksten bliver gr\xF8n, og
+    du kan placere sensoren p\xE5 patienten."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Go to Placement
+  m_text: "G\xE5 til placering"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1502,8 +1502,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Step 1: \r\nCalibrate sensors: Place sensor 1, 2, 3 and 4 flat on the
-    table. Press Pair on the sensors. \r"
+  m_text: "Trin 1:\r\nKalibr\xE9r sensorer: Placer sensor 1, 2, 3 og 4 fladt p\xE5
+    bordet. Tryk p\xE5 \"Pair\" p\xE5 sensorens sk\xE6rm."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1617,7 +1617,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -469.96002, y: -281.82803}
+  m_AnchoredPosition: {x: -469.96, y: -319.74}
   m_SizeDelta: {x: 675.7907, y: 172.1005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1840966271
@@ -1806,8 +1806,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -325, y: 69}
-  m_SizeDelta: {x: 999.8576, y: 129.6555}
+  m_AnchoredPosition: {x: -270.20535, y: 101}
+  m_SizeDelta: {x: 1109.4468, y: 129.6555}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1846076951
 MonoBehaviour:
@@ -1844,8 +1844,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Step 2: \nWhen the sensor is calibrated you will see this screen and you
-    can press pair sensors\n"
+  m_text: "Trin 2:\r\nN\xE5r sensorerne er blevet kalibreret, vil teksten p\xE5 sk\xE6rmen
+    v\xE6re som vist p\xE5 billedet. Derefter klikker du p\xE5 \"Pair sensors.\"\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

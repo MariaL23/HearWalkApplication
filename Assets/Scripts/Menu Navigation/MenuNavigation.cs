@@ -59,6 +59,42 @@ public class MenuNavigation : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(7);
     }
 
+    public void LoadLSMainPage(string sceneName)
+    {
+        Debug.Log("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(8);
+    }
+
+    public void LoadLSSetupPage(string sceneName)
+    {
+        Debug.Log("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(9);
+    }
+
+    public void LoadLSPlacementPage(string sceneName)
+    {
+        Debug.Log("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(10);
+    }
+
+    public void LoadLSExercisePage(string sceneName)
+    {
+        Debug.Log("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(11);
+    }
+
+    public void LoadLSSummaryPage(string sceneName)
+    {
+        Debug.Log("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(12);
+    }
+
+    public void LoadLSNewExercisePage(string sceneName)
+    {
+        Debug.Log("Loading Scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(13);
+    }
+
 
     public void DismissUI()
     {

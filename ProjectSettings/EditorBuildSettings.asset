@@ -39,6 +39,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Landscape Mode/Sensor Placement Landscape.unity
     guid: f4e45f815f1a3f54190c8d4e4804498c
   - enabled: 1
+    path: Assets/Scenes/Landscape Mode/Exercise PageLandscape 1.unity
+    guid: 50e9112c5d7a45e4b94d74184213c364
+  - enabled: 1
     path: Assets/Scenes/Landscape Mode/Exercise Summary Landscape.unity
     guid: f6fd3dd86b353ed4bb2c3e9ec48cd525
   m_configObjects:
