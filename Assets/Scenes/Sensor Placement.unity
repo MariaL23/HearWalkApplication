@@ -683,8 +683,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -32.529, y: -431}
-  m_SizeDelta: {x: 1593.0068, y: 430.4556}
+  m_AnchoredPosition: {x: 5.3368, y: -454.73785}
+  m_SizeDelta: {x: 1668.7, y: 486.188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &816483101
 MonoBehaviour:
@@ -706,7 +706,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Beskrivelse:'
+  m_text: "Nu hvor sensorerne er tilsluttet, er det tid til at placere sensorerne
+    p\xE5 patientes ben. \n\nFor at sikre, at hver sensor er korrekt placeret, henvises
+    der til diagrammet ovenfor. For at fastg\xF8re sensorene effektivt, er det vigtigt
+    at anvende elastiske stropper med passende l\xE6ngde til patienten. Dette vil
+    sikre en fast men komfortable placering p\xE5 patientens ben.\n\nS\xF8rg for,
+    at sensornes sk\xE6rme vender udad i en lateral retning for optimal dataindsamling
+    og l\xE6sbarhed."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -733,13 +739,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
