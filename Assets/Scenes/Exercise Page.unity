@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 13846578}
   - component: {fileID: 13846577}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Underben slider -
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13846578}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1889591080}
+        m_TargetAssemblyTypeName: UnderbenSliderButtons, Assembly-CSharp
+        m_MethodName: DecreaseSliderValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &13846578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2303,7 +2315,7 @@ GameObject:
   - component: {fileID: 485364947}
   - component: {fileID: 485364946}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Nulstil Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2373,7 +2385,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 485364947}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 988466674}
+        m_TargetAssemblyTypeName: UnderbenSliderButtons, Assembly-CSharp
+        m_MethodName: ResetSliderValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &485364947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4689,7 +4713,7 @@ GameObject:
   - component: {fileID: 865221693}
   - component: {fileID: 865221692}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Underben slider +
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4759,7 +4783,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 865221693}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1889591080}
+        m_TargetAssemblyTypeName: UnderbenSliderButtons, Assembly-CSharp
+        m_MethodName: IncreaseSliderValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &865221693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4919,7 +4955,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 3.0340729, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5291,7 +5327,7 @@ GameObject:
   - component: {fileID: 912297966}
   - component: {fileID: 912297967}
   m_Layer: 5
-  m_Name: Slider (2)
+  m_Name: Underben adjustment slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5365,7 +5401,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 797971382}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 10
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -5483,6 +5519,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981830606}
   m_CullTransparentMesh: 1
+--- !u!1 &988466673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 988466675}
+  - component: {fileID: 988466674}
+  m_Layer: 0
+  m_Name: Nulstill Sliders
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &988466674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988466673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa525c54b3a70841aca44944bcaf3ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 912297967}
+  slider2: {fileID: 1818511024}
+--- !u!4 &988466675
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988466673}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 321.0904, y: 1149.1941, z: -29.677505}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &990912112
 GameObject:
   m_ObjectHideFlags: 0
@@ -5991,7 +6073,7 @@ GameObject:
   - component: {fileID: 1067968721}
   - component: {fileID: 1067968720}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: "L\xE5r Slider -"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6061,7 +6143,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1067968721}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1473503073}
+        m_TargetAssemblyTypeName: UnderbenSliderButtons, Assembly-CSharp
+        m_MethodName: DecreaseSliderValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1067968721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7303,6 +7397,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443433438}
   m_CullTransparentMesh: 1
+--- !u!1 &1473503072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1473503074}
+  - component: {fileID: 1473503073}
+  m_Layer: 0
+  m_Name: "L\xE5r SliderButtons + - "
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1473503073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473503072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa525c54b3a70841aca44944bcaf3ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1818511024}
+  slider2: {fileID: 0}
+--- !u!4 &1473503074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473503072}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1170.2482, y: 1002.6962, z: -27.23514}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1474140913
 GameObject:
   m_ObjectHideFlags: 0
@@ -9329,6 +9469,12 @@ RectTransform:
   - {fileID: 1670127932}
   - {fileID: 1050486590}
   - {fileID: 912297966}
+  - {fileID: 865221691}
+  - {fileID: 13846576}
+  - {fileID: 1818511023}
+  - {fileID: 2037550589}
+  - {fileID: 1067968719}
+  - {fileID: 485364945}
   - {fileID: 673915328}
   - {fileID: 784931265}
   - {fileID: 873769956}
@@ -9341,11 +9487,6 @@ RectTransform:
   - {fileID: 115361996}
   - {fileID: 1564874566}
   - {fileID: 1635517590}
-  - {fileID: 2037550589}
-  - {fileID: 865221691}
-  - {fileID: 13846576}
-  - {fileID: 1067968719}
-  - {fileID: 485364945}
   - {fileID: 1474140914}
   - {fileID: 1835671182}
   - {fileID: 762844283}
@@ -9355,7 +9496,6 @@ RectTransform:
   - {fileID: 533951050}
   - {fileID: 695311930}
   - {fileID: 540039121}
-  - {fileID: 1818511023}
   - {fileID: 427577415}
   - {fileID: 1981855717}
   - {fileID: 847760464}
@@ -9799,7 +9939,7 @@ GameObject:
   - component: {fileID: 1818511023}
   - component: {fileID: 1818511024}
   m_Layer: 5
-  m_Name: Slider (1)
+  m_Name: "L\xE5r Adjustment slider"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9812,7 +9952,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818511022}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9825,7 +9965,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -637.49994, y: -250.20001}
+  m_AnchoredPosition: {x: -637.4999, y: -250.19997}
   m_SizeDelta: {x: 761.595, y: 288.607}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1818511024
@@ -9873,12 +10013,24 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1306643076}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 10
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1820719862
 GameObject:
   m_ObjectHideFlags: 0
@@ -10388,6 +10540,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1889591079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1889591081}
+  - component: {fileID: 1889591080}
+  m_Layer: 0
+  m_Name: Underbens SliderButtons + -
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1889591080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889591079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa525c54b3a70841aca44944bcaf3ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 912297967}
+  slider2: {fileID: 0}
+--- !u!4 &1889591081
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889591079}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1170.2482, y: 1002.6962, z: -27.23514}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1894310183
 GameObject:
@@ -11012,7 +11210,7 @@ GameObject:
   - component: {fileID: 2037550591}
   - component: {fileID: 2037550590}
   m_Layer: 5
-  m_Name: Button
+  m_Name: "L\xE5r Slider +"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11082,7 +11280,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2037550591}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1473503073}
+        m_TargetAssemblyTypeName: UnderbenSliderButtons, Assembly-CSharp
+        m_MethodName: IncreaseSliderValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2037550591
 MonoBehaviour:
   m_ObjectHideFlags: 0
