@@ -30,7 +30,8 @@ public class DataReceiver: MonoBehaviour
     {
         // Bind the OSC receiver to the address
         receiver.Bind(Address, MessageReceived);
-  
+        isChosen = true;
+
     }
 
     private void Update(){

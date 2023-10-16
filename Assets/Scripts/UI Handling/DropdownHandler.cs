@@ -10,7 +10,7 @@ public class DropdownHandler : MonoBehaviour
     public int[] desiredOptionIndexes;
     public TextMeshProUGUI sensorDataTextbox;
 
-    public MainDataProcessor mainDataProcessor;
+    
 
     private void OnEnable()
     {
@@ -24,7 +24,7 @@ public class DropdownHandler : MonoBehaviour
     private void Start()
     {
         dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-        mainDataProcessor = FindObjectOfType<MainDataProcessor>();
+       
     }
 
     public void OnDropdownValueChanged(int index)
@@ -44,8 +44,7 @@ public class DropdownHandler : MonoBehaviour
                     PlayerPrefs.SetInt(selectedBodyPartName, index);
                     PlayerPrefs.Save(); // Save the selected index
 
-                    // Call the appropriate SensorDataX method in MainDataProcessor
-                    mainDataProcessor.UpdateSensorData(desiredIndex);
+                   
 
                     // Update the textbox with the sensor data
                     UpdateSensorDataTextbox(desiredIndex);

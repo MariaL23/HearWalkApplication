@@ -84,6 +84,16 @@ public class DataProcessorAHRS : MonoBehaviour
 
     public Slider MapFuncGainSlider;
 
+    public Slider ThightRSlider;
+    public Slider ThightLSlider;
+    public Slider ShankLSlider;
+    public Slider ShankRSlider;
+
+    public Slider MaxValueThightLSlider;
+    public Slider MaxValueThightRSlider;
+    public Slider MaxValueShankLSlider;
+    public Slider MaxValueShankRSlider;
+
     [SerializeField]
     private Postprocessor postprocessor;
 
@@ -255,7 +265,14 @@ public class DataProcessorAHRS : MonoBehaviour
         KneeRtext.text = movementFeatures[5].getValue().ToString("F2");
         FootLvsRtext.text = movementFeatures[6].getValue().ToString("F2");
 
-      
+        ThightRSlider.value = movementFeatures[0].getValue();
+        ThightLSlider.value = movementFeatures[1].getValue();
+        ShankLSlider.value = movementFeatures[2].getValue();
+        ShankRSlider.value = movementFeatures[3].getValue();
+        HighestThighL();
+        HighestThighR();
+        HighestShankL();
+        HighestShankR();
 
 
         for (int i = 0; i < 6; i++)
@@ -265,22 +282,61 @@ public class DataProcessorAHRS : MonoBehaviour
             postprocessorOutputText[i].text = postprocessors[i].outputVal.ToString("F2");
         }
 
-       
 
+      
 
         generate_outputSignals();
     }
 
-
-    public void OnDropdownValueChange()
+    private float highestValueThighL = float.MinValue;
+    void HighestThighL()
     {
+        float currentValue = movementFeatures[1].getValue(); // Get the current value at index 3
 
-        int index = Exercisedropdown.value;
-        initialize_currentExercise((short)index);
-
-        Debug3.text = "Exercise: " + index.ToString();
-
+        if (currentValue > highestValueThighL)
+        {
+            highestValueThighL = currentValue; // Update the highest value if a new high is found
+            MaxValueThightLSlider.value = highestValueThighL; // Update the slider value
+        }
     }
+
+    private float highestValueThighR = float.MinValue;
+    void HighestThighR()
+    {
+        float currentValue = movementFeatures[0].getValue(); // Get the current value at index 3
+
+        if (currentValue > highestValueThighR)
+        {
+            highestValueThighR = currentValue; // Update the highest value if a new high is found
+            MaxValueThightRSlider.value = highestValueThighR; // Update the slider value
+        }
+    }
+
+    private float highestValueShankL = float.MinValue;
+    void HighestShankL()
+    {
+        float currentValue = movementFeatures[2].getValue(); // Get the current value at index 3
+
+        if (currentValue > highestValueThighR)
+        {
+            highestValueShankL = currentValue; // Update the highest value if a new high is found
+            MaxValueShankLSlider.value = highestValueShankL; // Update the slider value
+        }
+    }
+
+    private float highestValueShankR = float.MinValue;
+
+    void HighestShankR()
+    {
+        float currentValue = movementFeatures[3].getValue(); // Get the current value at index 3
+
+        if (currentValue > highestValueShankR)
+        {
+            highestValueShankR = currentValue; // Update the highest value if a new high is found
+            MaxValueShankRSlider.value = highestValueShankR; // Update the slider value
+        }
+    }
+
 
     void generate_outputSignals()
     {
