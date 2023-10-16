@@ -315,7 +315,7 @@ public class DataProcessorAHRS : MonoBehaviour
     private float highestValueShankL = float.MinValue;
     void HighestShankL()
     {
-        float currentValue = movementFeatures[2].getValue(); // Get the current value at index 3
+        float currentValue = movementFeatures[3].getValue(); // Get the current value at index 3
 
         if (currentValue > highestValueThighR)
         {
@@ -328,7 +328,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
     void HighestShankR()
     {
-        float currentValue = movementFeatures[3].getValue(); // Get the current value at index 3
+        float currentValue = movementFeatures[2].getValue(); // Get the current value at index 3
 
         if (currentValue > highestValueShankR)
         {

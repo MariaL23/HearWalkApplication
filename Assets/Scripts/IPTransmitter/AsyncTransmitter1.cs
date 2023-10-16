@@ -15,10 +15,10 @@ public Button connectButton; // Define the connect button
 private bool isConnected = false; // Define the connection status
 
 // Listen for the start event  and start the coroutine
-  private async void Start()
+  private void Start()
    {
     //connectButton.onClick.AddListener(ToggleConnection);
-    await SendOSCMessageRepeatedly();
+   
         Connect();
         isConnected = true;
    }
@@ -30,19 +30,7 @@ private bool isConnected = false; // Define the connection status
     }
 
    // Send OSC message repeatedly 
-  private async Task SendOSCMessageRepeatedly()
- {
-   while (true)
-  {
-    // Wait for 1 millisecond
-    await Task.Delay(1);
-    // Check if the connection is established
-    if (isConnected)
-     {
-      SendOSCMessage();
-    }
-  }
- }
+
  // Function for the message that has to be send
   private void SendOSCMessage()
   {
