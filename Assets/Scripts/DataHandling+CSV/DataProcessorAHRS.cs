@@ -76,7 +76,7 @@ public class DataProcessorAHRS : MonoBehaviour
     public int preproc_InUse = 1;
     public int postproc_InUse = 1;
 
-    public RTransmitter[] transmitters = new RTransmitter[6];
+    public RTransmitter[] transmitters = new RTransmitter[4];
 
     public Exercise[] exercises = new Exercise[3];
 
@@ -254,8 +254,8 @@ public class DataProcessorAHRS : MonoBehaviour
         ComputeMovFeatures(gyroZSensor2,gyroZSensor1, gyroZSensor3, gyroZSensor4,
         GetRollSensor2(), GetRollSensor1(), GetRollSensor3(), GetRollSensor4() );
 
+        generate_outputSignals();
 
-    
 
         ShankLtext.text = movementFeatures[2].getValue().ToString("F2");
         ShankRtext.text = movementFeatures[3].getValue().ToString("F2");
@@ -285,7 +285,7 @@ public class DataProcessorAHRS : MonoBehaviour
 
       
 
-        generate_outputSignals();
+      
     }
 
     private float highestValueThighL = float.MinValue;
@@ -367,6 +367,10 @@ public class DataProcessorAHRS : MonoBehaviour
 
             string messageContent = postprocessors[i].outputVal.ToString("F2");
             transmitters[i].SendOSCMessage(messageContent);
+            transmitters[1].SendOSCMessage(messageContent);
+            Debug4.text = messageContent;
+          
+
             
             // send postprocessor output via OSC
         }

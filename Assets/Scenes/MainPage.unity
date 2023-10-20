@@ -159,8 +159,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000037193, y: 91.93873}
-  m_SizeDelta: {x: 1624.9297, y: 951.6774}
+  m_AnchoredPosition: {x: 27.697, y: 252}
+  m_SizeDelta: {x: 1624.9297, y: 374.5118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &20318520
 MonoBehaviour:
@@ -197,21 +197,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Denne type auditiv feedback er designet til at give patienten \xF8jeblikkelig
-    information om deres svingfase under gangtr\xE6ning.\nDenne feedback metode kan
-    implementeres i b\xE5de overjordiske og l\xF8beb\xE5nds tr\xE6ningsmilj\xF8er.
-    \nSystemts arbejdsprincip er baseret p\xE5 m\xE5ling af benenes rotationshastighed
-    i l\xE5rene og underbenene. Disse m\xE5linger oms\xE6ttes derefter til lyden
-    af at g\xE5 igennem vand.\n\nForm\xE5let er at tilbyde patienten en intuitiv
-    lydretning, der indirekte giver indsigt i svingfasens kinematik. Det unikke ved
-    denne tilgang er, at det muligg\xF8r en instiktiv forst\xE5else af gangem\xF8nstre
-    uden at det kr\xE6ver konstant opm\xE6ksomhed fra patienten.\n\nDet skal dog
-    bem\xE6rkes, at mens \xE5benlyse gangsymmentrier er let genkendelige med denne
-    form for feedback kan mere subtile asymmetrier v\xE6re vanskelige at genkende
-    udelukkende ved hj\xE6lp af lyd.\n\nFor at implementere denne form for feedback
-    er det n\xF8dvendigt at placere i alt fire tr\xE5dl\xF8se sensorer p\xE5 patientens
-    ben . Dette vil sikre n\xF8jagtige m\xE5linger, der kan oms\xE6ttes til relevant
-    lydfeedback."
+  m_text: "Denne type af auditiv feedback er designet til at give patienten \xF8jeblikkelig
+    information om svingfasen under gangtr\xE6ning. \n\nSensorm\xE5linger oms\xE6ttes
+    til lyden af at g\xE5 igennem vand.\n\nForm\xE5let er at give patienten information
+    om bev\xE6gelseskvaliteten p\xE5 en intuitiv m\xE5de."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -238,8 +227,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -288,6 +277,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 20318518}
   m_CullTransparentMesh: 1
+--- !u!1 &59824549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 59824551}
+  - component: {fileID: 59824550}
+  m_Layer: 0
+  m_Name: Video Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!328 &59824550
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59824549}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: c366dcd5140aba242b5e3d946ba3dff7, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: 6afbc6b9482adb543b4b21a6bbc19411, type: 2}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: <noninit>
+  m_RenderMode: 2
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_TimeUpdateMode: 2
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 2
+  m_TargetAudioSources:
+  - {fileID: 0}
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
+  - 1
+  m_Url: 
+  m_EnabledAudioTracks: 0101
+  m_DirectAudioMutes: 0000
+  m_ControlledAudioTrackCount: 2
+  m_PlayOnAwake: 1
+  m_SkipOnDrop: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
+--- !u!4 &59824551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59824549}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1296.1986, y: 1643.0371, z: 30.444855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &233363162
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,8 +383,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000033379, y: 69.10329}
-  m_SizeDelta: {x: 1692.0125, y: 1052.0079}
+  m_AnchoredPosition: {x: -0.00006485, y: 118.84}
+  m_SizeDelta: {x: 1621.7296, y: 741.7399}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233363164
 MonoBehaviour:
@@ -455,6 +514,79 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283259310}
+  m_CullTransparentMesh: 1
+--- !u!1 &335752307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 335752308}
+  - component: {fileID: 335752310}
+  - component: {fileID: 335752309}
+  m_Layer: 5
+  m_Name: RawImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &335752308
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335752307}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1715247828}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -24.636002, y: -534.39795}
+  m_SizeDelta: {x: 492.0267, y: 628.9244}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &335752309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335752307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: 6afbc6b9482adb543b4b21a6bbc19411, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &335752310
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335752307}
   m_CullTransparentMesh: 1
 --- !u!1 &662840106
 GameObject:
@@ -918,6 +1050,7 @@ GameObject:
   - component: {fileID: 1715247827}
   - component: {fileID: 1715247826}
   - component: {fileID: 1715247825}
+  - component: {fileID: 1715247829}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1006,6 +1139,7 @@ RectTransform:
   - {fileID: 1582185944}
   - {fileID: 20318519}
   - {fileID: 901645928}
+  - {fileID: 335752308}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1014,6 +1148,44 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!328 &1715247829
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715247824}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: c366dcd5140aba242b5e3d946ba3dff7, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 0}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: <noninit>
+  m_RenderMode: 2
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_TimeUpdateMode: 2
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 2
+  m_TargetAudioSources:
+  - {fileID: 0}
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
+  - 1
+  m_Url: 
+  m_EnabledAudioTracks: 0101
+  m_DirectAudioMutes: 0000
+  m_ControlledAudioTrackCount: 2
+  m_PlayOnAwake: 1
+  m_SkipOnDrop: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
 --- !u!1 &1841014823
 GameObject:
   m_ObjectHideFlags: 0

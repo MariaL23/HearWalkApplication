@@ -17,7 +17,7 @@ public class ConnectionCheck : MonoBehaviour
     private DateTime lastMessageReceivedTime; // Store the timestamp of the last received message
     public float sensorTurnedOffTimeout = 0.5f; // Time in seconds to consider the sensor as turned off
 
-    private Coroutine blinkingCoroutine;
+   
     protected virtual void Start()
     {
         Receiver.Bind(Address, ReceivedMessage); // Bind address
@@ -32,20 +32,20 @@ public class ConnectionCheck : MonoBehaviour
             sensorTurnedOn = false; // Sensor is turned off
             ConnictionText.text = "Ikke tilsluttet\n Tænd Sensoren \n og Tryk Pair"; // updates text
             ConnictionText.color = Color.red;
-            StartBlinking();
+           
         }
         else if (!sensorTurnedOn)
         {
             ConnictionText.text = "Ikke tilsluttet \n Tryk Pair på Sensoren"; // updates text
             ConnictionText.color = Color.red;
-            StartBlinking();
+            
         }
         else
         {
             // Sensor is turned on or a message has been received recently
             ConnictionText.text = "Tilsluttet"; // updates button text
             ConnictionText.color = Color.green;
-           StopBlinking();
+           
         }
     }
 
@@ -57,33 +57,6 @@ public class ConnectionCheck : MonoBehaviour
         lastMessageReceivedTime = DateTime.Now; // Update the timestamp of the last received message
     }
 
-    private void StartBlinking()
-    {
-        if (blinkingCoroutine == null)
-        {
-            blinkingCoroutine = StartCoroutine(BlinkText());
-        }
-    }
-
-    public float blinkInterval = 2.0f;
-    private IEnumerator BlinkText()
-    {
-        while (true) // Infinite loop for continuous blinking
-        {
-            ConnictionText.enabled = !ConnictionText.enabled; // Toggle text visibility
-
-            yield return new WaitForSeconds(blinkInterval);
-        }
-    }
-
-    private void StopBlinking()
-    {
-        if (blinkingCoroutine != null)
-        {
-            StopCoroutine(blinkingCoroutine);
-            blinkingCoroutine = null;
-            ConnictionText.enabled = true; // Ensure the text is visible when not blinking
-        }
-    }
+   
 
 }
