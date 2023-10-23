@@ -3778,7 +3778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 510.59, y: 148.55}
+  m_AnchoredPosition: {x: 522.41, y: 137}
   m_SizeDelta: {x: 707.19, y: 308.5713}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &344428294
@@ -4511,7 +4511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2817666400473857552, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -861.489
+      value: -860
       objectReference: {fileID: 0}
     - target: {fileID: 3217457774786555154, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -4631,7 +4631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4536256359693231227, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -868.8889
+      value: -860
       objectReference: {fileID: 0}
     - target: {fileID: 4729692943387400815, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_Name
@@ -4687,7 +4687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5839107467729458529, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -857
+      value: -860
       objectReference: {fileID: 0}
     - target: {fileID: 6229765485461974834, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_Text
@@ -4795,7 +4795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8187436194362918221, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -864.1859
+      value: -860
       objectReference: {fileID: 0}
     - target: {fileID: 8230360352387923011, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_Name
@@ -4815,7 +4815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8786867536187377180, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -26.291864
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 8865692026339367789, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4827,7 +4827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8950871064304926410, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -24.999933
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 8998823755732037525, guid: 0c644ee2fe313ba4b9e557f0650f9005, type: 3}
       propertyPath: m_Value
@@ -9173,7 +9173,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 487.58, y: -396}
+  m_AnchoredPosition: {x: 487.58, y: -426}
   m_SizeDelta: {x: 436.7369, y: 122.9094}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &851880762
@@ -9697,7 +9697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+  m_Color: {r: 0.19607845, g: 0.57254905, b: 0.8235295, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14378,7 +14378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+  m_Color: {r: 0.18823531, g: 0.54901963, b: 0.79215693, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14414,7 +14414,7 @@ GameObject:
   - component: {fileID: 1450244065}
   - component: {fileID: 1450244066}
   m_Layer: 5
-  m_Name: "H\xF8jreL\xE5r Line Slider (2)"
+  m_Name: Slider Diffuclty Underben
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14438,7 +14438,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -464, y: -868}
+  m_AnchoredPosition: {x: -464, y: -860}
   m_SizeDelta: {x: 768.0665, y: 61.1216}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1450244066
@@ -16954,7 +16954,7 @@ GameObject:
   - component: {fileID: 1788890280}
   - component: {fileID: 1788890281}
   m_Layer: 5
-  m_Name: "H\xF8jreL\xE5r Line Slider (1)"
+  m_Name: "Slider Diffuclty L\xE5r"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16978,7 +16978,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -447, y: -27}
+  m_AnchoredPosition: {x: -447, y: -30}
   m_SizeDelta: {x: 768.0665, y: 61.1216}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1788890281
@@ -19777,6 +19777,14 @@ PrefabInstance:
       propertyPath: Debug4
       value: 
       objectReference: {fileID: 2043719226}
+    - target: {fileID: 6396233595453256111, guid: d7cd3d21d816d734aaa2c2acc6e68ab8, type: 3}
+      propertyPath: ShankMax
+      value: 
+      objectReference: {fileID: 1450244066}
+    - target: {fileID: 6396233595453256111, guid: d7cd3d21d816d734aaa2c2acc6e68ab8, type: 3}
+      propertyPath: ThighMax
+      value: 
+      objectReference: {fileID: 1788890281}
     - target: {fileID: 6396233595453256111, guid: d7cd3d21d816d734aaa2c2acc6e68ab8, type: 3}
       propertyPath: KneeLtext
       value: 

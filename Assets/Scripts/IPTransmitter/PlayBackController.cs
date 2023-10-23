@@ -52,7 +52,7 @@ public class PlayBackController : MonoBehaviour
         Transmitter.Send(message);
 
         connectButton.GetComponent<Image>().color = isSendingOne ? Color.green : Color.red;
-        connectButton.GetComponentInChildren<TextMeshProUGUI>().text = isSendingOne ? "On" : "Off";
+        connectButton.GetComponentInChildren<TextMeshProUGUI>().text = isSendingOne ? "Lydsystemet er aktivt" : "Lydsystemet er inaktivt\r\n\r\nTryk for at aktivere lydsystemet ";
 
 
     }

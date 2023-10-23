@@ -94,6 +94,9 @@ public class DataProcessorAHRS : MonoBehaviour
     public Slider MaxValueShankLSlider;
     public Slider MaxValueShankRSlider;
 
+    public Slider ThighMax;
+    public Slider ShankMax;
+
     [SerializeField]
     private Postprocessor postprocessor;
 
@@ -273,6 +276,8 @@ public class DataProcessorAHRS : MonoBehaviour
         HighestThighR();
         HighestShankL();
         HighestShankR();
+        UpdateThighMaxSlider();
+        UpdateShankMaxSlider();
 
 
         for (int i = 0; i < 6; i++)
@@ -281,9 +286,6 @@ public class DataProcessorAHRS : MonoBehaviour
             preprocessorOutputText[i].text = preprocessors[i].outputVal.ToString("F2");
             postprocessorOutputText[i].text = postprocessors[i].outputVal.ToString("F2");
         }
-
-
-      
 
       
     }
@@ -338,6 +340,7 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
 
+
     void generate_outputSignals()
     {
         // should be called once per UpdateData callback.
@@ -377,7 +380,20 @@ public class DataProcessorAHRS : MonoBehaviour
     }
 
 
+    void UpdateThighMaxSlider()
+    {
+        // Calculate the maximum of highestValueThighR and highestValueThighL
+        float maxThighValue = Mathf.Max(highestValueThighR, highestValueThighL);
 
+        // Set the ThighMax slider value to the maximum value
+        ThighMax.value = maxThighValue;
+    }
+
+    void UpdateShankMaxSlider()
+    {
+        float maxShankValue = Mathf.Max(highestValueShankR, highestValueShankL);
+        ShankMax.value = maxShankValue;
+    }
 
     public void SetBodyPartName(string name)
     {
